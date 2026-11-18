@@ -89,10 +89,22 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 .onames{font-family:Ruqaa;font-weight:700;font-size:118px;line-height:1.35;margin-top:30px;padding:0 20px}
 .onames span{color:#b5767a;font-size:80px}
 .odate{font-size:58px;font-weight:700;letter-spacing:3px;direction:ltr;margin-top:6px;color:#5a3436}
+
+.outro .v{display:none}
+body.outro-seal .v-seal,body.outro-rings .v-rings,body.outro-scroll .v-scroll{display:block}
+.rings{width:400px;height:278px}
+.rdraw{stroke-dasharray:1;stroke-dashoffset:1;animation:rdraw 1.6s cubic-bezier(.45,.05,.3,1) both}
+@keyframes rdraw{to{stroke-dashoffset:0}}
+.rfade{opacity:0;animation:rfade .8s ease-out both}
+@keyframes rfade{to{opacity:1}}
+.gempop{opacity:0;transform-origin:215px 66px;animation:gempop 1s cubic-bezier(.2,.8,.2,1.4) both}
+@keyframes gempop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+.oscroll{width:820px;height:162px}
+body.outro-scroll .onames{font-size:132px;margin-top:6px}
 .endfade{position:absolute;inset:0;background:#fdf3f3;opacity:0;animation:fade 1.6s ease-in 48.4s both}
 </style>
 </head>
-<body>
+<body class="outro-{{outro}}">
 <div class="stage">
   <canvas id="gl"></canvas>
   <div class="veil"></div>
@@ -152,10 +164,31 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 
   <div class="whiteout"></div>
   <div class="outro">
-    <div class="seal"><svg viewBox="0 0 330 330"><defs><radialGradient id="sealG" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fff7f2"/><stop offset=".4" stop-color="#f0c9c9"/><stop offset=".75" stop-color="#d79aa3"/><stop offset="1" stop-color="#b9737f"/></radialGradient></defs><path id="sealPath" fill="url(#sealG)"/><circle cx="165" cy="165" r="122" fill="none" stroke="#fff3ee" stroke-width="3" opacity=".85"/><circle cx="165" cy="165" r="110" fill="none" stroke="#a45b68" stroke-width="2" stroke-dasharray="3 9" opacity=".7"/></svg>
+    <div class="v v-seal seal"><svg viewBox="0 0 330 330"><defs><radialGradient id="sealG" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fff7f2"/><stop offset=".4" stop-color="#f0c9c9"/><stop offset=".75" stop-color="#d79aa3"/><stop offset="1" stop-color="#b9737f"/></radialGradient></defs><path id="sealPath" fill="url(#sealG)"/><circle cx="165" cy="165" r="122" fill="none" stroke="#fff3ee" stroke-width="3" opacity=".85"/><circle cx="165" cy="165" r="110" fill="none" stroke="#a45b68" stroke-width="2" stroke-dasharray="3 9" opacity=".7"/></svg>
       <div class="mono"><span>{{mono_groom}}</span><small>♡</small><span>{{mono_bride}}</span></div></div>
+    <!-- interlocking gold wedding rings that draw themselves -->
+    <svg class="v v-rings rings" viewBox="0 0 360 250"><defs>
+      <linearGradient id="ringG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6424"/><stop offset=".3" stop-color="#e9cd86"/><stop offset=".5" stop-color="#fff2c6"/><stop offset=".7" stop-color="#c9a24e"/><stop offset="1" stop-color="#8a6424"/></linearGradient>
+      <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f3e6ff"/><stop offset="1" stop-color="#d9c9e6"/></linearGradient>
+      <filter id="rsh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#7a4048" flood-opacity=".35"/></filter></defs>
+      <g filter="url(#rsh)" fill="none" stroke-linecap="round">
+        <circle class="rdraw" style="animation-delay:45.4s" cx="145" cy="150" r="72" stroke="url(#ringG)" stroke-width="13" pathLength="1"/>
+        <circle class="rdraw" style="animation-delay:45.8s" cx="215" cy="150" r="72" stroke="url(#ringG)" stroke-width="13" pathLength="1"/>
+        <path class="rfade" style="animation-delay:46.9s" d="M 173.6 85.8 A 72 72 0 0 1 199.4 102.6" stroke="url(#ringG)" stroke-width="13"/>
+        <circle class="rfade" style="animation-delay:46.9s" cx="145" cy="150" r="72" stroke="#fff6dc" stroke-width="2.2" opacity=".55" transform="translate(-2 -3)"/>
+        <circle class="rfade" style="animation-delay:46.9s" cx="215" cy="150" r="72" stroke="#fff6dc" stroke-width="2.2" opacity=".55" transform="translate(-2 -3)"/>
+      </g>
+      <g class="gempop" style="animation-delay:46.8s">
+        <path d="M201 62 L215 48 L229 62 L215 84 Z" fill="url(#gem)" stroke="#c9a24e" stroke-width="2"/>
+        <path d="M201 62 H229 M208 62 L215 48 L222 62 M208 62 L215 84 L222 62" fill="none" stroke="#c7b4d6" stroke-width="1"/>
+        <path d="M244 40 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" fill="#fff8e6"/>
+      </g>
+    </svg>
+    <!-- calligraphic scroll ornament frame, no emblem -->
+    <svg class="v v-scroll oscroll in" style="animation-delay:45.4s" viewBox="0 0 760 150"><use href="#scroll2"/></svg>
     <div class="onames write" style="animation-delay:46.1s">{{groom}} <span>♡</span> {{bride}}</div>
     <div class="odate in" style="animation-delay:47.0s">{{date}}</div>
+    <svg class="v v-scroll oscroll in" style="animation-delay:47.4s;transform:scaleY(-1)" viewBox="0 0 760 150"><use href="#scroll2"/></svg>
   </div>
   <div class="endfade"></div>
   <div class="white"></div>
