@@ -8,6 +8,7 @@ Once it works, add it here with ✅.
 |---|---|---|---|---|---|
 | 1 ✅ | **emerald-arch** | emerald `#0f3936`, ivory `#f8f1e4`, gold foil | arch frame, blush & ivory roses, eucalyptus, gold leaves, seal monogram | doors open → frame draws → flowers bloom → text written RTL; gold dust | luxurious, traditional |
 | 2 ✅ | **lace-classic** | white, pale grey, gold | 3-D embossed lace borders with pearls | gentle fade-up of each line, lace drift, shimmer | soft, classic (the family's original look) |
+| 2b ✅ | **pink-palace** | blush pink, cream, rosewood text | photo-real palace ballroom, roses, chandeliers, scroll ornaments, petals | pink doors open → fly-through → two text pages (names, then place/time/date medallions) | dreamy, princess — the family's chosen direction (Nov 2026) |
 | 3 | **navy-envelope** | midnight navy `#14213d`, champagne `#e9dcc0`, gold | envelope with a wax seal, card slides out, starry sky | seal cracks → flap opens → card rises and zooms to fill the frame | elegant, modern |
 | 4 | **burgundy-velvet** | burgundy `#5a1220`, cream, antique gold | velvet curtains, chandelier glints, damask pattern | curtains part left and right → spotlight → names engrave | royal, evening party |
 | 5 | **watercolor-garden** | white, peach, sage, dusty blue | watercolour washes (SVG turbulence + blur), pressed flowers, botanical line art | paint bleeds in → flowers draw as lines, then fill | fresh, spring/summer |

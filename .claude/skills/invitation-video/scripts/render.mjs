@@ -44,6 +44,8 @@ html = html.replace(/{{(\w+)}}/g, (_, k) => esc(data[k]));
 const build = path.join(out, 'build');
 fs.mkdirSync(build, { recursive: true });
 fs.cpSync(path.join(SKILL, 'fonts'), path.join(build, 'fonts'), { recursive: true });
+const assets = path.join(path.dirname(tplPath), 'assets');
+if (fs.existsSync(assets)) fs.cpSync(assets, path.join(build, 'assets'), { recursive: true });
 const page = path.join(build, `${name}.html`);
 fs.writeFileSync(page, html);
 

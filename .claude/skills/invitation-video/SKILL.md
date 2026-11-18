@@ -49,8 +49,11 @@ live in `templates/`. `references/styles.md` is a catalogue of further looks to 
 |---|---|---|
 | `emerald-arch` | ivory paper, gold arch frame that draws itself, blush/ivory roses + eucalyptus, gold dust | emerald doors with an Islamic star lattice, gold wax-seal monogram, doors swing open with a light burst |
 | `lace-classic` | white embossed 3-D lace borders with pearls, soft grey paper, gold text | fade-up of each line |
+| `pink-palace` | photo-real blush-pink palace ballroom (AI plate in `templates/assets/`), rosewood text, scroll ornaments, falling petals, light rays, slow dolly-in | carved pink doors open outward → camera flies through → **page 1** (verse, families, names) → fades → **page 2** (مكان/ساعة/تاريخ medallions, notes, closing). Timed natively for 40 s: render with `--slow 1 --duration 40` |
 
-Both use the same data keys (`lace-classic` ignores `cover_*` and `mono_*`).
+All share the data keys in the example JSON; each ignores the keys it has no slot for. `pink-palace` also uses `place_label`, `time_label`, `date_label`.
+
+Photo-real plates (halls, doors) are made with an image model (e.g. ElevenLabs `creative_generate_image`, gpt-image, aspect 9:16, 2K). Prompt for strict symmetry, a calm centre for the text, and no text or people. For doors, ask for the seam exactly on the vertical centre, then measure the door opening on a grid before cutting it out (see `.frameImg` / `.door` in `pink-palace.html`). Save plates as 1080x1920 JPG in `templates/assets/`.
 
 ## Building a new template
 
