@@ -65,6 +65,7 @@ const pageUrl = `http://127.0.0.1:${server.address().port}/${encodeURIComponent(
 
 async function openPage(browser) {
   const p = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+  p.setDefaultTimeout(300000);   // software WebGL frames can take a while when workers share CPU cores
   p.on('pageerror', (e) => console.error('page error:', e.message));
   await p.goto(pageUrl);
   await p.evaluate(() => document.fonts.ready);
@@ -86,15 +87,27 @@ try {
     }
   } else {
     const frames = path.join(out, `frames-${name}`);
-    fs.rmSync(frames, { recursive: true, force: true });
+    // resumable: frames already on disk are kept (pass --fresh to start over)
+    if (args.fresh) fs.rmSync(frames, { recursive: true, force: true });
     fs.mkdirSync(frames, { recursive: true });
     const total = Math.round(duration * fps);
     const chunk = Math.ceil(total / workers);
     await Promise.all([...Array(workers).keys()].map(async (w) => {
       const p = await openPage(browser);
       for (let i = w * chunk; i < Math.min(total, (w + 1) * chunk); i++) {
-        await p.evaluate((x) => window.seek(x), i / fps / slow);
-        await p.screenshot({ path: path.join(frames, `f${String(i).padStart(5, '0')}.jpg`), type: 'jpeg', quality: 93 });
+        const file = path.join(frames, `f${String(i).padStart(5, '0')}.jpg`);
+        if (fs.existsSync(file) && fs.statSync(file).size > 1000) continue;
+        for (let attempt = 1; ; attempt++) {
+          try {
+            await p.evaluate((x) => window.seek(x), i / fps / slow);
+            await p.screenshot({ path: file + '.part', type: 'jpeg', quality: 93 });
+            fs.renameSync(file + '.part', file);
+            break;
+          } catch (e) {
+            if (attempt >= 3) throw e;
+            console.error(`frame ${i} failed (${e.message.split('\n')[0]}), retry ${attempt}`);
+          }
+        }
       }
     }));
     const mp4 = path.join(out, `${name}.mp4`);
