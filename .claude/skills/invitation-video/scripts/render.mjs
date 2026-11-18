@@ -9,6 +9,7 @@
 // --slow stretches the template's own timeline (1.7 = everything 1.7x slower).
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
+import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,8 +26,7 @@ const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, all) =>
 const tplArg = args.template || 'emerald-arch';
 const tplPath = fs.existsSync(tplArg) ? path.resolve(tplArg) : path.join(SKILL, 'templates', `${tplArg}.html`);
 if (!fs.existsSync(tplPath)) throw new Error(`template not found: ${tplArg}`);
-if (!args.data) throw new Error('--data <json> is required');
-const data = JSON.parse(fs.readFileSync(args.data, 'utf8'));
+const data = args.data ? JSON.parse(fs.readFileSync(args.data, 'utf8')) : {};
 const out = path.resolve(args.out || 'out');
 const fps = +(args.fps || 30);
 const duration = +(args.duration || 40);
@@ -46,18 +46,35 @@ fs.mkdirSync(build, { recursive: true });
 fs.cpSync(path.join(SKILL, 'fonts'), path.join(build, 'fonts'), { recursive: true });
 const assets = path.join(path.dirname(tplPath), 'assets');
 if (fs.existsSync(assets)) fs.cpSync(assets, path.join(build, 'assets'), { recursive: true });
+// shared libraries (three.js) live in the sibling code-video skill
+const lib = path.resolve(SKILL, '..', 'code-video', 'lib');
+if (fs.existsSync(lib)) fs.cpSync(lib, path.join(build, 'lib'), { recursive: true });
 const page = path.join(build, `${name}.html`);
 fs.writeFileSync(page, html);
 
+// Serve the build folder over HTTP: ES modules (three.js) do not load from file:// URLs.
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.ttf': 'font/ttf', '.svg': 'image/svg+xml' };
+const server = http.createServer((req, res) => {
+  const f = path.join(build, decodeURIComponent(new URL(req.url, 'http://x').pathname));
+  if (!f.startsWith(build) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
+  res.writeHead(200, { 'Content-Type': MIME[path.extname(f)] || 'application/octet-stream' });
+  fs.createReadStream(f).pipe(res);
+});
+await new Promise((r) => server.listen(0, '127.0.0.1', r));
+const pageUrl = `http://127.0.0.1:${server.address().port}/${encodeURIComponent(path.basename(page))}`;
+
 async function openPage(browser) {
   const p = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-  await p.goto('file://' + page);
+  p.on('pageerror', (e) => console.error('page error:', e.message));
+  await p.goto(pageUrl);
   await p.evaluate(() => document.fonts.ready);
+  await p.waitForFunction(() => window.__ready !== false, null, { timeout: 120000 });
   await p.waitForTimeout(300);
   return p;
 }
 
-const browser = await chromium.launch();
+// SwiftShader gives headless Chromium a working WebGL2 without a GPU
+const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 try {
   if (args.preview) {
     const p = await openPage(browser);
@@ -94,4 +111,5 @@ try {
   }
 } finally {
   await browser.close();
+  server.close();
 }
