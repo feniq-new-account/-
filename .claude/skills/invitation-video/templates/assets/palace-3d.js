@@ -536,17 +536,36 @@ if (cfg.wedding) {
   }
   box(8.4, 0.62, 0.55, M.col, 0, 10.12, WALL_Z + 0.26); box(8.4, 0.05, 0.02, M.gold, 0, 9.88, WALL_Z + 0.55); box(8.4, 0.05, 0.02, M.gold, 0, 10.36, WALL_Z + 0.55);
   box(9.0, 0.26, 0.75, M.col, 0, 10.56, WALL_Z + 0.36); box(9.0, 0.04, 0.02, M.gold, 0, 10.44, WALL_Z + 0.74);
-  // ornate lanterns on curled gold brackets
+  // ornate brass lanterns right beside the door, with warm candle light spilling on the wall
+  const warm = new THREE.MeshBasicMaterial({ color: new THREE.Color(3.4, 2.3, 1.15), fog: false });
+  const amberGlass = new THREE.MeshStandardMaterial({ color: '#ffd9a0', emissive: new THREE.Color(1.7, 0.95, 0.35), roughness: 0.15, transparent: true, opacity: 0.92 });
+  const brass = new THREE.MeshStandardMaterial({ color: '#c8a15a', metalness: 1, roughness: 0.32 });
+  function warmGlowTexture() { const s2 = 256, cv = document.createElement('canvas'); cv.width = cv.height = s2; const g = cv.getContext('2d'); const gr = g.createRadialGradient(s2 / 2, s2 / 2, 0, s2 / 2, s2 / 2, s2 / 2); gr.addColorStop(0, 'rgba(255,214,150,1)'); gr.addColorStop(0.2, 'rgba(255,190,120,.6)'); gr.addColorStop(0.55, 'rgba(255,170,110,.18)'); gr.addColorStop(1, 'rgba(255,160,110,0)'); g.fillStyle = gr; g.fillRect(0, 0, s2, s2); return new THREE.CanvasTexture(cv); }
+  const warmTex = warmGlowTexture();
   for (const sd of [-1, 1]) {
-    const lx = sd * 4.3, ly = 4.75, lz = WALL_Z + 0.62;
-    const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.16, 0.56, 8), M.glow); glass.position.set(lx, ly, lz); world.add(glass);
-    const cage = new THREE.Mesh(new THREE.CylinderGeometry(0.215, 0.175, 0.58, 8, 1, true), new THREE.MeshStandardMaterial({ color: P.gold, metalness: 1, roughness: 0.3, wireframe: true })); cage.position.set(lx, ly, lz); world.add(cage);
-    for (const [y, r] of [[0.29, 0.215], [-0.29, 0.175]]) { const t = new THREE.Mesh(new THREE.TorusGeometry(r, 0.025, 8, 24), M.gold); t.rotation.x = Math.PI / 2; t.position.set(lx, ly + y, lz); world.add(t); }
-    const cap = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.32, 8), M.gold); cap.position.set(lx, ly + 0.45, lz); world.add(cap);
-    const fin = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), M.gold); fin.position.set(lx, ly + 0.66, lz); world.add(fin);
-    const bot = new THREE.Mesh(new THREE.ConeGeometry(0.17, 0.24, 8), M.gold); bot.rotation.x = Math.PI; bot.position.set(lx, ly - 0.41, lz); world.add(bot);
-    const arm = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.028, 8, 30, Math.PI), M.gold); arm.rotation.y = Math.PI / 2; arm.position.set(lx, ly + 0.66, lz - 0.32); world.add(arm);
-    const sp = new THREE.Sprite(glowMat); sp.scale.set(2.4, 2.4, 1); sp.position.set(lx, ly, lz + 0.2); world.add(sp);
+    const L = new THREE.Group(); L.position.set(sd * 3.32, 5.15, WALL_Z + 0.95); world.add(L);
+    // wall plate + scrolled bracket arm
+    const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.05, 24), brass); plate.rotation.x = Math.PI / 2; plate.position.set(0, 0.62, -0.62); L.add(plate);
+    const arm = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.032, 10, 32, Math.PI * 0.9), brass); arm.rotation.y = Math.PI / 2; arm.position.set(0, 0.62, -0.3); L.add(arm);
+    const curl = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.022, 8, 20, Math.PI * 1.6), brass); curl.rotation.y = Math.PI / 2; curl.position.set(0, 0.38, -0.5); L.add(curl);
+    // body: 6-sided glass with brass frame, crown, finial and drip
+    const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.27, 0.22, 0.72, 6), amberGlass); L.add(glass);
+    const frame = new THREE.Mesh(new THREE.CylinderGeometry(0.285, 0.235, 0.74, 6, 1, true), new THREE.MeshStandardMaterial({ color: '#c8a15a', metalness: 1, roughness: 0.3, wireframe: true })); L.add(frame);
+    for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2 + Math.PI / 6; const post = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.76, 0.035), brass); post.position.set(Math.cos(a) * 0.255, 0, Math.sin(a) * 0.255); post.rotation.y = -a; L.add(post); }
+    for (const [y, r] of [[0.38, 0.3], [-0.38, 0.245]]) { const t = new THREE.Mesh(new THREE.TorusGeometry(r, 0.03, 8, 6), brass); t.rotation.x = Math.PI / 2; t.position.y = y; L.add(t); }
+    const roof = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.34, 6), brass); roof.position.y = 0.58; L.add(roof);
+    const crown = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.025, 8, 18), brass); crown.position.y = 0.83; L.add(crown);
+    const fin = new THREE.Mesh(new THREE.SphereGeometry(0.07, 14, 10), brass); fin.position.y = 0.97; L.add(fin);
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.12, 0.16, 6), brass); base.position.y = -0.47; L.add(base);
+    const drip = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.26, 6), brass); drip.rotation.x = Math.PI; drip.position.y = -0.68; L.add(drip);
+    const ball = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 10), brass); ball.position.y = -0.84; L.add(ball);
+    // candle + flame inside
+    const candle = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.3, 12), M.col); candle.position.y = -0.2; L.add(candle);
+    const flame = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), warm); flame.scale.y = 1.8; flame.position.y = 0.04; L.add(flame);
+    // light: bright halo at the lantern, softer amber pool on wall/door edge behind it
+    const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: warmTex, color: '#ffc27a', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: false, opacity: 0.85 })); halo.scale.set(2.2, 2.2, 1); halo.position.set(0, 0.02, 0.1); L.add(halo);
+    const pool = new THREE.Mesh(new THREE.PlaneGeometry(4.2, 5.2), new THREE.MeshBasicMaterial({ map: warmTex, color: '#ffb877', transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }));
+    pool.position.set(0, 0.2, -0.6); L.add(pool);
   }
   // marble threshold steps
   box(6.4, 0.12, 0.9, M.col, 0, 0.06, WALL_Z + 0.45); box(6.4, 0.03, 0.02, M.gold, 0, 0.11, WALL_Z + 0.9);
