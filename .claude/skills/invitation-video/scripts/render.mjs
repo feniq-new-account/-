@@ -91,10 +91,12 @@ try {
     if (args.fresh) fs.rmSync(frames, { recursive: true, force: true });
     fs.mkdirSync(frames, { recursive: true });
     const total = Math.round(duration * fps);
-    const chunk = Math.ceil(total / workers);
+    // --from <seconds>: render only the tail (to extend a finished video); encode starts at that frame
+    const first = Math.round((+args.from || 0) * fps);
+    const chunk = Math.ceil((total - first) / workers);
     await Promise.all([...Array(workers).keys()].map(async (w) => {
       const p = await openPage(browser);
-      for (let i = w * chunk; i < Math.min(total, (w + 1) * chunk); i++) {
+      for (let i = first + w * chunk; i < Math.min(total, first + (w + 1) * chunk); i++) {
         const file = path.join(frames, `f${String(i).padStart(5, '0')}.jpg`);
         if (fs.existsSync(file) && fs.statSync(file).size > 1000) continue;
         for (let attempt = 1; ; attempt++) {
@@ -111,12 +113,14 @@ try {
       }
     }));
     const mp4 = path.join(out, `${name}.mp4`);
-    const ff = ['-y', '-loglevel', 'error', '-framerate', String(fps), '-i', path.join(frames, 'f%05d.jpg')];
+    const ff = ['-y', '-loglevel', 'error', '-framerate', String(fps), '-start_number', String(first), '-i', path.join(frames, 'f%05d.jpg')];
     if (args.music) {
-      const fadeAt = Math.max(0, duration - 3.5);
-      ff.push('-i', path.resolve(args.music), '-af', `atrim=0:${duration},afade=t=out:st=${fadeAt}:d=3.5`, '-c:a', 'aac', '-b:a', '192k');
+      const fadeLen = +(args.fade ?? 3.5);
+      const fadeAt = Math.max(0, duration - fadeLen);
+      ff.push('-i', path.resolve(args.music), '-af', `atrim=0:${duration},afade=t=out:st=${fadeAt}:d=${fadeLen}`, '-c:a', 'aac', '-b:a', '192k');
     }
-    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf || 19), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-t', String(duration), '-movflags', '+faststart', mp4);
+    if (first) ff.push('-frames:v', String(total - first));
+    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf || 19), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-t', String(duration - first / fps), '-movflags', '+faststart', mp4);
     execFileSync('ffmpeg', ff, { stdio: 'inherit' });
     fs.copyFileSync(path.join(frames, `f${String(total - 1).padStart(5, '0')}.jpg`), path.join(out, `${name}-poster.jpg`));
     if (!args['keep-frames']) fs.rmSync(frames, { recursive: true, force: true });

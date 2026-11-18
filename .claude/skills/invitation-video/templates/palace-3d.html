@@ -74,6 +74,22 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 .white{position:absolute;inset:0;background:#fff;animation:wo 1.2s ease-out both}
 @keyframes wo{from{opacity:1}to{opacity:0}}
 #gl{position:absolute;inset:0;width:1080px;height:1920px;display:block}
+
+/* ---------- outro (45-50 s): page 2 out, seal monogram + names + date, fade to blush white ---------- */
+.p2{animation:pageOut 1.2s ease-in 44.2s forwards}
+.whiteout{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 80% 60% at 50% 48%,rgba(255,250,249,.92),rgba(253,240,240,.8) 60%,rgba(250,232,233,.7));animation:fade 3.2s ease-in-out 44.6s both}
+.outro{position:absolute;left:0;right:0;top:600px;display:flex;flex-direction:column;align-items:center;text-align:center;
+  font-family:Naskh,Amiri,serif;color:#4b2c2e;text-shadow:0 0 14px rgba(255,255,255,.95)}
+.seal{width:330px;height:330px;position:relative;opacity:0;animation:sealIn 1.8s cubic-bezier(.2,.8,.2,1) 45.4s both}
+@keyframes sealIn{from{opacity:0;transform:scale(.55) rotate(-12deg);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+.seal svg{position:absolute;inset:0;filter:drop-shadow(0 14px 18px rgba(120,60,70,.35))}
+.seal .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:16px;direction:rtl;
+  font-family:Ruqaa;font-weight:700;font-size:104px;color:#8a4954;text-shadow:0 2px 0 rgba(255,240,235,.85);padding-bottom:22px}
+.seal .mono small{font-size:52px;color:#fff4f0;margin-top:26px;text-shadow:0 1px 2px rgba(120,60,70,.4)}
+.onames{font-family:Ruqaa;font-weight:700;font-size:118px;line-height:1.35;margin-top:30px;padding:0 20px}
+.onames span{color:#b5767a;font-size:80px}
+.odate{font-size:58px;font-weight:700;letter-spacing:3px;direction:ltr;margin-top:6px;color:#5a3436}
+.endfade{position:absolute;inset:0;background:#fdf3f3;opacity:0;animation:fade 1.6s ease-in 48.4s both}
 </style>
 </head>
 <body>
@@ -134,6 +150,14 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
   </div>
 
 
+  <div class="whiteout"></div>
+  <div class="outro">
+    <div class="seal"><svg viewBox="0 0 330 330"><defs><radialGradient id="sealG" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fff7f2"/><stop offset=".4" stop-color="#f0c9c9"/><stop offset=".75" stop-color="#d79aa3"/><stop offset="1" stop-color="#b9737f"/></radialGradient></defs><path id="sealPath" fill="url(#sealG)"/><circle cx="165" cy="165" r="122" fill="none" stroke="#fff3ee" stroke-width="3" opacity=".85"/><circle cx="165" cy="165" r="110" fill="none" stroke="#a45b68" stroke-width="2" stroke-dasharray="3 9" opacity=".7"/></svg>
+      <div class="mono"><span>{{mono_groom}}</span><small>♡</small><span>{{mono_bride}}</span></div></div>
+    <div class="onames write" style="animation-delay:46.1s">{{groom}} <span>♡</span> {{bride}}</div>
+    <div class="odate in" style="animation-delay:47.0s">{{date}}</div>
+  </div>
+  <div class="endfade"></div>
   <div class="white"></div>
 </div>
 
@@ -179,6 +203,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 <script type="importmap">{"imports":{"three":"./lib/three/three.module.min.js","three/addons/":"./lib/three/addons/"}}</script>
 <script>
 window.__ready=false;
+document.addEventListener('DOMContentLoaded',()=>{const p=document.getElementById('sealPath');if(!p)return;let d='';for(let i=0;i<=360;i++){const a=i/360*Math.PI*2,r=148+7*Math.sin(a*20)+3*Math.sin(a*6);d+=(i?'L':'M')+(165+Math.cos(a)*r).toFixed(1)+' '+(165+Math.sin(a)*r).toFixed(1)}p.setAttribute('d',d+'Z')});
 window.seek=function(t){
   for(const a of document.getAnimations()){a.pause();a.currentTime=t*1000}
   if(window.render3d) window.render3d(t);

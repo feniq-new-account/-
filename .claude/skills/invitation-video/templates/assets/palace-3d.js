@@ -28,7 +28,10 @@ const clamp01 = (k) => Math.min(1, Math.max(0, k));
 function track(keys) {
   return (t) => {
     if (t <= keys[0][0]) return keys[0][1];
-    if (t >= keys[keys.length - 1][0]) return keys[keys.length - 1][1];
+    if (t >= keys[keys.length - 1][0]) {        // extend past the last key: same velocity, gentle stop (frames before stay identical)
+      const L = keys[keys.length - 1], Pk = keys[keys.length - 2], v = (L[1] - Pk[1]) / (L[0] - Pk[0]);
+      const T = Math.min(t - L[0], 12); return L[1] + v * (T - T * T / 24);
+    }
     let i = 0; while (t > keys[i + 1][0]) i++;
     const k0 = keys[Math.max(0, i - 1)], k1 = keys[i], k2 = keys[i + 1], k3 = keys[Math.min(keys.length - 1, i + 2)];
     const u = (t - k1[0]) / (k2[0] - k1[0]);
@@ -382,6 +385,13 @@ const NP = 260, petalSeeds = [];
 for (let i = 0; i < NP; i++) petalSeeds.push({ x: (R() - 0.5) * 12, z: 4 - R() * 46, y0: R() * 11, v: 0.35 + R() * 0.35, w: 0.6 + R() * 1.4, ph: R() * 6.28, s: 0.07 + R() * 0.07, c: pick(P.blossom) });
 const petals = instanced(new THREE.ShapeGeometry(petalShape, 6), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.7, side: THREE.DoubleSide, emissive: '#f7cfd4', emissiveIntensity: 0.25 }), NP, (i, d, c) => { c.set(petalSeeds[i].c); d.scale.setScalar(0); }, scene);
 
+// ---------- outro extras (only visible after cfg.outroAt seconds) ----------
+const OUTRO = cfg.outroAt ?? 44.6;
+const NB = 220, burstSeeds = [];
+for (let i = 0; i < NB; i++) burstSeeds.push({ x: (R() - 0.5) * 7, zo: -2 - R() * 9, y0: 6 + R() * 6, v: 0.55 + R() * 0.5, w: 0.6 + R() * 1.4, ph: R() * 6.28, s: 0.08 + R() * 0.08, c: pick(P.blossom), d: R() * 1.6 });
+const burst = instanced(new THREE.ShapeGeometry(petalShape, 6), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.7, side: THREE.DoubleSide, emissive: '#f7cfd4', emissiveIntensity: 0.3 }), NB, (i, d, c) => { c.set(burstSeeds[i].c); d.scale.setScalar(0); }, scene);
+const winGlow0 = { o: winGlow.material.opacity, sx: winGlow.scale.x, sy: winGlow.scale.y };
+
 // ---------- post ----------
 const composer = new EffectComposer(renderer);
 composer.setSize(cfg.width, cfg.height);
@@ -424,6 +434,22 @@ window.render3d = function (t) {
     dummy.updateMatrix(); petals.setMatrixAt(i, dummy.matrix);
   }
   petals.instanceMatrix.needsUpdate = true;
+
+  // outro: petal burst falls just in front of the camera, window light swells
+  const ko = clamp01((t - OUTRO) / 4);
+  for (let i = 0; i < NB; i++) {
+    const p = burstSeeds[i], tt = t - OUTRO - p.d;
+    if (tt <= 0) { dummy.scale.setScalar(0); }
+    else {
+      dummy.position.set(p.x + Math.sin(t * 0.7 * p.w + p.ph) * 0.5, p.y0 - tt * p.v * 1.4, camera.position.z + p.zo);
+      dummy.rotation.set(t * p.w + p.ph, t * 0.8 * p.w, Math.sin(t + p.ph));
+      dummy.scale.setScalar(p.s * smooth(clamp01(tt / 0.6)));
+    }
+    dummy.updateMatrix(); burst.setMatrixAt(i, dummy.matrix);
+  }
+  burst.instanceMatrix.needsUpdate = true;
+  winGlow.material.opacity = winGlow0.o + 0.6 * smooth(ko);
+  winGlow.scale.set(winGlow0.sx * (1 + 0.6 * smooth(ko)), winGlow0.sy * (1 + 0.6 * smooth(ko)), 1);
 
   composer.render();
 };
