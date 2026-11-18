@@ -8,7 +8,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cfg = Object.assign({
-  width: 720, height: 1280,            // internal render size (CSS scales the canvas to 1080x1920)
+  width: 1080, height: 1920,           // internal render size; 720x1280 renders ~2x faster for drafts
   palette: {
     fog: '#ecd0cf', wall: '#efcfd0', column: '#fbf0ea', door: '#eab3b9', gold: '#d8b06a',
     roses: ['#f3bcc4', '#f7d3d8', '#fbe8ea', '#eaa8b3', '#ffffff', '#f5c9cf'], leaf: '#93a98d',

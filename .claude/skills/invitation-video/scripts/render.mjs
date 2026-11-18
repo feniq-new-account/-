@@ -103,7 +103,7 @@ try {
       const fadeAt = Math.max(0, duration - 3.5);
       ff.push('-i', path.resolve(args.music), '-af', `atrim=0:${duration},afade=t=out:st=${fadeAt}:d=3.5`, '-c:a', 'aac', '-b:a', '192k');
     }
-    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-pix_fmt', 'yuv420p', '-t', String(duration), '-movflags', '+faststart', mp4);
+    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf || 19), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-t', String(duration), '-movflags', '+faststart', mp4);
     execFileSync('ffmpeg', ff, { stdio: 'inherit' });
     fs.copyFileSync(path.join(frames, `f${String(total - 1).padStart(5, '0')}.jpg`), path.join(out, `${name}-poster.jpg`));
     if (!args['keep-frames']) fs.rmSync(frames, { recursive: true, force: true });
