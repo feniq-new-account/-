@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>{{groom}} و{{bride}}</title>
+<style>
+@font-face{font-family:Amiri;src:url(fonts/amiri.ttf);font-weight:400}
+@font-face{font-family:Amiri;src:url(fonts/amiri-b.ttf);font-weight:700}
+@font-face{font-family:Ruqaa;src:url(fonts/ruqaa.ttf);font-weight:400}
+@font-face{font-family:Ruqaa;src:url(fonts/ruqaa-b.ttf);font-weight:700}
+@font-face{font-family:Quran;src:url(fonts/quran.ttf)}
+@font-face{font-family:Naskh;src:url(fonts/naskh.ttf);font-weight:500}
+@font-face{font-family:Naskh;src:url(fonts/naskh-b.ttf);font-weight:700}
+:root{--ink:#5a3436;--ink2:#7a4e50;--rose:#b5767a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
+.stage{position:relative;width:1080px;height:1920px;overflow:hidden}
+
+/* soft white veil behind text so it reads on the busy photo */
+.veil{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(ellipse 72% 56% at 50% 46%,rgba(255,250,248,.78) 0%,rgba(255,246,244,.55) 58%,rgba(255,246,244,0) 100%);
+  animation:fade 2s ease-out 4.2s both,veilDown 2.4s ease-in-out 40s forwards}
+@keyframes veilDown{from{opacity:1}to{opacity:.25}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- pages ---------- */
+.page{position:absolute;left:50px;right:50px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;text-align:center;
+  color:var(--ink);font-family:Naskh,Amiri,serif;text-shadow:0 0 14px rgba(255,255,255,.95),0 0 4px rgba(255,255,255,.9)}
+.p1{padding-top:215px;animation:pageOut 1.6s ease-in 23.4s forwards}
+.p2{padding-top:300px}
+@keyframes pageOut{to{opacity:0;filter:blur(8px);transform:translateY(-30px)}}
+
+.in{opacity:0;animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(30px);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+.write{clip-path:inset(-30% 0 -30% 100%);animation:write 2.2s cubic-bezier(.45,.05,.35,1) both}
+@keyframes write{to{clip-path:inset(-30% 0 -30% 0)}}
+.zoom{opacity:0;animation:zoom 1.8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes zoom{from{opacity:0;transform:scale(.7);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+
+.bism{font-family:Quran;font-size:80px;line-height:1.3;color:#4b2c2e}
+.verse{font-family:Quran;font-size:50px;line-height:1.9;margin-top:14px;color:#4b2c2e}
+.verse span{display:block}
+.scroll{width:640px;height:111px;margin-top:14px}
+.intro{font-size:44px;margin-top:22px;font-weight:500;color:var(--ink2)}
+.fam{display:flex;justify-content:space-between;width:900px;margin-top:40px}
+.fam div{width:50%;display:flex;flex-direction:column;align-items:center}
+.fam small{font-size:38px;font-weight:500;color:var(--ink2)}
+.fam b{font-family:Ruqaa;font-size:76px;font-weight:700;line-height:1.3;color:#4b2c2e}
+.amp{font-family:Ruqaa;font-size:44px;color:var(--rose);margin-top:-6px}
+.invite{font-size:46px;margin-top:36px;font-weight:700}
+.names{display:flex;justify-content:space-between;align-items:flex-end;width:940px;margin-top:34px}
+.names .p{width:44%;display:flex;flex-direction:column;align-items:center}
+.names .t{font-family:Ruqaa;font-size:54px;font-weight:700;color:var(--ink2);line-height:1.1}
+.names .n{font-family:Ruqaa;font-size:172px;font-weight:700;line-height:1.2;padding:0 16px;text-shadow:none;
+  background:linear-gradient(180deg,#6d3b3f 0%,#4a2528 55%,#8a5256 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 10px rgba(255,255,255,.95)) drop-shadow(0 2px 2px rgba(80,30,30,.25))}
+.names .w{font-family:Ruqaa;font-size:72px;color:var(--rose);align-self:center;margin-top:40px}
+
+.cols{display:flex;width:980px;justify-content:space-between;margin-top:0}
+.col{width:33.3%;display:flex;flex-direction:column;align-items:center;position:relative}
+.col + .col::before{content:"";position:absolute;right:0;top:20px;height:400px;width:2px;background:linear-gradient(transparent,rgba(110,60,62,.55),transparent)}
+.col .lab{font-family:Ruqaa;font-size:62px;font-weight:700;color:#4b2c2e}
+.medal{width:210px;height:210px;margin-top:16px;position:relative;display:grid;place-items:center}
+.medal svg.ring{position:absolute;inset:0}
+.medal svg.ic{width:92px;height:92px}
+.col .val{font-size:46px;font-weight:700;margin-top:22px;line-height:1.35;color:#4b2c2e}
+.col .sub{font-size:38px;font-weight:500;color:var(--ink2)}
+.when{font-family:Ruqaa;font-size:64px;font-weight:700;margin-top:80px;color:#4b2c2e}
+.divider{width:720px;height:48px;margin-top:18px}
+.note{font-size:44px;font-weight:500;margin-top:34px;color:var(--ink2)}
+.heart{width:44px;height:44px;margin-top:14px}
+.close{font-family:Ruqaa;font-size:88px;font-weight:700;margin-top:40px;padding:0 20px;color:#4b2c2e}
+.scroll2{width:900px;height:178px;margin-top:10px}
+
+.white{position:absolute;inset:0;background:#fff;animation:wo 1.2s ease-out both}
+@keyframes wo{from{opacity:1}to{opacity:0}}
+#gl{position:absolute;inset:0;width:1080px;height:1920px;display:block}
+
+/* ---------- outro (45-50 s): page 2 out, seal monogram + names + date, fade to blush white ---------- */
+.p2{animation:pageOut 1.2s ease-in 40s forwards}
+.whiteout{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 34% 21% at 50% 50%,rgba(255,250,249,.8),rgba(255,248,247,.45) 55%,rgba(255,248,247,0) 100%);animation:fade 2s ease-in-out 45s both}
+.outro{position:absolute;left:0;right:0;top:{{outro_top}}px;display:flex;flex-direction:column;align-items:center;text-align:center;
+  font-family:Naskh,Amiri,serif;color:#4b2c2e;text-shadow:0 0 14px rgba(255,255,255,.95)}
+.seal{width:330px;height:330px;position:relative;opacity:0;animation:sealIn 1.8s cubic-bezier(.2,.8,.2,1) 45.4s both}
+@keyframes sealIn{from{opacity:0;transform:scale(.55) rotate(-12deg);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+.seal svg{position:absolute;inset:0;filter:drop-shadow(0 14px 18px rgba(120,60,70,.35))}
+.seal .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:16px;direction:rtl;
+  font-family:Ruqaa;font-weight:700;font-size:104px;color:#8a4954;text-shadow:0 2px 0 rgba(255,240,235,.85);padding-bottom:22px}
+.seal .mono small{font-size:52px;color:#fff4f0;margin-top:26px;text-shadow:0 1px 2px rgba(120,60,70,.4)}
+.onames{font-family:Ruqaa;font-weight:700;font-size:118px;line-height:1.35;margin-top:30px;padding:0 20px}
+.onames span{color:#b5767a;font-size:80px}
+.odate{font-size:58px;font-weight:700;letter-spacing:3px;direction:ltr;margin-top:6px;color:#5a3436}
+
+.outro .v{display:none}
+body.outro-seal .v-seal,body.outro-rings .v-rings,body.outro-scroll .v-scroll{display:block}
+.rings{width:400px;height:278px}
+.rdraw{stroke-dasharray:1;stroke-dashoffset:1;animation:rdraw 1.6s cubic-bezier(.45,.05,.3,1) both}
+@keyframes rdraw{to{stroke-dashoffset:0}}
+.rfade{opacity:0;animation:rfade .8s ease-out both}
+@keyframes rfade{to{opacity:1}}
+.gempop{opacity:0;transform-origin:215px 66px;animation:gempop 1s cubic-bezier(.2,.8,.2,1.4) both}
+@keyframes gempop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+.oscroll{width:820px;height:162px}
+body.outro-scroll .onames{font-size:132px;margin-top:6px}
+.endfade{position:absolute;inset:0;background:#fdf3f3;opacity:0;animation:fade 1.6s ease-in 48.4s both}
+</style>
+</head>
+<body class="outro-{{outro}}">
+<div class="stage">
+  <canvas id="gl"></canvas>
+  <div class="veil"></div>
+
+  <!-- PAGE 1 -->
+  <div class="page p1">
+    <div class="bism zoom" style="animation-delay:4.4s">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+    <div class="verse">
+      <span class="write" style="animation-delay:5.6s">{{verse_line1}}</span>
+      <span class="write" style="animation-delay:7.4s">{{verse_line2}}</span>
+    </div>
+    <svg class="scroll in" style="animation-delay:9.4s" viewBox="0 0 520 90"><use href="#scroll"/></svg>
+    <div class="intro in" style="animation-delay:10.2s">{{intro}}</div>
+    <div class="fam">
+      <div class="in" style="animation-delay:11.2s"><small>{{family_label}}</small><b>{{groom_family}}</b></div>
+      <div class="in" style="animation-delay:12.0s"><small>{{family_label}}</small><b>{{bride_family}}</b></div>
+    </div>
+    <div class="invite in" style="animation-delay:13.2s">{{invite_line}}</div>
+    <div class="names">
+      <div class="p"><span class="t in" style="animation-delay:14.4s">{{groom_title}}</span><span class="n write" style="animation-delay:14.8s">{{groom}}</span></div>
+      <span class="w in" style="animation-delay:16.6s">و</span>
+      <div class="p"><span class="t in" style="animation-delay:16.9s">{{bride_title}}</span><span class="n write" style="animation-delay:17.3s">{{bride}}</span></div>
+    </div>
+    <svg class="scroll in" style="animation-delay:19.4s;margin-top:20px;transform:scaleY(-1)" viewBox="0 0 520 90"><use href="#scroll"/></svg>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page p2">
+    <div class="cols">
+      <div class="col in" style="animation-delay:25.6s">
+        <span class="lab">{{place_label}}</span>
+        <div class="medal"><svg class="ring" viewBox="0 0 170 170"><use href="#medal"/></svg>
+          <svg class="ic" viewBox="0 0 24 24" fill="#5a3436"><path d="M12 2.5a7 7 0 0 0-7 7c0 5 7 12 7 12s7-7 7-12a7 7 0 0 0-7-7zm0 9.6a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"/></svg></div>
+        <span class="val">{{venue}}</span><span class="sub">{{venue_sub}}</span>
+      </div>
+      <div class="col in" style="animation-delay:26.6s">
+        <span class="lab">{{time_label}}</span>
+        <div class="medal"><svg class="ring" viewBox="0 0 170 170"><use href="#medal"/></svg>
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5a3436" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></svg></div>
+        <span class="val">{{time}}</span><span class="sub">{{time_sub}}</span>
+      </div>
+      <div class="col in" style="animation-delay:27.6s">
+        <span class="lab">{{date_label}}</span>
+        <div class="medal"><svg class="ring" viewBox="0 0 170 170"><use href="#medal"/></svg>
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#5a3436" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke-linecap="round"/><g fill="#5a3436" stroke="none"><rect x="6.5" y="12" width="2.4" height="2.2" rx=".4"/><rect x="10.8" y="12" width="2.4" height="2.2" rx=".4"/><rect x="15.1" y="12" width="2.4" height="2.2" rx=".4"/><rect x="6.5" y="16" width="2.4" height="2.2" rx=".4"/><rect x="10.8" y="16" width="2.4" height="2.2" rx=".4"/></g></svg></div>
+        <span class="val" style="direction:ltr">{{date}}</span><span class="sub">{{day}}</span>
+      </div>
+    </div>
+    <div class="when in" style="animation-delay:29.0s">{{when_line}} {{day}}</div>
+    <svg class="divider in" style="animation-delay:29.8s" viewBox="0 0 600 40"><use href="#divider"/></svg>
+    <div class="note in" style="animation-delay:30.4s">{{note}}</div>
+    <svg class="heart in" style="animation-delay:30.8s" viewBox="0 0 24 24" fill="none" stroke="#8a5256" stroke-width="1.6"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+    <div class="close write" style="animation-delay:31.6s">{{closing}}</div>
+    <svg class="scroll2 in" style="animation-delay:33.4s" viewBox="0 0 760 150"><use href="#scroll2"/></svg>
+  </div>
+
+
+  <div class="whiteout"></div>
+  <div class="outro">
+    <div class="v v-seal seal"><svg viewBox="0 0 330 330"><defs><radialGradient id="sealG" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fff7f2"/><stop offset=".4" stop-color="#f0c9c9"/><stop offset=".75" stop-color="#d79aa3"/><stop offset="1" stop-color="#b9737f"/></radialGradient></defs><path id="sealPath" fill="url(#sealG)"/><circle cx="165" cy="165" r="122" fill="none" stroke="#fff3ee" stroke-width="3" opacity=".85"/><circle cx="165" cy="165" r="110" fill="none" stroke="#a45b68" stroke-width="2" stroke-dasharray="3 9" opacity=".7"/></svg>
+      <div class="mono"><span>{{mono_groom}}</span><small>♡</small><span>{{mono_bride}}</span></div></div>
+    <!-- interlocking gold wedding rings that draw themselves -->
+    <svg class="v v-rings rings" viewBox="0 0 360 250"><defs>
+      <linearGradient id="ringG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6424"/><stop offset=".3" stop-color="#e9cd86"/><stop offset=".5" stop-color="#fff2c6"/><stop offset=".7" stop-color="#c9a24e"/><stop offset="1" stop-color="#8a6424"/></linearGradient>
+      <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#f3e6ff"/><stop offset="1" stop-color="#d9c9e6"/></linearGradient>
+      <filter id="rsh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#7a4048" flood-opacity=".35"/></filter></defs>
+      <g filter="url(#rsh)" fill="none" stroke-linecap="round">
+        <circle class="rdraw" style="animation-delay:45.4s" cx="145" cy="150" r="72" stroke="url(#ringG)" stroke-width="13" pathLength="1"/>
+        <circle class="rdraw" style="animation-delay:45.8s" cx="215" cy="150" r="72" stroke="url(#ringG)" stroke-width="13" pathLength="1"/>
+        <path class="rfade" style="animation-delay:46.9s" d="M 173.6 85.8 A 72 72 0 0 1 199.4 102.6" stroke="url(#ringG)" stroke-width="13"/>
+        <circle class="rfade" style="animation-delay:46.9s" cx="145" cy="150" r="72" stroke="#fff6dc" stroke-width="2.2" opacity=".55" transform="translate(-2 -3)"/>
+        <circle class="rfade" style="animation-delay:46.9s" cx="215" cy="150" r="72" stroke="#fff6dc" stroke-width="2.2" opacity=".55" transform="translate(-2 -3)"/>
+      </g>
+      <g class="gempop" style="animation-delay:46.8s">
+        <path d="M201 62 L215 48 L229 62 L215 84 Z" fill="url(#gem)" stroke="#c9a24e" stroke-width="2"/>
+        <path d="M201 62 H229 M208 62 L215 48 L222 62 M208 62 L215 84 L222 62" fill="none" stroke="#c7b4d6" stroke-width="1"/>
+        <path d="M244 40 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" fill="#fff8e6"/>
+      </g>
+    </svg>
+    <!-- calligraphic scroll ornament frame, no emblem -->
+    <svg class="v v-scroll oscroll in" style="animation-delay:45.4s" viewBox="0 0 760 150"><use href="#scroll2"/></svg>
+    <div class="onames write" style="animation-delay:46.1s">{{groom}} <span>♡</span> {{bride}}</div>
+    <div class="odate in" style="animation-delay:47.0s">{{date}}</div>
+    <svg class="v v-scroll oscroll in" style="animation-delay:47.4s;transform:scaleY(-1)" viewBox="0 0 760 150"><use href="#scroll2"/></svg>
+  </div>
+  <div class="endfade"></div>
+  <div class="white"></div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- calligraphic scroll ornament -->
+    <g id="scrollHalf" fill="none" stroke="#5a3436" stroke-linecap="round">
+      <path d="M260 58 C 220 58, 200 30, 168 30 C 140 30, 128 52, 146 60 C 160 66, 170 50, 158 44" stroke-width="3"/>
+      <path d="M168 30 C 130 32, 110 64, 70 62 C 40 60, 28 40, 42 32 C 54 26, 62 40, 52 46" stroke-width="2.4"/>
+      <path d="M70 62 C 50 66, 30 66, 8 58" stroke-width="1.6"/>
+      <path d="M196 60 C 186 74, 166 78, 152 70" stroke-width="1.6"/>
+      <circle cx="100" cy="48" r="2.4" fill="#5a3436" stroke="none"/>
+      <circle cx="216" cy="44" r="2.2" fill="#5a3436" stroke="none"/>
+    </g>
+    <g id="scroll">
+      <use href="#scrollHalf"/>
+      <use href="#scrollHalf" transform="translate(520 0) scale(-1 1)"/>
+      <path d="M260 10 C 270 24, 272 40, 260 58 C 248 40, 250 24, 260 10Z" fill="#5a3436"/>
+      <path d="M260 58 C 246 50, 236 54, 238 64 C 246 62, 252 62, 260 70 C 268 62, 274 62, 282 64 C 284 54, 274 50, 260 58Z" fill="#5a3436"/>
+      <path d="M260 70 V 84" stroke="#5a3436" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="260" cy="86" r="3.4" fill="#5a3436"/>
+    </g>
+    <g id="scroll2">
+      <g transform="translate(0 20) scale(1.46)"><use href="#scroll"/></g>
+    </g>
+    <g id="divider" fill="#5a3436" stroke="#5a3436" stroke-linecap="round">
+      <path d="M20 20H250M350 20H580" stroke-width="1.6" fill="none"/>
+      <circle cx="250" cy="20" r="4" stroke="none"/><circle cx="350" cy="20" r="4" stroke="none"/>
+      <path d="M300 4 C 308 12, 308 28, 300 36 C 292 28, 292 12, 300 4Z" stroke="none"/>
+      <path d="M300 20 C 290 10, 276 12, 278 20 C 276 28, 290 30, 300 20Z M300 20 C 310 10, 324 12, 322 20 C 324 28, 310 30, 300 20Z" stroke="none" opacity=".85"/>
+    </g>
+    <g id="medal" fill="none" stroke="#5a3436" stroke-linecap="round">
+      <circle cx="85" cy="85" r="56" stroke-width="2.4"/>
+      <circle cx="85" cy="85" r="49" stroke-width="1" opacity=".7"/>
+      <path d="M85 22 C 92 14, 100 18, 96 24 M85 22 C 78 14, 70 18, 74 24" stroke-width="2"/>
+      <path d="M85 148 C 92 156, 100 152, 96 146 M85 148 C 78 156, 70 152, 74 146" stroke-width="2"/>
+      <path d="M22 85 C 12 76, 6 90, 16 94 C 22 96, 26 88, 20 86" stroke-width="2"/>
+      <path d="M148 85 C 158 76, 164 90, 154 94 C 148 96, 144 88, 150 86" stroke-width="2"/>
+    </g>
+  </defs>
+</svg>
+
+<script type="importmap">{"imports":{"three":"./lib/three/three.module.min.js","three/addons/":"./lib/three/addons/"}}</script>
+<script>
+window.__ready=false;
+document.addEventListener('DOMContentLoaded',()=>{const p=document.getElementById('sealPath');if(!p)return;let d='';for(let i=0;i<=360;i++){const a=i/360*Math.PI*2,r=148+7*Math.sin(a*20)+3*Math.sin(a*6);d+=(i?'L':'M')+(165+Math.cos(a)*r).toFixed(1)+' '+(165+Math.sin(a)*r).toFixed(1)}p.setAttribute('d',d+'Z')});
+window.seek=function(t){
+  for(const a of document.getAnimations()){a.pause();a.currentTime=t*1000}
+  if(window.render3d) window.render3d(t);
+};
+</script>
+<script type="module" src="assets/palace-3d.js"></script>
+</body>
+</html>
