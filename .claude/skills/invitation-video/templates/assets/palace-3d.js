@@ -6,6 +6,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const cfg = Object.assign({
   width: 1080, height: 1920,           // internal render size; 720x1280 renders ~2x faster for drafts
@@ -316,6 +317,59 @@ for (let z = -3; z > HALL_END + 4; z -= 7) for (const s of [-1, 1]) {
 // over the doorway (seen from outside)
 for (let i = 0; i < 700; i++) { const s = R() < 0.5 ? -1 : 1; const x = s * (2.6 + R() * 5.5), y = 9 + R() * 4.5 - Math.abs(x) * 0.25, z = WALL_Z + 0.3 + R() * 1.6; blossoms.push([x, y, z, 0.07 + R() * 0.08, pick(P.blossom)]); }
 instanced(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.6 }), blossoms.length, (i, d, c) => { const b = blossoms[i]; d.position.set(b[0], b[1], b[2]); d.scale.setScalar(b[3]); c.set(b[4]); });
+
+
+// ---------- wedding-hall dressing (cfg.wedding): guest chairs, aisle petals + candles, flower arch on a stage ----------
+if (cfg.wedding) {
+  const seat = new THREE.BoxGeometry(0.5, 0.07, 0.5); seat.translate(0, 0.5, 0);
+  const back = new THREE.BoxGeometry(0.5, 0.78, 0.06); back.translate(0, 0.93, 0.22);   // guests face the arch (-z), back toward +z
+  const legs = [[-0.21, -0.21], [0.21, -0.21], [-0.21, 0.21], [0.21, 0.21]].map(([x, z]) => { const g = new THREE.BoxGeometry(0.05, 0.5, 0.05); g.translate(x, 0.25, z); return g; });
+  const chairGeo = mergeGeometries([seat, back, ...legs]);
+  const chairMat = new THREE.MeshStandardMaterial({ color: '#fffafa', roughness: 0.35, metalness: 0.05 });
+  const chairs = [];
+  for (let z = -7; z > -43; z -= 1.15) for (const s of [-1, 1]) for (const x of [1.6, 2.35]) chairs.push([s * x, z]);
+  instanced(chairGeo, chairMat, chairs.length, (i, d, c) => { d.position.set(chairs[i][0], 0, chairs[i][1]); c.set('#ffffff'); });
+  instanced(new THREE.IcosahedronGeometry(1, 1), M.rose, chairs.length, (i, d, c) => { d.position.set(chairs[i][0], 1.18, chairs[i][1] + 0.27); d.scale.set(0.09, 0.07, 0.05); c.set(P.roses[i % 3]); });
+
+  // petals strewn on the aisle
+  const flatPetal = new THREE.Shape(); flatPetal.moveTo(0, -0.5); flatPetal.bezierCurveTo(0.55, -0.2, 0.45, 0.45, 0, 0.5); flatPetal.bezierCurveTo(-0.45, 0.45, -0.55, -0.2, 0, -0.5);
+  const flat = new THREE.ShapeGeometry(flatPetal, 6); flat.rotateX(-Math.PI / 2);
+  const fp = []; for (let i = 0; i < 620; i++) fp.push([(R() - 0.5) * 2.3, 0.012 + R() * 0.012, -1.5 - R() * 44, R() * 6.28, 0.09 + R() * 0.09, pick(P.blossom)]);
+  instanced(flat, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.7, side: THREE.DoubleSide }), fp.length, (i, d, c) => { const p = fp[i]; d.position.set(p[0], p[1], p[2]); d.rotation.y = p[3]; d.scale.setScalar(p[4]); c.set(p[5]); });
+
+  // candle jars lining the aisle
+  const jarGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.34, 14);
+  const jars = []; for (let z = -4; z > -45; z -= 1.15) for (const s of [-1, 1]) jars.push([s * 1.18, z]);
+  instanced(jarGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.1, transparent: true, opacity: 0.6 }), jars.length, (i, d, c) => { d.position.set(jars[i][0], 0.17, jars[i][1]); c.set('#ffffff'); });
+  for (const [x, z] of jars) {
+    const fl = new THREE.Mesh(flameGeo, M.glow); fl.scale.set(1, 1.5, 1); fl.position.set(x, 0.3, z); world.add(fl);
+    const sp = new THREE.Sprite(glowMat); sp.scale.set(0.9, 0.9, 1); sp.position.set(x, 0.32, z); world.add(sp);
+  }
+
+  // ceremony stage + moon-gate flower arch
+  const AZ = -46, AR = 2.8, AY = 3.3;
+  box(9.5, 0.3, 5.5, M.col, 0, 0.15, AZ - 0.6);
+  box(9.9, 0.1, 5.9, M.gold, 0, 0.32, AZ - 0.6);
+  const dr = new THREE.PlaneGeometry(11, 10, 40, 20); { const p = dr.attributes.position; for (let i = 0; i < p.count; i++) p.setZ(i, Math.sin(p.getX(i) * 3.2) * 0.22); dr.computeVertexNormals(); }
+  const drape = new THREE.Mesh(dr, M.curtain); drape.position.set(0, 5.3, AZ - 3.1); world.add(drape);
+  const aGlow = new THREE.Sprite(glowMat); aGlow.scale.set(11, 11, 1); aGlow.position.set(0, AY, AZ - 2.4); world.add(aGlow);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(AR, 0.09, 10, 96), new THREE.MeshStandardMaterial({ color: '#fffafa', roughness: 0.4 })); ring.position.set(0, AY, AZ); world.add(ring);
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(AR + 0.28, 0.025, 8, 96), M.gold); ring2.position.set(0, AY, AZ); world.add(ring2);
+  const ar = [], al = [];
+  for (let i = 0; i < 520; i++) {
+    const a = R() * Math.PI * 2, w = 0.5 + 0.5 * Math.sin(a + 0.6);        // heavier on one sweep like a real floral arch
+    if (R() > w * 0.95 + 0.12) continue;
+    const r = AR + (R() - 0.5) * 0.5, sc = 0.13 + R() * 0.1 + w * 0.06;
+    ar.push([Math.cos(a) * r, AY + Math.sin(a) * r, AZ + (R() - 0.5) * 0.5, sc, pick(P.roses)]);
+    if (R() < 0.5) al.push([Math.cos(a) * r + (R() - 0.5) * 0.4, AY + Math.sin(a) * r + (R() - 0.5) * 0.4, AZ, R() * 6]);
+  }
+  for (const s of [-1, 1]) {            // flower pedestals either side of the stage
+    const x = s * 4.2; box(0.9, 0.9, 0.9, M.col, x, 0.77, AZ + 0.6); const urn = new THREE.Mesh(urnGeo, M.col); urn.position.set(x, 1.22, AZ + 0.6); world.add(urn);
+    roseDome(x, 2.75, AZ + 0.6, 1.0, 130, ar, al);
+  }
+  instanced(roseGeo, M.rose, ar.length, (i, d, c) => { const r = ar[i]; d.position.set(r[0], r[1], r[2]); d.scale.setScalar(r[3]); d.rotation.set(R() * 6, R() * 6, R() * 6); c.set(r[4]); });
+  instanced(leafGeo, M.leaf, al.length, (i, d, c) => { const l = al[i]; d.position.set(l[0], l[1], l[2]); d.scale.set(0.17, 0.035, 0.07); d.rotation.set(R() * 0.6, l[3], R() * 0.8 - 0.4); c.set(P.leaf); });
+}
 
 // ---------- mirror world (reflection in the marble floor) ----------
 const mirror = world.clone(); mirror.scale.y = -1; scene.add(mirror);

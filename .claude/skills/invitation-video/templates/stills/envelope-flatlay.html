@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>envelope</title>
+<style>
+@font-face{font-family:Ruqaa;src:url(fonts/ruqaa-b.ttf);font-weight:700}
+@font-face{font-family:Naskh;src:url(fonts/naskh.ttf);font-weight:500}
+@font-face{font-family:Naskh;src:url(fonts/naskh-b.ttf);font-weight:700}
+*{margin:0;padding:0}html,body{width:1080px;height:1920px;overflow:hidden;background:#f6dede}
+svg{display:block}
+</style></head><body>
+<svg id="art" width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+let seed=77;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const pick=a=>a[Math.floor(rnd()*a.length)];
+function defs(){return `<defs>
+ <radialGradient id="blush" cx=".5" cy=".9" r="1"><stop offset="0" stop-color="#e9b0a6"/><stop offset=".55" stop-color="#f6d3cc"/><stop offset="1" stop-color="#fff1ee"/></radialGradient>
+ <radialGradient id="ivory" cx=".5" cy=".9" r="1"><stop offset="0" stop-color="#e6d8c2"/><stop offset=".55" stop-color="#f7efe2"/><stop offset="1" stop-color="#fffdf8"/></radialGradient>
+ <radialGradient id="dusty" cx=".5" cy=".9" r="1"><stop offset="0" stop-color="#c58288"/><stop offset=".55" stop-color="#e2a9ae"/><stop offset="1" stop-color="#f6d9db"/></radialGradient>
+ <linearGradient id="sage" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9c7b1"/><stop offset="1" stop-color="#7f927a"/></linearGradient>
+ <linearGradient id="lgold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6424"/><stop offset=".35" stop-color="#f0d897"/><stop offset=".6" stop-color="#b48535"/><stop offset="1" stop-color="#e6c77c"/></linearGradient>
+ <filter id="fs" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="3" dy="7" stdDeviation="6" flood-color="#6a3a40" flood-opacity=".32"/></filter>
+ <filter id="fs2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="1.5" dy="3" stdDeviation="2" flood-color="#6a3a40" flood-opacity=".28"/></filter>
+ <filter id="blur30"><feGaussianBlur stdDeviation="34"/></filter>
+ <filter id="blur6"><feGaussianBlur stdDeviation="7"/></filter>
+ <filter id="blur14"><feGaussianBlur stdDeviation="14"/></filter>
+ <filter id="paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" seed="3"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .32  0 0 0 0 .36  0 0 0 .5 0"/></filter>
+ <filter id="silk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".004 .012" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 .9  0 0 0 0 .92  0 0 0 .55 -.1"/></filter>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbeaea"/><stop offset=".5" stop-color="#f7dcdd"/><stop offset="1" stop-color="#f1cfd2"/></linearGradient>
+ <linearGradient id="envBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5d5d8"/><stop offset="1" stop-color="#ecbac1"/></linearGradient>
+ <linearGradient id="foldL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f8dfe1"/><stop offset="1" stop-color="#f1c6cb"/></linearGradient>
+ <linearGradient id="foldR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#f8dfe1"/><stop offset="1" stop-color="#f1c6cb"/></linearGradient>
+ <linearGradient id="foldB" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#fbe9ea"/><stop offset="1" stop-color="#f4cfd3"/></linearGradient>
+ <linearGradient id="flap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fae6e7"/><stop offset="1" stop-color="#f2c9ce"/></linearGradient>
+ <radialGradient id="pearl" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#f6ecee"/><stop offset="1" stop-color="#c9aeb3"/></radialGradient>
+ <radialGradient id="seal" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#fff7f2"/><stop offset=".4" stop-color="#f0c9c9"/><stop offset=".75" stop-color="#d79aa3"/><stop offset="1" stop-color="#b9737f"/></radialGradient>
+ <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7a5a1e"/><stop offset=".3" stop-color="#d7b266"/><stop offset=".5" stop-color="#f6e3a1"/><stop offset=".7" stop-color="#b48535"/><stop offset="1" stop-color="#8a6424"/></linearGradient>
+</defs>`}
+function petal(w,h,fill,edge){return `<path d="M${-w} 0 C ${-w*1.15} ${-h*0.7}, ${-w*0.5} ${-h}, 0 ${-h*0.96} C ${w*0.5} ${-h}, ${w*1.15} ${-h*0.7}, ${w} 0 C ${w*0.4} ${h*0.18}, ${-w*0.4} ${h*0.18}, ${-w} 0Z" fill="url(#${fill})" stroke="${edge}" stroke-width="1.2"/><path d="M${-w*0.8} ${-h*0.55} C ${-w*0.3} ${-h*0.75}, ${w*0.3} ${-h*0.75}, ${w*0.8} ${-h*0.55}" fill="none" stroke="#fff" stroke-width="1.4" opacity=".55"/>`}
+function rose(cx,cy,r,fill,edge,rot=0,blur=0){let s=`<g ${blur?`filter="url(#blur${blur})"`:'filter="url(#fs)"'} transform="translate(${cx} ${cy}) rotate(${rot})">`;
+ for(const [n,w,h,d,off] of [[7,.62,.55,.95,0],[6,.48,.42,.72,25],[5,.36,.3,.5,10],[4,.24,.2,.32,40]])for(let k=0;k<n;k++){s+=`<g transform="rotate(${off+360/n*k}) translate(0 ${-r*d*0.32})">${petal(r*w*0.62,r*h*1.05,fill,edge)}</g>`}
+ s+=`<circle r="${r*0.13}" fill="url(#${fill})" stroke="${edge}" stroke-width="1.2"/>`;return s+`</g>`}
+function leaf(x,y,rot,l,fill,w=.3){return `<g filter="url(#fs2)" transform="translate(${x} ${y}) rotate(${rot})"><path d="M0 0 C ${l*0.3} ${-l*w}, ${l*0.75} ${-l*w*0.8}, ${l} 0 C ${l*0.75} ${l*w*0.8}, ${l*0.3} ${l*w}, 0 0Z" fill="url(#${fill})"/><path d="M3 0H${l-8}" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/></g>`}
+function euca(x,y,rot,len,n){let s=`<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M0 0 C ${len*0.3} -10, ${len*0.7} 8, ${len} 0" stroke="#7f927a" stroke-width="2.6" fill="none"/>`;
+ for(let i=1;i<=n;i++){const t=i/(n+0.6),px=len*t,r=17*(1-t*0.45),side=i%2?-1:1;s+=`<g filter="url(#fs2)"><ellipse cx="${px}" cy="${side*r*0.95}" rx="${r}" ry="${r*0.88}" fill="url(#sage)" stroke="#6f8269" stroke-width=".8"/></g>`}return s+`</g>`}
+function breath(x,y,n,spread){let s='<g filter="url(#fs2)">';for(let i=0;i<n;i++){const a=i*2.4,d=spread*Math.sqrt(i/n),px=x+Math.cos(a)*d,py=y+Math.sin(a)*d;s+=`<line x1="${x}" y1="${y+spread}" x2="${px}" y2="${py}" stroke="#c7cbb8" stroke-width=".9"/><circle cx="${px}" cy="${py}" r="${3.4+(i%3)}" fill="#fffdf6" stroke="#dcd3c0" stroke-width=".8"/>`}return s+'</g>'}
+function bud(x,y,rot,r,fill,edge){return `<g filter="url(#fs2)" transform="translate(${x} ${y}) rotate(${rot})">${petal(r*0.55,r*1.1,fill,edge)}<path d="M${-r*0.5} 2 Q 0 ${r*0.6} ${r*0.5} 2" fill="url(#sage)"/></g>`}
+function pearlDot(x,y,r){return `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#pearl)"/>`}
+function loosePetal(x,y,rot,s,col){return `<g filter="url(#fs2)" transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 -26 C 22 -18 20 14 0 26 C -20 14 -22 -18 0 -26Z" fill="${col}" opacity=".95"/><path d="M0 -20 V 20" stroke="#fff" stroke-opacity=".5" stroke-width="1.2"/></g>`}
+
+// ---------------- scene ----------------
+const W=960,H=676;
+let g=defs();
+// silk background
+g+=`<rect width="1080" height="1920" fill="url(#bg)"/>`;
+g+=`<rect width="1080" height="1920" filter="url(#silk)" opacity=".55"/>`;
+g+=`<g filter="url(#blur30)" opacity=".75"><path d="M-80 380 C 300 260 600 520 1160 330 L 1160 560 C 640 700 300 520 -80 640Z" fill="#fff"/><path d="M-80 1280 C 280 1160 640 1400 1160 1200 L 1160 1430 C 700 1580 300 1380 -80 1520Z" fill="#fff"/><path d="M-80 880 C 300 780 700 960 1160 820 L 1160 900 C 700 1040 300 880 -80 980Z" fill="#e9bcc2" opacity=".5"/></g>`;
+// big out-of-focus roses (depth of field) at the edges
+g+=rose(1000,230,240,'blush','#e2a9a0',20,30)+rose(40,1700,260,'dusty','#c58288',-15,30)+rose(1060,1850,170,'ivory','#dccdb3',0,14);
+
+// contact shadow
+g+=`<g transform="translate(540 960) rotate(-4)"><rect x="${-W/2+8}" y="${-H/2+34}" width="${W}" height="${H}" rx="14" fill="#7a3a44" opacity=".34" filter="url(#blur30)"/><rect x="${-W/2+3}" y="${-H/2+12}" width="${W}" height="${H}" rx="12" fill="#7a3a44" opacity=".3" filter="url(#blur6)"/></g>`;
+
+// envelope
+let e=`<g transform="translate(540 960) rotate(-4) translate(${-W/2} ${-H/2})">`;
+e+=`<rect width="${W}" height="${H}" rx="12" fill="url(#envBody)"/>`;
+const tipY=H*0.56;
+e+=`<path d="M0 0 L ${W/2} ${H*0.5} L 0 ${H}Z" fill="url(#foldL)"/>`;
+e+=`<path d="M${W} 0 L ${W/2} ${H*0.5} L ${W} ${H}Z" fill="url(#foldR)"/>`;
+e+=`<path d="M0 ${H} L ${W/2} ${H*0.42} L ${W} ${H}Z" fill="url(#foldB)"/>`;
+// fold edge highlights + soft shadows
+e+=`<g fill="none" stroke-linecap="round"><path d="M0 ${H} L ${W/2} ${H*0.42} L ${W} ${H}" stroke="#fff" stroke-width="2.4" opacity=".85"/><path d="M0 ${H} L ${W/2} ${H*0.42} L ${W} ${H}" stroke="#b9737f" stroke-width="6" opacity=".12" transform="translate(0 -4)" filter="url(#blur6)"/><path d="M0 0 L ${W/2} ${H*0.5} L 0 ${H}" stroke="#fff" stroke-width="1.6" opacity=".6"/><path d="M${W} 0 L ${W/2} ${H*0.5} L ${W} ${H}" stroke="#fff" stroke-width="1.6" opacity=".6"/></g>`;
+e+=`<rect width="${W}" height="${H}" rx="12" filter="url(#paper)" opacity=".5"/>`;
+// white stitched border
+e+=`<rect x="22" y="22" width="${W-44}" height="${H-44}" rx="8" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="10 9" opacity=".9"/>`;
+e+=`<rect x="12" y="12" width="${W-24}" height="${H-24}" rx="10" fill="none" stroke="url(#foil)" stroke-width="1.4" opacity=".75"/>`;
+// text on the bottom fold
+e+=`<text x="${W/2}" y="${H*0.795}" text-anchor="middle" font-family="Ruqaa" font-weight="700" font-size="84" fill="url(#foil)" stroke="#6a4a1a" stroke-width=".4" style="filter:drop-shadow(0 1.5px 0 rgba(255,250,240,.8))">دعوة زفاف</text>`;
+e+=`<text x="${W/2}" y="${H*0.905}" text-anchor="middle" font-family="Naskh" font-weight="700" font-size="38" fill="#8a5560" direction="rtl">محمد  ♡  سيرين</text>`;
+// flap
+const flapPath=`M0 0 L ${W} 0 L ${W/2+6} ${tipY+8} Q ${W/2} ${tipY+16} ${W/2-6} ${tipY+8} Z`;
+e+=`<g filter="url(#fs)"><path d="${flapPath}" fill="url(#flap)"/></g>`;
+e+=`<path d="${flapPath}" fill="none" stroke="#fff" stroke-width="2.4" opacity=".9"/>`;
+e+=`<path d="M0 0 L ${W/2} ${tipY} L ${W} 0" fill="none" stroke="url(#foil)" stroke-width="1.6" opacity=".8" transform="translate(0 -12) scale(1 1)" />`;
+// pearl trim along flap edges
+let trim='';const L1=Math.hypot(W/2,tipY),n1=Math.floor(L1/24);
+for(let i=2;i<n1-1;i++){const t=i/n1;const x=W/2*t, y=tipY*t;const nx=tipY/L1,ny=-W/2/L1; // inward offset
+ trim+=pearlDot(x+nx*-22+0,y+ -0 + (-ny)*0 -22*ny*-1*0 -0,4.4)}
+trim='';
+for(let i=2;i<n1-1;i++){const t=i/n1;const x=W/2*t,y=tipY*t;const ox=-tipY/L1*18+0,oy=W/2/L1*18;trim+=pearlDot(x+ox*-1,y+oy*-1+ (0),4.6);trim+=pearlDot(W-x-ox*-1,y+oy*-1,4.6)}
+e+=`<g>${trim}</g>`;
+// seal
+let sealPts='';const cx=W/2,cy=tipY+6;for(let i=0;i<=240;i++){const a=i/240*Math.PI*2,r=62+3.6*Math.sin(a*18)+1.6*Math.sin(a*5);sealPts+=(i?'L':'M')+(cx+Math.cos(a)*r).toFixed(1)+' '+(cy+Math.sin(a)*r).toFixed(1)}
+e+=`<g filter="url(#fs)"><path d="${sealPts}Z" fill="url(#seal)"/></g><circle cx="${cx}" cy="${cy}" r="50" fill="none" stroke="#fff3ee" stroke-width="1.6" opacity=".8"/><circle cx="${cx}" cy="${cy}" r="45" fill="none" stroke="#a45b68" stroke-width="1" stroke-dasharray="2 5" opacity=".7"/>`;
+e+=`<text x="${cx-24}" y="${cy+14}" text-anchor="middle" font-family="Ruqaa" font-weight="700" font-size="46" fill="#8a4954" style="filter:drop-shadow(0 1px 0 rgba(255,240,235,.8))">م</text><text x="${cx+26}" y="${cy+14}" text-anchor="middle" font-family="Ruqaa" font-weight="700" font-size="46" fill="#8a4954" style="filter:drop-shadow(0 1px 0 rgba(255,240,235,.8))">س</text><path d="M${cx} ${cy+30} c-9-7-12-12-8-16 3-3 7-1 8 2 1-3 5-5 8-2 4 4 1 9-8 16z" fill="#fff4f0" opacity=".9"/>`;
+e+=`</g>`;
+g+=e;
+
+// scattered loose petals on the silk
+const cols=['#f6c3c9','#fbdde0','#f2b1ba','#fff1f1'];
+for(let i=0;i<26;i++){const x=rnd()*1080,y=rnd()*1920;if(x>120&&x<960&&y>610&&y<1320)continue;g+=loosePetal(x,y,rnd()*360,.7+rnd()*.9,pick(cols))}
+// pearls + gold beads
+for(let i=0;i<18;i++){const x=rnd()*1080,y=rnd()*1920;if(x>120&&x<960&&y>610&&y<1320)continue;g+=`<g filter="url(#fs2)">${pearlDot(x,y,5+rnd()*5)}</g>`}
+
+// flower clusters over the envelope corners
+function cluster(ox,oy,sc,flip){
+  let c=`<g transform="translate(${ox} ${oy}) scale(${flip*sc} ${sc})">`;
+  c+=euca(-30,60,-150,300,8)+euca(30,70,-80,320,8)+euca(0,50,-200,260,7)+euca(60,40,-20,300,8);
+  c+=leaf(-10,20,-130,150,'lgold',.22)+leaf(60,30,-60,150,'lgold',.22)+leaf(20,10,-190,130,'lgold',.22);
+  c+=breath(-120,-70,22,60)+breath(130,-60,18,55)+breath(-30,-150,16,48);
+  c+=rose(0,0,150,'blush','#e2a99f',10)+rose(125,50,112,'ivory','#dccdb3',-20)+rose(-110,60,100,'dusty','#c28087',30)+rose(40,-110,92,'ivory','#dccdb3',50)+rose(-70,-80,70,'blush','#e2a99f',-30);
+  c+=bud(190,-30,40,52,'blush','#e2a99f')+bud(-170,-10,-50,46,'dusty','#c28087')+bud(10,-200,10,44,'ivory','#dccdb3');
+  c+=pearlDot(60,-170,7)+pearlDot(-60,-190,6)+pearlDot(160,-110,6);
+  return c+`</g>`}
+g+=cluster(130,665,1.0,1);
+g+=cluster(960,1290,0.95,-1);
+// small accent near the seal side
+g+=rose(1000,610,52,'blush','#e2a99f',0)+leaf(930,650,-130,70,'sage')+leaf(950,660,-50,70,'sage');
+document.getElementById('art').innerHTML=g;
+</script></body></html>
