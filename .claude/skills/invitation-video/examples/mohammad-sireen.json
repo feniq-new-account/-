@@ -26,5 +26,6 @@
   "place_label": "مكان",
   "time_label": "ساعة",
   "date_label": "تاريخ",
-  "outro": "rings"
+  "outro": "rings",
+  "outro_top": 700
 }

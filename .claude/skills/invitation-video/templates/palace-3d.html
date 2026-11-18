@@ -19,7 +19,8 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 /* soft white veil behind text so it reads on the busy photo */
 .veil{position:absolute;inset:0;opacity:0;
   background:radial-gradient(ellipse 72% 56% at 50% 46%,rgba(255,250,248,.78) 0%,rgba(255,246,244,.55) 58%,rgba(255,246,244,0) 100%);
-  animation:fade 2s ease-out 4.2s both}
+  animation:fade 2s ease-out 4.2s both,veilDown 2.4s ease-in-out 40s forwards}
+@keyframes veilDown{from{opacity:1}to{opacity:.25}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
 /* ---------- pages ---------- */
@@ -76,9 +77,9 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#f6e6e4}
 #gl{position:absolute;inset:0;width:1080px;height:1920px;display:block}
 
 /* ---------- outro (45-50 s): page 2 out, seal monogram + names + date, fade to blush white ---------- */
-.p2{animation:pageOut 1.2s ease-in 44.2s forwards}
-.whiteout{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 80% 60% at 50% 48%,rgba(255,250,249,.92),rgba(253,240,240,.8) 60%,rgba(250,232,233,.7));animation:fade 3.2s ease-in-out 44.6s both}
-.outro{position:absolute;left:0;right:0;top:600px;display:flex;flex-direction:column;align-items:center;text-align:center;
+.p2{animation:pageOut 1.2s ease-in 40s forwards}
+.whiteout{position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 34% 21% at 50% 50%,rgba(255,250,249,.8),rgba(255,248,247,.45) 55%,rgba(255,248,247,0) 100%);animation:fade 2s ease-in-out 45s both}
+.outro{position:absolute;left:0;right:0;top:{{outro_top}}px;display:flex;flex-direction:column;align-items:center;text-align:center;
   font-family:Naskh,Amiri,serif;color:#4b2c2e;text-shadow:0 0 14px rgba(255,255,255,.95)}
 .seal{width:330px;height:330px;position:relative;opacity:0;animation:sealIn 1.8s cubic-bezier(.2,.8,.2,1) 45.4s both}
 @keyframes sealIn{from{opacity:0;transform:scale(.55) rotate(-12deg);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}

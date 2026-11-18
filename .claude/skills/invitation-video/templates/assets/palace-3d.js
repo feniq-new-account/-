@@ -392,6 +392,59 @@ for (let i = 0; i < NB; i++) burstSeeds.push({ x: (R() - 0.5) * 7, zo: -2 - R() 
 const burst = instanced(new THREE.ShapeGeometry(petalShape, 6), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.7, side: THREE.DoubleSide, emissive: '#f7cfd4', emissiveIntensity: 0.3 }), NB, (i, d, c) => { c.set(burstSeeds[i].c); d.scale.setScalar(0); }, scene);
 const winGlow0 = { o: winGlow.material.opacity, sx: winGlow.scale.x, sy: winGlow.scale.y };
 
+// ---------- outro flower arch: a moon-gate ring that blooms from 40 s (invisible before) ----------
+const ARCH = { at: cfg.archAt ?? 40.3, dur: 3.9, z: cfg.archZ ?? -33, r: 2.5 };
+ARCH.y = ARCH.r + 0.62;
+const archItems = [];     // [x, y, z, scale, colour, bloomOrder, geo]  geo: 0 rose, 1 leaf, 2 blossom
+for (let i = 0; i < 560; i++) {
+  const a = R() * Math.PI * 2;
+  const fromBottom = Math.abs(Math.atan2(Math.cos(a), -Math.sin(a))) / Math.PI;  // 0 at bottom, 1 at top
+  const heavy = 0.55 + 0.45 * Math.sin(a + 2.4);                                    // fuller on one sweep, like a real arch
+  if (R() > heavy * 0.9 + 0.2) continue;
+  const rr = ARCH.r + (R() - 0.5) * 0.55, z = ARCH.z + (R() - 0.5) * 0.55;
+  const order = fromBottom * 0.92 + R() * 0.08;
+  archItems.push([Math.cos(a) * rr, ARCH.y + Math.sin(a) * rr, z, 0.12 + R() * 0.09 + heavy * 0.05, pick(P.roses), order, 0]);
+  if (R() < 0.55) archItems.push([Math.cos(a) * (rr + (R() - 0.5) * 0.5), ARCH.y + Math.sin(a) * (rr + (R() - 0.5) * 0.5), z + (R() - 0.5) * 0.3, R() * 6, P.leaf, order, 1]);
+  if (R() < 0.6) archItems.push([Math.cos(a) * (rr + (R() - 0.5) * 0.7), ARCH.y + Math.sin(a) * (rr + (R() - 0.5) * 0.7), z + (R() - 0.5) * 0.4, 0.05 + R() * 0.04, pick(P.blossom), order, 2]);
+}
+for (let i = 0; i < 140; i++) {        // flower mound the ring stands on
+  const th = R() * Math.PI, ph = R() * Math.PI, r = 0.9 * (0.8 + R() * 0.3);
+  archItems.push([Math.cos(th) * r * 1.4, 0.15 + Math.sin(ph) * r * 0.55, ARCH.z + Math.cos(ph) * r * 0.6, 0.13 + R() * 0.08, pick(P.roses), R() * 0.12, 0]);
+}
+const archRose = archItems.filter((x) => x[6] === 0), archLeaf = archItems.filter((x) => x[6] === 1), archBlos = archItems.filter((x) => x[6] === 2);
+const blossomGeo = new THREE.IcosahedronGeometry(1, 1), blossomMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.6 });
+function archMesh(list, geo, mat, mirrorY) {
+  return instanced(geo, mat, list.length, (i, d, c) => { c.set(list[i][4]); d.scale.setScalar(0); }, scene);
+}
+const archSets = [[archRose, roseGeo, M.rose], [archLeaf, leafGeo, M.leaf], [archBlos, blossomGeo, blossomMat]].map(([list, geo, mat]) => ({ list, rot: list.map(() => [R() * 6, R() * 6, R() * 6]), mesh: archMesh(list, geo, mat), mir: archMesh(list, geo, mat) }));
+const archRing = new THREE.Mesh(new THREE.TorusGeometry(ARCH.r, 0.07, 10, 120), new THREE.MeshStandardMaterial({ color: '#fffafa', roughness: 0.4 }));
+const archGold = new THREE.Mesh(new THREE.TorusGeometry(ARCH.r + 0.2, 0.025, 8, 120), M.gold);
+for (const m of [archRing, archGold]) { m.position.set(0, ARCH.y, ARCH.z); m.scale.setScalar(0); scene.add(m); }
+const archRingM = archRing.clone(), archGoldM = archGold.clone();
+for (const m of [archRingM, archGoldM]) { m.position.y = -ARCH.y; scene.add(m); }
+const archHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: '#fff3ee', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0, fog: false }));
+archHalo.position.set(0, ARCH.y, ARCH.z - 0.8); archHalo.scale.set(7, 7, 1); scene.add(archHalo);
+const easeOutBack = (k) => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+function updateArch(t) {
+  const on = t > ARCH.at;
+  const rk = on ? smooth(clamp01((t - ARCH.at) / 0.9)) : 0;
+  archRing.scale.setScalar(rk); archGold.scale.setScalar(rk);
+  archRingM.scale.set(rk, -rk, rk); archGoldM.scale.set(rk, -rk, rk);
+  archHalo.material.opacity = on ? 0.14 * smooth(clamp01((t - ARCH.at - 2) / 2.5)) : 0;
+  for (const S of archSets) {
+    for (let i = 0; i < S.list.length; i++) {
+      const it = S.list[i], k = on ? clamp01((t - ARCH.at - it[5] * ARCH.dur) / 0.7) : 0;
+      const sc = k > 0 ? (it[6] === 1 ? 1 : it[3]) * easeOutBack(k) : 0;
+      dummy.position.set(it[0], it[1], it[2]);
+      if (it[6] === 1) { dummy.rotation.set(0.3, it[3], 0.2); dummy.scale.set(0.17 * sc, 0.035 * sc, 0.07 * sc); }
+      else { dummy.rotation.set(S.rot[i][0], S.rot[i][1] + t * 0.05, S.rot[i][2]); dummy.scale.setScalar(sc); }
+      dummy.updateMatrix(); S.mesh.setMatrixAt(i, dummy.matrix);
+      dummy.position.y = -it[1]; dummy.scale.y = -dummy.scale.y; dummy.updateMatrix(); S.mir.setMatrixAt(i, dummy.matrix);
+    }
+    S.mesh.instanceMatrix.needsUpdate = true; S.mir.instanceMatrix.needsUpdate = true;
+  }
+}
+
 // ---------- post ----------
 const composer = new EffectComposer(renderer);
 composer.setSize(cfg.width, cfg.height);
@@ -415,9 +468,18 @@ window.render3d = function (t) {
   seam.visible = seam.material.opacity > 0.01;
 
   // camera
-  const z = camZ(t);
-  camera.position.set(Math.sin(t * 0.21) * 0.18 * smooth(clamp01((t - 8) / 4)), camY(t), z);
-  camera.lookAt(Math.sin(t * 0.17) * 0.25 * smooth(clamp01((t - 8) / 4)), lookY(t), z - 14);
+  const kc = smooth(clamp01((t - 40) / 5));           // 0 up to 40 s: frames before are unchanged
+  let z = camZ(t);
+  if (t > 40) {                                              // Hermite from the 40 s state to a gentle stop in front of the arch
+    const T = Math.min(t - 40, 10) / 10, v0 = -0.375 * 10, z1 = ARCH.z + (cfg.archDist ?? 9.4), v1 = -0.06 * 10;
+    const h00 = 2 * T ** 3 - 3 * T ** 2 + 1, h10 = T ** 3 - 2 * T ** 2 + T, h01 = -2 * T ** 3 + 3 * T ** 2, h11 = T ** 3 - T ** 2;
+    z = h00 * -21 + h10 * v0 + h01 * z1 + h11 * v1;
+  }
+  const y = camY(t), sway = smooth(clamp01((t - 8) / 4)) * (1 - kc);
+  camera.position.set(Math.sin(t * 0.21) * 0.18 * sway, y, z);
+  const lyArch = y + (ARCH.y - y) * 14 / Math.max(1, z - ARCH.z);
+  camera.lookAt(Math.sin(t * 0.17) * 0.25 * sway, lerp(lookY(t), lyArch, kc), z - 14);
+  updateArch(t);
 
   // chandeliers turn very slowly, crystals shimmer
   chandeliers.forEach((c, i) => { c.rotation.y = t * 0.05 + i; mirrorCh[i].rotation.y = t * 0.05 + i; });
@@ -448,8 +510,8 @@ window.render3d = function (t) {
     dummy.updateMatrix(); burst.setMatrixAt(i, dummy.matrix);
   }
   burst.instanceMatrix.needsUpdate = true;
-  winGlow.material.opacity = winGlow0.o + 0.6 * smooth(ko);
-  winGlow.scale.set(winGlow0.sx * (1 + 0.6 * smooth(ko)), winGlow0.sy * (1 + 0.6 * smooth(ko)), 1);
+  winGlow.material.opacity = winGlow0.o * (1 - 0.55 * smooth(clamp01((t - 40) / 3)));
+  winGlow.scale.set(winGlow0.sx, winGlow0.sy, 1);
 
   composer.render();
 };
