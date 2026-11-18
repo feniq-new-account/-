@@ -224,6 +224,7 @@ for (let z = -2; z > HALL_END + 6; z -= 0.42) for (const s of [-1, 1]) {
 
 // ---------- entrance wall + doors ----------
 const DOOR_W = 2.2, DOOR_H = 7.4, WALL_Z = 0;
+const ENT0 = world.children.length;
 box(HALL_W - DOOR_W, 22, 0.7, M.wall, -(DOOR_W + (HALL_W - DOOR_W) / 2), 11, WALL_Z - 0.35);
 box(HALL_W - DOOR_W, 22, 0.7, M.wall, (DOOR_W + (HALL_W - DOOR_W) / 2), 11, WALL_Z - 0.35);
 box(DOOR_W * 2, 22 - DOOR_H, 0.7, M.wall, 0, DOOR_H + (22 - DOOR_H) / 2, WALL_Z - 0.35);
@@ -242,6 +243,8 @@ const pedArc = new THREE.Mesh(new THREE.TorusGeometry(DOOR_W + 0.3, 0.2, 10, 48,
 const pedArcG = new THREE.Mesh(new THREE.TorusGeometry(DOOR_W + 0.05, 0.05, 6, 48, Math.PI), M.gold); pedArcG.position.set(0, DOOR_H + 0.3, WALL_Z + 0.2); world.add(pedArcG);
 const tymp = new THREE.Mesh(new THREE.CircleGeometry(DOOR_W + 0.1, 40, 0, Math.PI), new THREE.MeshStandardMaterial({ color: '#f3d9da', roughness: 0.6 })); tymp.position.set(0, DOOR_H + 0.3, WALL_Z + 0.05); world.add(tymp);
 const rosette = new THREE.Mesh(new THREE.TorusGeometry(0.45, 0.07, 8, 24), M.gold); rosette.position.set(0, DOOR_H + 1.2, WALL_Z + 0.12); world.add(rosette);
+const ENT1 = world.children.length;
+const G0 = roses.length, LG0 = leaves.length;
 // garland of roses around the doorway
 for (let i = 0; i < 360; i++) {
   const u = i / 359; let x, y;
@@ -252,11 +255,12 @@ for (let i = 0; i < 360; i++) {
   roses.push([x + j, y + (R() - 0.5) * 0.4, WALL_Z + 0.35 + R() * 0.2, 0.12 + R() * 0.08, pick(P.roses)]);
   if (R() < 0.6) leaves.push([x + (R() - 0.5) * 0.7, y + (R() - 0.5) * 0.5, WALL_Z + 0.3, R() * 6]);
 }
+const G1 = roses.length, LG1 = leaves.length;
 // flower urns beside the door
 for (const s of [-1, 1]) { const x = s * (DOOR_W + 2.2); const urn = new THREE.Mesh(urnGeo, M.col); urn.position.set(x, 0, WALL_Z + 1.1); world.add(urn); roseDome(x, 1.52, WALL_Z + 1.1, 0.85, 100, roses, leaves); }
 
-instanced(roseGeo, M.rose, roses.length, (i, d, c) => { const r = roses[i]; d.position.set(r[0], r[1], r[2]); d.scale.setScalar(r[3]); d.rotation.set(R() * 6, R() * 6, R() * 6); c.set(r[4]); });
-instanced(leafGeo, M.leaf, leaves.length, (i, d, c) => { const l = leaves[i]; d.position.set(l[0], l[1], l[2]); d.scale.set(0.16, 0.035, 0.07); d.rotation.set(R() * 0.6, l[3], R() * 0.8 - 0.4); c.set(P.leaf).offsetHSL(0, 0, (R() - 0.5) * 0.08); });
+const rosesMesh = instanced(roseGeo, M.rose, roses.length, (i, d, c) => { const r = roses[i]; d.position.set(r[0], r[1], r[2]); d.scale.setScalar(r[3]); d.rotation.set(R() * 6, R() * 6, R() * 6); c.set(r[4]); });
+const leavesMesh = instanced(leafGeo, M.leaf, leaves.length, (i, d, c) => { const l = leaves[i]; d.position.set(l[0], l[1], l[2]); d.scale.set(0.16, 0.035, 0.07); d.rotation.set(R() * 0.6, l[3], R() * 0.8 - 0.4); c.set(P.leaf).offsetHSL(0, 0, (R() - 0.5) * 0.08); });
 
 // doors
 function panelFrame(parent, w, h, x, y, z) {
@@ -264,23 +268,130 @@ function panelFrame(parent, w, h, x, y, z) {
   box(w, t, 0.04, M.gold, x, y + h / 2, z, parent); box(w, t, 0.04, M.gold, x, y - h / 2, z, parent);
   box(t, h, 0.04, M.gold, x - w / 2, y, z, parent); box(t, h, 0.04, M.gold, x + w / 2, y, z, parent);
 }
-function makeDoor(side) {      // side -1 = left (hinge at -DOOR_W), +1 = right
+// ---- carved door leaves: canvas-painted ornament (colour + bump), arched top like a real palace door ----
+const R2 = rng(4242);                       // separate stream: the hall's random layout stays identical
+const LEAF_W = 2.2, LEAF_SIDE = 7.4, LEAF_TOP = 8.8, PXM = 1024 / LEAF_W;
+function doorCanvas(mode, flip) {
+  const cv = document.createElement('canvas'); cv.width = 1024; cv.height = Math.round(LEAF_TOP * PXM); const g = cv.getContext('2d');
+  const bump = mode === 'bump', X = (m) => m * PXM, Y = (m) => (LEAF_TOP - m) * PXM, S = (m) => m * PXM;
+  if (flip) { g.translate(1024, 0); g.scale(-1, 1); }
+  if (bump) { g.fillStyle = '#000'; g.fillRect(0, 0, 1024, cv.height); }
+  else {
+    const gr = g.createLinearGradient(0, 0, 1024, 0); gr.addColorStop(0, '#e5aab2'); gr.addColorStop(0.5, '#efbec4'); gr.addColorStop(1, '#e8b0b7');
+    g.fillStyle = gr; g.fillRect(0, 0, 1024, cv.height);
+    const rg = g.createRadialGradient(512, cv.height * 0.45, 50, 512, cv.height * 0.45, cv.height * 0.6); rg.addColorStop(0, 'rgba(255,240,240,.25)'); rg.addColorStop(1, 'rgba(160,90,100,.12)');
+    g.fillStyle = rg; g.fillRect(0, 0, 1024, cv.height);
+  }
+  const CREAM = '#f8ecdc', GOLD = '#c99b4f';
+  const lift = (lv) => { if (bump) { const v = Math.round(255 * lv); g.fillStyle = g.strokeStyle = `rgb(${v},${v},${v})`; g.shadowColor = 'transparent'; } else { g.fillStyle = g.strokeStyle = CREAM; g.shadowColor = 'rgba(105,45,52,.5)'; g.shadowBlur = 9; g.shadowOffsetX = 3; g.shadowOffsetY = 5; } };
+  const flat = () => { g.shadowColor = 'transparent'; };
+  // ---- ornament primitives (metres) ----
+  function scroll(cx, cy, R, rot, dir) {            // tapered C-scroll: discs along a spiral
+    lift(0.95);
+    for (let k = 0; k <= 70; k++) { const a = k / 70 * 2.7 * Math.PI, r = R * (1 - a / (3.1 * Math.PI)), w = R * 0.16 * (1 - k / 85);
+      const x = cx + Math.cos(a * dir + rot) * r, y = cy + Math.sin(a * dir + rot) * r; g.beginPath(); g.arc(X(x), Y(y), S(w), 0, 7); g.fill(); }
+    if (!bump) { flat(); g.strokeStyle = GOLD; g.lineWidth = 1.6; g.beginPath(); for (let k = 0; k <= 70; k++) { const a = k / 70 * 2.7 * Math.PI, r = R * (1 - a / (3.1 * Math.PI)); const x = cx + Math.cos(a * dir + rot) * r, y = cy + Math.sin(a * dir + rot) * r; k ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y)); } g.stroke(); }
+  }
+  function leaf(cx, cy, len, ang, w = 0.32) {        // acanthus-like lobed leaf
+    lift(0.85); g.save(); g.translate(X(cx), Y(cy)); g.rotate(-ang); const L = S(len), W = L * w;
+    g.beginPath(); g.moveTo(0, 0);
+    g.bezierCurveTo(L * 0.2, -W, L * 0.35, -W * 0.4, L * 0.45, -W * 0.85); g.bezierCurveTo(L * 0.55, -W * 0.3, L * 0.7, -W * 0.7, L * 0.78, -W * 0.45);
+    g.quadraticCurveTo(L * 0.92, -W * 0.25, L, 0);
+    g.quadraticCurveTo(L * 0.92, W * 0.25, L * 0.78, W * 0.45); g.bezierCurveTo(L * 0.7, W * 0.7, L * 0.55, W * 0.3, L * 0.45, W * 0.85);
+    g.bezierCurveTo(L * 0.35, W * 0.4, L * 0.2, W, 0, 0); g.fill();
+    if (!bump) { flat(); g.strokeStyle = GOLD; g.lineWidth = 1.4; g.beginPath(); g.moveTo(L * 0.05, 0); g.quadraticCurveTo(L * 0.5, -W * 0.12, L * 0.95, 0); g.stroke(); }
+    g.restore();
+  }
+  function rose(cx, cy, r) {                         // carved rose: disc + spiral petal cuts
+    lift(1.0); g.beginPath(); g.arc(X(cx), Y(cy), S(r), 0, 7); g.fill();
+    if (bump) { g.fillStyle = 'rgb(170,170,170)'; } else { flat(); g.strokeStyle = 'rgba(150,95,95,.55)'; }
+    g.lineWidth = bump ? S(r) * 0.12 : 1.6;
+    for (let k = 0; k < 4; k++) { const rr = S(r) * (0.85 - k * 0.2); g.beginPath(); g.arc(X(cx), Y(cy), rr, k * 1.3, k * 1.3 + 4.6); bump ? (g.strokeStyle = 'rgb(140,140,140)', g.stroke()) : g.stroke(); }
+    if (!bump) { g.strokeStyle = GOLD; g.lineWidth = 1.2; g.beginPath(); g.arc(X(cx), Y(cy), S(r), 0, 7); g.stroke(); }
+  }
+  function bow(cx, cy, s) {
+    lift(0.9);
+    for (const sd of [-1, 1]) { g.beginPath(); g.ellipse(X(cx + sd * s * 0.55), Y(cy + s * 0.05), S(s * 0.55), S(s * 0.28), sd * -0.35, 0, 7); g.fill();
+      g.beginPath(); g.moveTo(X(cx), Y(cy)); g.bezierCurveTo(X(cx + sd * s * 0.2), Y(cy - s * 0.6), X(cx + sd * s * 0.7), Y(cy - s * 0.7), X(cx + sd * s * 0.75), Y(cy - s * 1.3));
+      g.lineTo(X(cx + sd * s * 0.55), Y(cy - s * 1.25)); g.bezierCurveTo(X(cx + sd * s * 0.45), Y(cy - s * 0.7), X(cx + sd * s * 0.1), Y(cy - s * 0.55), X(cx), Y(cy)); g.fill(); }
+    rose(cx, cy, s * 0.22);
+  }
+  function bouquet(cx, cy, s) {
+    for (let k = 0; k < 11; k++) { const a = Math.PI / 2 + (k - 5) * 0.32; leaf(cx, cy - 0.05 * s, 0.52 * s, a, 0.3); }
+    for (const [dx, dy, r] of [[0, 0.06, 0.13], [-0.17, -0.03, 0.105], [0.17, -0.03, 0.105], [-0.09, 0.22, 0.09], [0.09, 0.22, 0.09], [0, 0.36, 0.075], [-0.24, 0.16, 0.07], [0.24, 0.16, 0.07], [0, -0.17, 0.09]])
+      rose(cx + dx * s, cy + dy * s, r * s);
+    bow(cx, cy - 0.34 * s, 0.17 * s);
+  }
+  function rosetteSmall(cx, cy, r) { for (let k = 0; k < 8; k++) leaf(cx, cy, r * 1.9, k * Math.PI / 4, 0.42); rose(cx, cy, r * 0.75); }
+  // ---- panel moldings ----
+  function molding(pathAt) {
+    lift(0.7); g.lineWidth = 30; g.stroke(pathAt(0));
+    lift(1.0); g.lineWidth = 8; g.stroke(pathAt(24));
+    if (!bump) { flat(); g.strokeStyle = GOLD; g.lineWidth = 5; g.stroke(pathAt(9)); g.strokeStyle = 'rgba(255,250,242,.9)'; g.lineWidth = 2; g.stroke(pathAt(-10)); }
+  }
+  const notch = (x0, y0, x1, y1, c = 0.09) => (d) => { const D = d / PXM, a = X(x0 + D), b = X(x1 - D), t = Y(y1 - D), u = Y(y0 + D), r = S(c), p = new Path2D();
+    p.moveTo(a + r, t); p.lineTo(b - r, t); p.arc(b, t, r, Math.PI, Math.PI / 2, true); p.lineTo(b, u - r); p.arc(b, u, r, -Math.PI / 2, Math.PI, true);
+    p.lineTo(a + r, u); p.arc(a, u, r, 0, -Math.PI / 2, true); p.lineTo(a, t + r); p.arc(a, t, r, Math.PI / 2, 0, true); p.closePath(); return p; };
+  const archPanel = (x0, y0, x1) => (d) => { const D = d / PXM, rx = LEAF_W - 0.26 - D, ry = (LEAF_TOP - LEAF_SIDE) - 0.26 - D, k = Math.min(0.99, (LEAF_W - (x1 - D)) / rx), p = new Path2D();
+    p.moveTo(X(x0 + D), Y(y0 + D)); p.lineTo(X(x0 + D), Y(LEAF_SIDE)); p.ellipse(X(LEAF_W), Y(LEAF_SIDE), S(rx), S(ry), 0, Math.PI, Math.PI + Math.acos(k), false);
+    p.lineTo(X(x1 - D), Y(y0 + D)); p.closePath(); return p; };
+  const tallPanel = (x0, y0, x1, y1, bulge) => (d) => { const D = d / PXM, a = X(x0 + D), b = X(x1 - D), u = Y(y0 + D), t = Y(y1 - D), m = (a + b) / 2, p = new Path2D(), r = S(0.09);
+    p.moveTo(a, t); p.quadraticCurveTo(m, t - S(bulge) * 2, b, t); p.lineTo(b, u - r); p.arc(b, u, r, -Math.PI / 2, Math.PI, true); p.lineTo(a + r, u); p.arc(a, u, r, 0, -Math.PI / 2, true); p.closePath(); return p; };
+  // outer edge bead all round the leaf
+  lift(0.55); g.lineWidth = 16; g.strokeRect(8, 8, 1024 - 16, cv.height - 16);
+  // 1) arched top panel
+  molding(archPanel(0.27, 6.62, 1.93));
+  scroll(0.62, 7.0, 0.16, 0.6, 1); scroll(1.58, 7.0, 0.16, 2.5, -1); leaf(0.75, 7.0, 0.38, 0.5); leaf(1.45, 7.0, 0.38, Math.PI - 0.5); rosetteSmall(1.1, 7.42, 0.12);
+  leaf(1.1, 7.62, 0.3, Math.PI / 2, 0.36);
+  // 2) small horizontal panel
+  molding(notch(0.27, 5.72, 1.93, 6.38));
+  rosetteSmall(1.1, 6.05, 0.1); leaf(0.98, 6.05, 0.5, Math.PI, 0.3); leaf(1.22, 6.05, 0.5, 0, 0.3); scroll(0.52, 6.05, 0.1, 0, 1); scroll(1.68, 6.05, 0.1, Math.PI, -1);
+  // 3) tall panel with medallion bouquet
+  molding(tallPanel(0.27, 2.0, 1.93, 5.3, 0.16));
+  lift(0.75); g.lineWidth = 20; g.beginPath(); g.ellipse(X(1.1), Y(3.7), S(0.58), S(0.98), 0, 0, 7); g.stroke();
+  lift(1.0); g.lineWidth = 6; g.beginPath(); g.ellipse(X(1.1), Y(3.7), S(0.5), S(0.9), 0, 0, 7); g.stroke();
+  if (!bump) { flat(); g.strokeStyle = GOLD; g.lineWidth = 2.6; g.beginPath(); g.ellipse(X(1.1), Y(3.7), S(0.555), S(0.955), 0, 0, 7); g.stroke(); }
+  bouquet(1.1, 3.72, 1.0);
+  scroll(0.8, 4.92, 0.13, 0.3, 1); scroll(1.4, 4.92, 0.13, 2.8, -1); rosetteSmall(1.1, 4.98, 0.09);
+  leaf(1.1, 2.55, 0.42, -Math.PI / 2, 0.3); scroll(0.7, 2.35, 0.12, -0.6, 1); scroll(1.5, 2.35, 0.12, 3.7, -1);
+  for (const [x, y] of [[0.48, 5.0], [1.72, 5.0], [0.48, 2.25], [1.72, 2.25]]) rose(x, y, 0.045);
+  // 4) bottom panel
+  molding(notch(0.27, 0.38, 1.93, 1.68));
+  rosetteSmall(1.1, 1.03, 0.11); leaf(0.95, 1.03, 0.45, Math.PI, 0.3); leaf(1.25, 1.03, 0.45, 0, 0.3);
+  for (const [x, y, rt, dr] of [[0.55, 1.4, -0.5, 1], [1.65, 1.4, 3.6, -1], [0.55, 0.66, 0.5, -1], [1.65, 0.66, 2.6, 1]]) scroll(x, y, 0.1, rt, dr);
+  if (bump) { const c2 = document.createElement('canvas'); c2.width = cv.width; c2.height = cv.height; const g2 = c2.getContext('2d'); g2.filter = 'blur(2.5px)'; g2.drawImage(cv, 0, 0); return c2; }
+  return cv;
+}
+function doorMaterial(flip) {
+  const map = new THREE.CanvasTexture(doorCanvas('color', flip)), bmp = new THREE.CanvasTexture(doorCanvas('bump', flip));
+  for (const t of [map, bmp]) { t.repeat.set(1 / LEAF_W, 1 / LEAF_TOP); t.anisotropy = 8; }
+  map.colorSpace = THREE.SRGBColorSpace;
+  return new THREE.MeshStandardMaterial({ map, bumpMap: bmp, bumpScale: 3.2, roughness: 0.48, metalness: 0.02 });
+}
+function leafShape(side) {
+  const s = new THREE.Shape();
+  if (side < 0) { s.moveTo(0, 0); s.lineTo(LEAF_W, 0); s.lineTo(LEAF_W, LEAF_TOP); s.absellipse(LEAF_W, LEAF_SIDE, LEAF_W, LEAF_TOP - LEAF_SIDE, Math.PI / 2, Math.PI, false); s.lineTo(0, 0); }
+  else { s.moveTo(0, 0); s.lineTo(LEAF_W, 0); s.lineTo(LEAF_W, LEAF_SIDE); s.absellipse(0, LEAF_SIDE, LEAF_W, LEAF_TOP - LEAF_SIDE, 0, Math.PI / 2, false); s.lineTo(0, 0); }
+  return s;
+}
+function ornateHandle(parent, x) {
+  const grp = new THREE.Group(); grp.position.set(x, 3.75, 0.13); parent.add(grp);
+  const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 1.5, 16), M.gold); grp.add(bar);
+  for (const y of [-0.75, 0.75]) { const k = new THREE.Mesh(new THREE.SphereGeometry(0.065, 16, 12), M.gold); k.position.y = y; grp.add(k); const f = new THREE.Mesh(new THREE.ConeGeometry(0.04, 0.12, 12), M.gold); f.position.y = y + Math.sign(y) * 0.11; f.rotation.z = y > 0 ? 0 : Math.PI; grp.add(f); }
+  for (const y of [-0.45, -0.15, 0.15, 0.45]) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.048, 0.014, 8, 20), M.gold); r.rotation.x = Math.PI / 2; r.position.y = y; grp.add(r); }
+  for (const y of [-0.58, 0.58]) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.06, 0.13), M.gold); b.position.set(0, y, -0.065); grp.add(b); const pl = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.02, 20), M.gold); pl.rotation.x = Math.PI / 2; pl.position.set(0, y, -0.12); grp.add(pl); }
+}
+function makeDoor(side) {      // side -1 = left (hinge at -LEAF_W), +1 = right
   const pivot = new THREE.Group(); pivot.position.set(side * DOOR_W, 0, WALL_Z + 0.02); world.add(pivot);
-  const cx = -side * DOOR_W / 2, z = 0.1;
-  box(DOOR_W - 0.02, DOOR_H, 0.16, M.door, cx, DOOR_H / 2, 0, pivot);
-  panelFrame(pivot, 1.5, 2.1, cx, 6.0, z); panelFrame(pivot, 1.25, 1.75, cx, 6.0, z);
-  panelFrame(pivot, 1.5, 2.8, cx, 3.35, z); panelFrame(pivot, 1.25, 2.45, cx, 3.35, z);
-  panelFrame(pivot, 1.5, 1.2, cx, 1.0, z);
-  const ro = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.045, 8, 24), M.gold); ro.position.set(cx, 3.35, z); pivot.add(ro);
-  const ro2 = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 10), M.gold); ro2.position.set(cx, 3.35, z); pivot.add(ro2);
-  const ro3 = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.04, 8, 24), M.gold); ro3.position.set(cx, 6.0, z); pivot.add(ro3);
-  const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 1.4, 12), M.gold); handle.position.set(-side * (DOOR_W - 0.28), 3.6, 0.2); pivot.add(handle);
-  for (const hy of [2.95, 4.25]) box(0.05, 0.05, 0.16, M.gold, -side * (DOOR_W - 0.28), hy, 0.13, pivot);
+  const geo = new THREE.ExtrudeGeometry(leafShape(side), { depth: 0.14, bevelEnabled: true, bevelThickness: 0.012, bevelSize: 0.012, bevelSegments: 2, curveSegments: 48 });
+  const mesh = new THREE.Mesh(geo, [doorMaterial(side > 0), M.door]);
+  mesh.position.set(side < 0 ? 0 : -LEAF_W, 0, -0.07); pivot.add(mesh);
+  ornateHandle(pivot, side < 0 ? LEAF_W - 0.2 : -(LEAF_W - 0.2));
   return pivot;
 }
 const doorL = makeDoor(-1), doorR = makeDoor(1);
-const seam = new THREE.Mesh(new THREE.PlaneGeometry(0.07, DOOR_H), new THREE.MeshBasicMaterial({ color: hdr([3, 2.8, 2.6]), transparent: true, fog: false }));
-seam.position.set(0, DOOR_H / 2, WALL_Z + 0.12); scene.add(seam);
+const seam = new THREE.Mesh(new THREE.PlaneGeometry(0.07, 8.5), new THREE.MeshBasicMaterial({ color: hdr([3, 2.8, 2.6]), transparent: true, fog: false }));
+seam.position.set(0, 4.25, WALL_Z + 0.12); scene.add(seam);
 // outside: soft dark-ish vestibule floor area is the same floor; a blush backdrop behind the camera is the fog colour
 
 // ---------- back: staircase, giant window, curtains ----------
@@ -317,9 +428,10 @@ for (let z = -3; z > HALL_END + 4; z -= 7) for (const s of [-1, 1]) {
   world.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 24, 0.05, 6), M.branch));
   for (let i = 0; i < 170; i++) { const p = curve.getPoint(Math.pow(R(), 0.8)); blossoms.push([p.x + (R() - 0.5) * 1.3, p.y + (R() - 0.6) * 1.0, p.z + (R() - 0.5) * 1.3, 0.06 + R() * 0.07, pick(P.blossom)]); }
 }
+const B0 = blossoms.length;
 // over the doorway (seen from outside)
 for (let i = 0; i < 700; i++) { const s = R() < 0.5 ? -1 : 1; const x = s * (2.6 + R() * 5.5), y = 9 + R() * 4.5 - Math.abs(x) * 0.25, z = WALL_Z + 0.3 + R() * 1.6; blossoms.push([x, y, z, 0.07 + R() * 0.08, pick(P.blossom)]); }
-instanced(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.6 }), blossoms.length, (i, d, c) => { const b = blossoms[i]; d.position.set(b[0], b[1], b[2]); d.scale.setScalar(b[3]); c.set(b[4]); });
+const blossomsMesh = instanced(new THREE.IcosahedronGeometry(1, 1), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.6 }), blossoms.length, (i, d, c) => { const b = blossoms[i]; d.position.set(b[0], b[1], b[2]); d.scale.setScalar(b[3]); c.set(b[4]); });
 
 
 // ---------- wedding-hall dressing (cfg.wedding): guest chairs, aisle petals + candles, flower arch on a stage ----------
@@ -372,6 +484,108 @@ if (cfg.wedding) {
   }
   instanced(roseGeo, M.rose, ar.length, (i, d, c) => { const r = ar[i]; d.position.set(r[0], r[1], r[2]); d.scale.setScalar(r[3]); d.rotation.set(R() * 6, R() * 6, R() * 6); c.set(r[4]); });
   instanced(leafGeo, M.leaf, al.length, (i, d, c) => { const l = al[i]; d.position.set(l[0], l[1], l[2]); d.scale.set(0.17, 0.035, 0.07); d.rotation.set(R() * 0.6, l[3], R() * 0.8 - 0.4); c.set(P.leaf); });
+}
+
+
+// ---------- detailed entrance (replaces the plain one; uses R2 only) ----------
+{
+  for (let i = ENT0; i < ENT1; i++) world.children[i].visible = false;            // old flat wall, frame, lanterns
+  const zero = new THREE.Matrix4().makeScale(0, 0, 0);
+  for (let i = G0; i < G1; i++) rosesMesh.setMatrixAt(i, zero); rosesMesh.instanceMatrix.needsUpdate = true;   // old garland
+  for (let i = LG0; i < LG1; i++) leavesMesh.setMatrixAt(i, zero); leavesMesh.instanceMatrix.needsUpdate = true;
+  for (let i = B0; i < blossoms.length; i++) blossomsMesh.setMatrixAt(i, zero); blossomsMesh.instanceMatrix.needsUpdate = true;  // floating balls
+
+  // carved marble wall with an arched opening that matches the door leaves
+  function wallTexture() {
+    const cv = document.createElement('canvas'); cv.width = cv.height = 1024; const g = cv.getContext('2d');
+    g.fillStyle = '#f3e1dc'; g.fillRect(0, 0, 1024, 1024);
+    g.filter = 'blur(1px)';
+    for (let i = 0; i < 20; i++) { g.strokeStyle = `rgba(190,150,150,${0.05 + R2() * 0.08})`; g.lineWidth = 0.6 + R2() * 1.6; g.beginPath(); let x = R2() * 1024, y = R2() * 1024; g.moveTo(x, y); for (let k = 0; k < 5; k++) { const nx = x + (R2() - 0.4) * 240, ny = y + (R2() - 0.5) * 240; g.quadraticCurveTo((x + nx) / 2, (y + ny) / 2 + (R2() - 0.5) * 60, nx, ny); x = nx; y = ny; } g.stroke(); }
+    g.filter = 'none'; g.strokeStyle = 'rgba(175,140,135,.35)'; g.lineWidth = 3;
+    for (let r = 0; r < 4; r++) { g.beginPath(); g.moveTo(0, r * 256); g.lineTo(1024, r * 256); g.stroke(); for (let c = 0; c < 3; c++) { const x = ((c + (r % 2) * 0.5) * 1024 / 2.5) % 1024; g.beginPath(); g.moveTo(x, r * 256); g.lineTo(x, r * 256 + 256); g.stroke(); } }
+    const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(0.4, 0.4); t.colorSpace = THREE.SRGBColorSpace; return t;
+  }
+  const wallMat = new THREE.MeshStandardMaterial({ map: wallTexture(), roughness: 0.55 });
+  const outline = (rx, ry, w) => { const s = new THREE.Path(); s.moveTo(-w, 0); s.lineTo(-w, LEAF_SIDE); s.absellipse(0, LEAF_SIDE, rx, ry, Math.PI, 0, true); s.lineTo(w, 0); s.lineTo(-w, 0); return s; };
+  const wshape = new THREE.Shape(); wshape.moveTo(-HALL_W, 0); wshape.lineTo(HALL_W, 0); wshape.lineTo(HALL_W, 22); wshape.lineTo(-HALL_W, 22); wshape.lineTo(-HALL_W, 0);
+  wshape.holes.push(outline(LEAF_W, LEAF_TOP - LEAF_SIDE, LEAF_W));
+  const wall = new THREE.Mesh(new THREE.ExtrudeGeometry(wshape, { depth: 0.7, bevelEnabled: false, curveSegments: 48 }), wallMat); wall.position.z = WALL_Z - 0.7; world.add(wall);
+  // archivolt: raised moulded band round the opening + gold lines + gold beads + keystone
+  const band = new THREE.Shape(); band.moveTo(-2.78, 0); band.lineTo(-2.78, LEAF_SIDE); band.absellipse(0, LEAF_SIDE, 2.78, 1.98, Math.PI, 0, true); band.lineTo(2.78, 0); band.lineTo(2.3, 0);
+  band.lineTo(2.3, LEAF_SIDE); band.absellipse(0, LEAF_SIDE, 2.3, 1.5, 0, Math.PI, false); band.lineTo(-2.3, 0); band.lineTo(-2.78, 0);
+  const bandMesh = new THREE.Mesh(new THREE.ExtrudeGeometry(band, { depth: 0.22, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3, curveSegments: 64 }), M.col); bandMesh.position.z = WALL_Z; world.add(bandMesh);
+  const contour = (rx, ry, n = 120) => { const pts = []; for (let i = 0; i <= 30; i++) pts.push(new THREE.Vector3(-rx, i / 30 * LEAF_SIDE, 0)); for (let i = 1; i < n; i++) { const a = Math.PI - i / n * Math.PI; pts.push(new THREE.Vector3(Math.cos(a) * rx, LEAF_SIDE + Math.sin(a) * ry, 0)); } for (let i = 30; i >= 0; i--) pts.push(new THREE.Vector3(rx, i / 30 * LEAF_SIDE, 0)); return pts; };
+  for (const [rx, ry, z, r] of [[2.36, 1.56, 0.29, 0.03], [2.72, 1.92, 0.29, 0.03]]) { const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(contour(rx, ry)), 400, r, 8), M.gold); tube.position.z = WALL_Z + z; world.add(tube); }
+  const beadPts = contour(2.54, 1.74, 90).filter((_, i) => i % 3 === 0);
+  instanced(new THREE.SphereGeometry(0.042, 10, 8), M.gold, beadPts.length, (i, d, c) => { d.position.set(beadPts[i].x, beadPts[i].y, WALL_Z + 0.31); c.set('#ffffff'); });
+  const key = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.95, 0.42), M.col); key.position.set(0, LEAF_SIDE + 1.85, WALL_Z + 0.16); world.add(key);
+  const kG = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.035, 10, 28), M.gold); kG.position.set(0, LEAF_SIDE + 1.9, WALL_Z + 0.39); world.add(kG);
+  const kS = new THREE.Mesh(new THREE.SphereGeometry(0.075, 14, 10), M.gold); kS.position.set(0, LEAF_SIDE + 1.9, WALL_Z + 0.4); world.add(kS);
+  for (const sd of [-1, 1]) { const sc = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.025, 8, 20, Math.PI * 1.5), M.gold); sc.position.set(sd * 0.2, LEAF_SIDE + 1.55, WALL_Z + 0.39); sc.rotation.z = sd > 0 ? 0 : Math.PI / 2; world.add(sc); }
+  // fluted pilasters, capitals, entablature and cornice
+  function fluteTexture() { const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64; const g = cv.getContext('2d'); g.fillStyle = '#fbf2ec'; g.fillRect(0, 0, 256, 64);
+    for (let k = 0; k < 6; k++) { const x = 18 + k * 40, gr = g.createLinearGradient(x - 12, 0, x + 12, 0); gr.addColorStop(0, 'rgba(160,120,115,0)'); gr.addColorStop(0.35, 'rgba(160,120,115,.45)'); gr.addColorStop(0.65, 'rgba(255,255,255,.7)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(x - 12, 0, 24, 64); }
+    const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t; }
+  const pilMat = new THREE.MeshStandardMaterial({ map: fluteTexture(), roughness: 0.45 });
+  for (const sd of [-1, 1]) {
+    const x = sd * 3.45;
+    box(0.72, 9.0, 0.32, [M.col, M.col, M.col, M.col, pilMat, M.col], x, 0.45 + 4.5, WALL_Z + 0.16);
+    box(0.98, 0.45, 0.48, M.col, x, 0.225, WALL_Z + 0.24); box(1.02, 0.06, 0.5, M.gold, x, 0.47, WALL_Z + 0.24);
+    box(0.98, 0.34, 0.48, M.col, x, 9.62, WALL_Z + 0.24); box(1.02, 0.05, 0.5, M.gold, x, 9.43, WALL_Z + 0.24);
+    for (const dx of [-0.26, 0.26]) { const v = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.03, 8, 20, Math.PI * 1.6), M.gold); v.position.set(x + dx, 9.66, WALL_Z + 0.5); v.rotation.z = dx < 0 ? -0.4 : Math.PI + 0.4; world.add(v); }
+  }
+  box(8.4, 0.62, 0.55, M.col, 0, 10.12, WALL_Z + 0.26); box(8.4, 0.05, 0.02, M.gold, 0, 9.88, WALL_Z + 0.55); box(8.4, 0.05, 0.02, M.gold, 0, 10.36, WALL_Z + 0.55);
+  box(9.0, 0.26, 0.75, M.col, 0, 10.56, WALL_Z + 0.36); box(9.0, 0.04, 0.02, M.gold, 0, 10.44, WALL_Z + 0.74);
+  // ornate lanterns on curled gold brackets
+  for (const sd of [-1, 1]) {
+    const lx = sd * 4.3, ly = 4.75, lz = WALL_Z + 0.62;
+    const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.16, 0.56, 8), M.glow); glass.position.set(lx, ly, lz); world.add(glass);
+    const cage = new THREE.Mesh(new THREE.CylinderGeometry(0.215, 0.175, 0.58, 8, 1, true), new THREE.MeshStandardMaterial({ color: P.gold, metalness: 1, roughness: 0.3, wireframe: true })); cage.position.set(lx, ly, lz); world.add(cage);
+    for (const [y, r] of [[0.29, 0.215], [-0.29, 0.175]]) { const t = new THREE.Mesh(new THREE.TorusGeometry(r, 0.025, 8, 24), M.gold); t.rotation.x = Math.PI / 2; t.position.set(lx, ly + y, lz); world.add(t); }
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.32, 8), M.gold); cap.position.set(lx, ly + 0.45, lz); world.add(cap);
+    const fin = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), M.gold); fin.position.set(lx, ly + 0.66, lz); world.add(fin);
+    const bot = new THREE.Mesh(new THREE.ConeGeometry(0.17, 0.24, 8), M.gold); bot.rotation.x = Math.PI; bot.position.set(lx, ly - 0.41, lz); world.add(bot);
+    const arm = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.028, 8, 30, Math.PI), M.gold); arm.rotation.y = Math.PI / 2; arm.position.set(lx, ly + 0.66, lz - 0.32); world.add(arm);
+    const sp = new THREE.Sprite(glowMat); sp.scale.set(2.4, 2.4, 1); sp.position.set(lx, ly, lz + 0.2); world.add(sp);
+  }
+  // marble threshold steps
+  box(6.4, 0.12, 0.9, M.col, 0, 0.06, WALL_Z + 0.45); box(6.4, 0.03, 0.02, M.gold, 0, 0.11, WALL_Z + 0.9);
+  box(7.0, 0.06, 1.5, M.col, 0, 0.03, WALL_Z + 0.75);
+
+  // ---- flowers: rose garland hugging the archivolt, trailing greenery, cherry-blossom branches ----
+  const gR = [], gL = [], gB = [];
+  const along = (u) => { const side = LEAF_SIDE - 0.6, arcL = Math.PI * 3.0, tot = side * 2 + arcL, d = u * tot, rx = 3.0, ry = 2.2;
+    if (d < side) return [-rx, 0.6 + d]; if (d < side + arcL) { const a = Math.PI - (d - side) / arcL * Math.PI; return [Math.cos(a) * rx, LEAF_SIDE + Math.sin(a) * ry]; } return [rx, LEAF_SIDE - (d - side - arcL)]; };
+  const dens = (u) => 0.3 + 0.9 * Math.exp(-Math.pow((u - 0.33) / 0.1, 2)) + 0.9 * Math.exp(-Math.pow((u - 0.62) / 0.09, 2)) + 0.5 * Math.exp(-Math.pow(u / 0.08, 2)) + 0.5 * Math.exp(-Math.pow((u - 1) / 0.08, 2));
+  for (let i = 0; i < 2600; i++) {
+    const u = R2(); if (R2() * 1.6 > dens(u)) continue;
+    const [x, y] = along(u), th = R2() * Math.PI * 2, rr = Math.sqrt(R2()) * 0.42 * Math.min(1.4, dens(u));
+    const px = x + Math.cos(th) * rr, py = y + Math.sin(th) * rr, pz = WALL_Z + 0.42 + R2() * 0.35;
+    const k = R2();
+    if (k < 0.5) gR.push([px, py, pz, 0.1 + R2() * 0.1 * Math.min(1.3, dens(u)), pick2(P.roses)]);
+    else if (k < 0.8) gL.push([px, py, pz - 0.05, R2() * 6, R2() * 6]);
+    else gB.push([px, py, pz + 0.05, 0.05 + R2() * 0.05, R2() < 0.6 ? '#ffffff' : pick2(P.blossom)]);
+  }
+  // trailing vines falling from the two lush clusters
+  for (const u0 of [0.33, 0.62, 0.05, 0.95]) for (let v = 0; v < 5; v++) {
+    let [x, y] = along(u0 + (R2() - 0.5) * 0.06); const len = 1.2 + R2() * 2.2, sx = (R2() - 0.5) * 0.25;
+    for (let s2 = 0; s2 < len; s2 += 0.1) { gL.push([x + sx * s2 + Math.sin(s2 * 5 + v) * 0.08, y - s2, WALL_Z + 0.5 + R2() * 0.1, R2() * 6, R2() * 6]); if (R2() < 0.12) gB.push([x + sx * s2, y - s2, WALL_Z + 0.56, 0.04 + R2() * 0.03, '#ffffff']); }
+  }
+  function pick2(a) { return a[Math.floor(R2() * a.length)]; }
+  instanced(roseGeo, M.rose, gR.length, (i, d, c) => { const r = gR[i]; d.position.set(r[0], r[1], r[2]); d.scale.setScalar(r[3]); d.rotation.set(R2() * 6, R2() * 6, R2() * 6); c.set(r[4]); });
+  instanced(leafGeo, M.leaf, gL.length, (i, d, c) => { const l = gL[i]; d.position.set(l[0], l[1], l[2]); d.scale.set(0.15, 0.03, 0.065); d.rotation.set(l[3] * 0.3, l[3], l[4] * 0.3); c.set(P.leaf).offsetHSL(0, 0, (R2() - 0.5) * 0.12); });
+  const flowerShape = new THREE.Shape(); for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2, b = (k + 0.5) / 5 * Math.PI * 2; const px = Math.cos(a), py = Math.sin(a); if (!k) flowerShape.moveTo(0, 0); flowerShape.quadraticCurveTo(Math.cos(a - 0.5) * 1.25, Math.sin(a - 0.5) * 1.25, px, py); flowerShape.quadraticCurveTo(Math.cos(a + 0.5) * 1.25, Math.sin(a + 0.5) * 1.25, 0, 0); }
+  const flowerGeo = new THREE.ShapeGeometry(flowerShape, 4);
+  const flowerMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.65, side: THREE.DoubleSide, emissive: '#f6d3d8', emissiveIntensity: 0.15 });
+  // cherry-blossom branches reaching over the top corners
+  const bl = [];
+  for (const sd of [-1, 1]) for (let b = 0; b < 3; b++) {
+    const y0 = 13.2 - b * 1.1, pts = [new THREE.Vector3(sd * 9.0, y0, WALL_Z + 0.9 + b * 0.2), new THREE.Vector3(sd * (6.6 - b * 0.4), y0 - 0.6 - R2() * 0.4, WALL_Z + 1.0), new THREE.Vector3(sd * (4.6 - b * 0.6), y0 - 1.2 + R2() * 0.3, WALL_Z + 0.95), new THREE.Vector3(sd * (2.6 - b * 0.4), y0 - 2.0 - R2() * 0.5, WALL_Z + 1.05)];
+    const curve = new THREE.CatmullRomCurve3(pts);
+    world.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.055 - b * 0.01, 6), M.branch));
+    for (let i = 0; i < 950; i++) { const t2 = Math.pow(R2(), 0.75), p = curve.getPoint(t2), spread = 0.35 + t2 * 0.7; bl.push([p.x + (R2() - 0.5) * spread * 2, p.y + (R2() - 0.55) * spread * 1.5, p.z + (R2() - 0.5) * 0.5, 0.06 + R2() * 0.06, pick2(P.blossom)]); }
+  }
+  instanced(flowerGeo, flowerMat, gB.length + bl.length, (i, d, c) => { const f = i < gB.length ? gB[i] : bl[i - gB.length]; d.position.set(f[0], f[1], f[2]); d.scale.setScalar(f[3]); d.rotation.set((R2() - 0.5) * 1.2, (R2() - 0.5) * 1.2, R2() * 6); c.set(f[4]); });
 }
 
 // ---------- mirror world (reflection in the marble floor) ----------

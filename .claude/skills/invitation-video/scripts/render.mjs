@@ -93,10 +93,11 @@ try {
     const total = Math.round(duration * fps);
     // --from <seconds>: render only the tail (to extend a finished video); encode starts at that frame
     const first = Math.round((+args.from || 0) * fps);
-    const chunk = Math.ceil((total - first) / workers);
+    const last = args.to ? Math.round(+args.to * fps) : total;   // --to <seconds>: stop early (render a head segment)
+    const chunk = Math.ceil((last - first) / workers);
     await Promise.all([...Array(workers).keys()].map(async (w) => {
       const p = await openPage(browser);
-      for (let i = first + w * chunk; i < Math.min(total, first + (w + 1) * chunk); i++) {
+      for (let i = first + w * chunk; i < Math.min(last, first + (w + 1) * chunk); i++) {
         const file = path.join(frames, `f${String(i).padStart(5, '0')}.jpg`);
         if (fs.existsSync(file) && fs.statSync(file).size > 1000) continue;
         for (let attempt = 1; ; attempt++) {
@@ -119,10 +120,10 @@ try {
       const fadeAt = Math.max(0, duration - fadeLen);
       ff.push('-i', path.resolve(args.music), '-af', `atrim=0:${duration},afade=t=out:st=${fadeAt}:d=${fadeLen}`, '-c:a', 'aac', '-b:a', '192k');
     }
-    if (first) ff.push('-frames:v', String(total - first));
-    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf || 19), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-t', String(duration - first / fps), '-movflags', '+faststart', mp4);
+    if (first || last !== total) ff.push('-frames:v', String(last - first));
+    ff.push('-c:v', 'libx264', '-preset', 'slow', '-crf', String(args.crf || 19), '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-t', String((last - first) / fps), '-movflags', '+faststart', mp4);
     execFileSync('ffmpeg', ff, { stdio: 'inherit' });
-    fs.copyFileSync(path.join(frames, `f${String(total - 1).padStart(5, '0')}.jpg`), path.join(out, `${name}-poster.jpg`));
+    fs.copyFileSync(path.join(frames, `f${String(last - 1).padStart(5, '0')}.jpg`), path.join(out, `${name}-poster.jpg`));
     if (!args['keep-frames']) fs.rmSync(frames, { recursive: true, force: true });
     console.log(mp4);
   }
