@@ -14,3 +14,4 @@ videos/**/audio/*.mp3
 videos/**/audio/*.mp3.json
 videos/**/work-*/
 videos/**/.*.hf-transaction-*/
+.claude/skills/reverse-engineer-video/package-lock.json
