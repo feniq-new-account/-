@@ -1,0 +1,614 @@
+{
+ "duration": 48.182,
+ "lines": [
+  {
+   "id": "hook",
+   "text": "One person hears a rumor. Every minute, everyone who knows it tells one new person. How long until the whole world knows?",
+   "start": 0.15,
+   "end": 7.777,
+   "words": [
+    {
+     "w": "One",
+     "start": 0.15,
+     "end": 0.356
+    },
+    {
+     "w": "person",
+     "start": 0.356,
+     "end": 0.802
+    },
+    {
+     "w": "hears",
+     "start": 0.815,
+     "end": 1.019
+    },
+    {
+     "w": "a",
+     "start": 1.019,
+     "end": 1.057
+    },
+    {
+     "w": "rumor",
+     "start": 1.07,
+     "end": 1.529
+    },
+    {
+     "w": "Every",
+     "start": 1.95,
+     "end": 2.18
+    },
+    {
+     "w": "minute",
+     "start": 2.18,
+     "end": 2.524
+    },
+    {
+     "w": "everyone",
+     "start": 2.971,
+     "end": 3.328
+    },
+    {
+     "w": "who",
+     "start": 3.328,
+     "end": 3.43
+    },
+    {
+     "w": "knows",
+     "start": 3.43,
+     "end": 3.813
+    },
+    {
+     "w": "it",
+     "start": 3.813,
+     "end": 3.889
+    },
+    {
+     "w": "tells",
+     "start": 3.889,
+     "end": 4.208
+    },
+    {
+     "w": "one",
+     "start": 4.221,
+     "end": 4.514
+    },
+    {
+     "w": "new",
+     "start": 4.514,
+     "end": 4.667
+    },
+    {
+     "w": "person",
+     "start": 4.667,
+     "end": 5.241
+    },
+    {
+     "w": "How",
+     "start": 5.649,
+     "end": 5.79
+    },
+    {
+     "w": "long",
+     "start": 5.79,
+     "end": 6.21
+    },
+    {
+     "w": "until",
+     "start": 6.223,
+     "end": 6.427
+    },
+    {
+     "w": "the",
+     "start": 6.427,
+     "end": 6.491
+    },
+    {
+     "w": "whole",
+     "start": 6.504,
+     "end": 6.81
+    },
+    {
+     "w": "world",
+     "start": 6.81,
+     "end": 7.103
+    },
+    {
+     "w": "knows",
+     "start": 7.103,
+     "end": 7.741
+    }
+   ]
+  },
+  {
+   "id": "m05",
+   "text": "Five minutes: your whole classroom.",
+   "start": 8.277,
+   "end": 10.579,
+   "words": [
+    {
+     "w": "Five",
+     "start": 8.277,
+     "end": 8.577
+    },
+    {
+     "w": "minutes",
+     "start": 8.577,
+     "end": 9.113
+    },
+    {
+     "w": "your",
+     "start": 9.508,
+     "end": 9.649
+    },
+    {
+     "w": "whole",
+     "start": 9.661,
+     "end": 9.929
+    },
+    {
+     "w": "classroom",
+     "start": 9.942,
+     "end": 10.516
+    }
+   ]
+  },
+  {
+   "id": "m10",
+   "text": "Ten: your entire school.",
+   "start": 11.079,
+   "end": 12.93,
+   "words": [
+    {
+     "w": "Ten",
+     "start": 11.079,
+     "end": 11.349
+    },
+    {
+     "w": "your",
+     "start": 11.795,
+     "end": 11.923
+    },
+    {
+     "w": "entire",
+     "start": 11.923,
+     "end": 12.42
+    },
+    {
+     "w": "school",
+     "start": 12.433,
+     "end": 12.879
+    }
+   ]
+  },
+  {
+   "id": "m13",
+   "text": "Thirteen: a small town.",
+   "start": 13.43,
+   "end": 15.039,
+   "words": [
+    {
+     "w": "Thirteen",
+     "start": 13.43,
+     "end": 13.994
+    },
+    {
+     "w": "a",
+     "start": 14.211,
+     "end": 14.236
+    },
+    {
+     "w": "small",
+     "start": 14.236,
+     "end": 14.58
+    },
+    {
+     "w": "town",
+     "start": 14.58,
+     "end": 14.963
+    }
+   ]
+  },
+  {
+   "id": "m16",
+   "text": "Sixteen: a packed stadium.",
+   "start": 15.539,
+   "end": 17.704,
+   "words": [
+    {
+     "w": "Sixteen",
+     "start": 15.539,
+     "end": 16.145
+    },
+    {
+     "w": "a",
+     "start": 16.617,
+     "end": 16.668
+    },
+    {
+     "w": "packed",
+     "start": 16.668,
+     "end": 17.063
+    },
+    {
+     "w": "stadium",
+     "start": 17.063,
+     "end": 17.65
+    }
+   ]
+  },
+  {
+   "id": "m20",
+   "text": "Twenty: a city of a million people.",
+   "start": 18.204,
+   "end": 20.518,
+   "words": [
+    {
+     "w": "Twenty",
+     "start": 18.204,
+     "end": 18.581
+    },
+    {
+     "w": "a",
+     "start": 19.002,
+     "end": 19.065
+    },
+    {
+     "w": "city",
+     "start": 19.065,
+     "end": 19.55
+    },
+    {
+     "w": "of",
+     "start": 19.55,
+     "end": 19.614
+    },
+    {
+     "w": "a",
+     "start": 19.614,
+     "end": 19.652
+    },
+    {
+     "w": "million",
+     "start": 19.652,
+     "end": 20.048
+    },
+    {
+     "w": "people",
+     "start": 20.048,
+     "end": 20.507
+    }
+   ]
+  },
+  {
+   "id": "m25",
+   "text": "Twenty-five: all of Australia.",
+   "start": 21.018,
+   "end": 23.124,
+   "words": [
+    {
+     "w": "Twenty-five",
+     "start": 21.018,
+     "end": 21.688
+    },
+    {
+     "w": "all",
+     "start": 22.16,
+     "end": 22.339
+    },
+    {
+     "w": "of",
+     "start": 22.351,
+     "end": 22.415
+    },
+    {
+     "w": "Australia",
+     "start": 22.428,
+     "end": 23.053
+    }
+   ]
+  },
+  {
+   "id": "m27",
+   "text": "Twenty-seven: everyone in Japan.",
+   "start": 23.624,
+   "end": 25.74,
+   "words": [
+    {
+     "w": "Twenty-seven",
+     "start": 23.624,
+     "end": 24.266
+    },
+    {
+     "w": "everyone",
+     "start": 24.7,
+     "end": 25.095
+    },
+    {
+     "w": "in",
+     "start": 25.095,
+     "end": 25.172
+    },
+    {
+     "w": "Japan",
+     "start": 25.184,
+     "end": 25.682
+    }
+   ]
+  },
+  {
+   "id": "m29",
+   "text": "Twenty-nine: the entire European Union.",
+   "start": 26.24,
+   "end": 28.954,
+   "words": [
+    {
+     "w": "Twenty-nine",
+     "start": 26.24,
+     "end": 26.998
+    },
+    {
+     "w": "the",
+     "start": 27.279,
+     "end": 27.33
+    },
+    {
+     "w": "entire",
+     "start": 27.343,
+     "end": 27.942
+    },
+    {
+     "w": "European",
+     "start": 27.942,
+     "end": 28.529
+    },
+    {
+     "w": "Union",
+     "start": 28.542,
+     "end": 28.924
+    }
+   ]
+  },
+  {
+   "id": "m31",
+   "text": "Thirty-one: more people than live in India.",
+   "start": 29.454,
+   "end": 31.998,
+   "words": [
+    {
+     "w": "Thirty-one",
+     "start": 29.454,
+     "end": 29.991
+    },
+    {
+     "w": "more",
+     "start": 30.552,
+     "end": 30.705
+    },
+    {
+     "w": "people",
+     "start": 30.718,
+     "end": 31.012
+    },
+    {
+     "w": "than",
+     "start": 31.012,
+     "end": 31.177
+    },
+    {
+     "w": "live",
+     "start": 31.177,
+     "end": 31.381
+    },
+    {
+     "w": "in",
+     "start": 31.381,
+     "end": 31.445
+    },
+    {
+     "w": "India",
+     "start": 31.445,
+     "end": 31.943
+    }
+   ]
+  },
+  {
+   "id": "m33a",
+   "text": "And at thirty-three minutes...",
+   "start": 32.498,
+   "end": 34.396,
+   "words": [
+    {
+     "w": "And",
+     "start": 32.498,
+     "end": 32.65
+    },
+    {
+     "w": "at",
+     "start": 33.083,
+     "end": 33.185
+    },
+    {
+     "w": "thirty-three",
+     "start": 33.185,
+     "end": 33.759
+    },
+    {
+     "w": "minutes",
+     "start": 33.759,
+     "end": 34.359
+    }
+   ]
+  },
+  {
+   "id": "m33b",
+   "text": "every single person on Earth has heard it.",
+   "start": 35.196,
+   "end": 37.3,
+   "words": [
+    {
+     "w": "every",
+     "start": 35.196,
+     "end": 35.423
+    },
+    {
+     "w": "single",
+     "start": 35.423,
+     "end": 35.704
+    },
+    {
+     "w": "person",
+     "start": 35.704,
+     "end": 36.048
+    },
+    {
+     "w": "on",
+     "start": 36.048,
+     "end": 36.214
+    },
+    {
+     "w": "Earth",
+     "start": 36.329,
+     "end": 36.609
+    },
+    {
+     "w": "has",
+     "start": 36.622,
+     "end": 36.839
+    },
+    {
+     "w": "heard",
+     "start": 36.839,
+     "end": 37.056
+    },
+    {
+     "w": "it",
+     "start": 37.068,
+     "end": 37.247
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "text": "Half an hour. And at every moment, half of them just heard it. That's the power of doubling. What should we double next?",
+   "start": 38.1,
+   "end": 45.382,
+   "words": [
+    {
+     "w": "Half",
+     "start": 38.1,
+     "end": 38.289
+    },
+    {
+     "w": "an",
+     "start": 38.302,
+     "end": 38.378
+    },
+    {
+     "w": "hour",
+     "start": 38.391,
+     "end": 38.748
+    },
+    {
+     "w": "And",
+     "start": 39.169,
+     "end": 39.386
+    },
+    {
+     "w": "at",
+     "start": 39.819,
+     "end": 39.921
+    },
+    {
+     "w": "every",
+     "start": 39.921,
+     "end": 40.164
+    },
+    {
+     "w": "moment",
+     "start": 40.164,
+     "end": 40.674
+    },
+    {
+     "w": "half",
+     "start": 41.069,
+     "end": 41.337
+    },
+    {
+     "w": "of",
+     "start": 41.337,
+     "end": 41.414
+    },
+    {
+     "w": "them",
+     "start": 41.426,
+     "end": 41.643
+    },
+    {
+     "w": "just",
+     "start": 41.643,
+     "end": 41.886
+    },
+    {
+     "w": "heard",
+     "start": 41.886,
+     "end": 42.115
+    },
+    {
+     "w": "it",
+     "start": 42.115,
+     "end": 42.268
+    },
+    {
+     "w": "That's",
+     "start": 42.689,
+     "end": 42.842
+    },
+    {
+     "w": "the",
+     "start": 42.842,
+     "end": 42.944
+    },
+    {
+     "w": "power",
+     "start": 42.944,
+     "end": 43.416
+    },
+    {
+     "w": "of",
+     "start": 43.416,
+     "end": 43.518
+    },
+    {
+     "w": "doubling",
+     "start": 43.518,
+     "end": 43.939
+    },
+    {
+     "w": "What",
+     "start": 44.347,
+     "end": 44.398
+    },
+    {
+     "w": "should",
+     "start": 44.398,
+     "end": 44.5
+    },
+    {
+     "w": "we",
+     "start": 44.5,
+     "end": 44.564
+    },
+    {
+     "w": "double",
+     "start": 44.564,
+     "end": 44.794
+    },
+    {
+     "w": "next",
+     "start": 44.794,
+     "end": 45.33
+    }
+   ]
+  }
+ ]
+}

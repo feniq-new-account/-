@@ -1,0 +1,72 @@
+{
+ "lead": 0.15,
+ "tail": 2.6,
+ "trim": true,
+ "lines": [
+  {
+   "id": "hook",
+   "text": "One person hears a rumor. Every minute, everyone who knows it tells one new person. How long until the whole world knows?",
+   "gap": 0.5
+  },
+  {
+   "id": "m05",
+   "text": "Five minutes: your whole classroom.",
+   "gap": 0.5
+  },
+  {
+   "id": "m10",
+   "text": "Ten: your entire school.",
+   "gap": 0.5
+  },
+  {
+   "id": "m13",
+   "text": "Thirteen: a small town.",
+   "gap": 0.5
+  },
+  {
+   "id": "m16",
+   "text": "Sixteen: a packed stadium.",
+   "gap": 0.5
+  },
+  {
+   "id": "m20",
+   "text": "Twenty: a city of a million people.",
+   "gap": 0.5
+  },
+  {
+   "id": "m25",
+   "text": "Twenty-five: all of Australia.",
+   "gap": 0.5
+  },
+  {
+   "id": "m27",
+   "text": "Twenty-seven: everyone in Japan.",
+   "gap": 0.5
+  },
+  {
+   "id": "m29",
+   "text": "Twenty-nine: the entire European Union.",
+   "gap": 0.5
+  },
+  {
+   "id": "m31",
+   "text": "Thirty-one: more people than live in India.",
+   "gap": 0.5
+  },
+  {
+   "id": "m33a",
+   "text": "And at thirty-three minutes...",
+   "gap": 0.8
+  },
+  {
+   "id": "m33b",
+   "text": "every single person on Earth has heard it.",
+   "gap": 0.8
+  },
+  {
+   "id": "outro",
+   "text": "Half an hour. And at every moment, half of them just heard it. That's the power of doubling. What should we double next?",
+   "gap": 0.2
+  }
+ ]
+}

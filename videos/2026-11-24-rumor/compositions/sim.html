@@ -1,0 +1,207 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); }
+    #rm-art { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .rm-row { position: absolute; left: 0; width: 1080px; text-align: center; }
+    #rm-hook { top: 300px; font-weight: 900; font-size: 44px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+    #rm-hook .acc, #rm-outro .acc { color: var(--accent); }
+    #rm-clock { top: 296px; height: 64px; display: flex; justify-content: center; }
+    #rm-clock-pill { display: flex; align-items: center; gap: 14px; padding: 0 28px; height: 64px; border-radius: 32px; background: #151b2c; border: 2px solid #2b3452; font-weight: 800; font-size: 30px; letter-spacing: 0.06em; color: #aab4d4; }
+    #rm-clock-num { font-family: "League Gothic", sans-serif; font-size: 50px; letter-spacing: 0.02em; color: var(--accent); font-variant-numeric: tabular-nums; min-width: 50px; text-align: right; }
+    #rm-outro { top: 300px; font-weight: 900; font-size: 54px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+    #rm-outro > span { position: absolute; left: 150px; width: 780px; top: 0; opacity: 0; }
+    #rm-label { top: 800px; font-weight: 700; font-size: 28px; letter-spacing: 0.08em; color: #8f9abd; }
+    #rm-label b { color: var(--ink); font-weight: 800; letter-spacing: 0.04em; }
+    #rm-counter { top: 842px; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #rm-num { font-family: "League Gothic", sans-serif; font-variant-numeric: tabular-nums; line-height: 0.9; font-size: 150px; color: var(--ink); white-space: nowrap; text-shadow: 0 0 40px rgba(255, 196, 92, 0.25); }
+    #rm-name { font-weight: 900; font-size: 44px; letter-spacing: 0.1em; color: var(--accent); line-height: 1; margin-top: 8px; white-space: nowrap; }
+    #rm-note { top: 1060px; font-family: "Space Mono", monospace; font-size: 28px; line-height: 34px; color: #7d88ad; white-space: nowrap; }
+    #rm-cmp { top: 1124px; font-weight: 900; font-size: 44px; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
+    #rm-sub { top: 1182px; font-family: "Space Mono", monospace; font-size: 30px; color: #c9d0e6; white-space: nowrap; }
+    #rm-track { position: absolute; left: 170px; width: 740px; top: 1320px; height: 8px; border-radius: 4px; background: #1a2135; }
+    #rm-track-fill { position: absolute; left: 0; top: 0; height: 8px; width: 0; border-radius: 4px; background: linear-gradient(90deg, #6b5a2e, var(--accent)); }
+    #rm-ticks i { position: absolute; top: -5px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #2f3a58; }
+    #rm-ticks i.on { background: var(--accent); }
+    #rm-track-dot { position: absolute; top: -9px; width: 26px; height: 26px; margin-left: -13px; border-radius: 13px; background: var(--accent); box-shadow: 0 0 24px rgba(255, 184, 77, 0.7); }
+  </style>
+
+  <div id="root" data-composition-id="sim" data-width="1080" data-height="1920">
+    <svg id="rm-art" viewBox="0 0 1080 1920" data-layout-ignore>
+      <defs>
+        <radialGradient id="rm-glow-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffb84d" stop-opacity="0.55" /><stop offset="0.6" stop-color="#ffb84d" stop-opacity="0.12" /><stop offset="1" stop-color="#ffb84d" stop-opacity="0" /></radialGradient>
+        <linearGradient id="rm-maskg" x1="0" y1="0" x2="0" y2="1920" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" /><stop offset="0.19" stop-color="#000" /><stop offset="0.208" stop-color="#fff" /><stop offset="0.405" stop-color="#fff" /><stop offset="0.43" stop-color="#000" /><stop offset="1" stop-color="#000" /></linearGradient>
+        <mask id="rm-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920"><rect width="1080" height="1920" fill="url(#rm-maskg)" /></mask>
+      </defs>
+      <g mask="url(#rm-mask)">
+        <circle id="rm-glow" cx="540" cy="590" r="300" fill="url(#rm-glow-g)" opacity="0" />
+        <g id="rm-st3"></g>
+        <g id="rm-st2"></g>
+        <g id="rm-st1"></g>
+        <g id="rm-st0"></g>
+        <circle id="rm-ring" cx="540" cy="590" r="30" fill="none" stroke="#ffb84d" stroke-width="5" opacity="0" />
+      </g>
+    </svg>
+
+    <div id="rm-hook" class="rm-row">How fast can a rumor reach<br /><span class="acc">the whole world?</span></div>
+    <div id="rm-clock" class="rm-row">
+      <div id="rm-clock-pill">
+        <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#ffb84d" stroke-width="3.5" /><path id="rm-clock-hand" d="M17 17 L17 7" stroke="#ffb84d" stroke-width="3.5" stroke-linecap="round" /></svg>
+        <span id="rm-clock-num">0</span><span id="rm-clock-word">MINUTES</span>
+      </div>
+    </div>
+    <div id="rm-outro" class="rm-row">
+      <span id="rm-out1">Half an <span class="acc">hour.</span></span>
+      <span id="rm-out2">Half of them<br /><span class="acc">just heard it.</span></span>
+      <span id="rm-out3">That's the power<br />of <span class="acc">doubling.</span></span>
+      <span id="rm-out4">What should we<br /><span class="acc">double next?</span></span>
+    </div>
+    <div id="rm-label" class="rm-row"><span id="rm-unit">EACH DOT = 1 PERSON</span> &nbsp;·&nbsp; <b id="rm-pow">2⁰</b></div>
+    <div id="rm-counter" class="rm-row"><div id="rm-num">1</div><div id="rm-name">PERSON KNOWS</div></div>
+    <div id="rm-note" class="rm-row"></div>
+    <div id="rm-cmp" class="rm-row">Just you</div>
+    <div id="rm-sub" class="rm-row">Patient zero</div>
+    <div id="rm-track" data-layout-ignore><div id="rm-track-fill"></div><div id="rm-ticks"></div><div id="rm-track-dot"></div></div>
+  </div>
+
+  <script>
+    (function () {
+      const D = 48.18;
+      const CX = 540, CY = 590;
+      const $ = (id) => document.getElementById(id);
+      const NS = "http://www.w3.org/2000/svg";
+      const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+      const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+      const eout = (x) => 1 - Math.pow(1 - x, 3);
+      function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const rnd = mulberry32(33);
+
+      // video time → minutes (anchors = first word of each narrated line); the count stops at 33: everyone knows
+      const ANCH = [[0, 0], [1.1, 0], [7.1, 3], [8.28, 5], [11.08, 10], [13.43, 13], [15.54, 16], [18.2, 20], [21.02, 25], [23.62, 27], [26.24, 29], [29.45, 31], [33.19, 32.4], [35.2, 33], [D, 33]];
+      function minAt(v) { for (let i = 1; i < ANCH.length; i++) { const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i]; if (v <= v1) return t0 + (t1 - t0) * clamp((v - v0) / (v1 - v0)); } return 33; }
+      function vOf(m) { for (let i = 1; i < ANCH.length; i++) { const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i]; if (t1 > t0 && m <= t1) return v0 + ((m - t0) / (t1 - t0)) * (v1 - v0); } return D; }
+
+      // stages: 1 dot = UNIT[k] people; each zoom-out shrinks a full grid into what it equals on the next one
+      const UNIT = [1, 1024, 1048576, 8388608];
+      const CELLS = [1024, 1024, 1024, 978];
+      const POS = [0, Math.log(32), 2 * Math.log(32), 2 * Math.log(32) + Math.log(384 / (Math.sqrt(128) * 11))];
+      const ARRIVE = [13.43, 21.02, 29.45];
+      function camC(v) { let c = 0; ARRIVE.forEach((a, i) => (c += (POS[i + 1] - POS[i]) * ease(clamp((v - (a - 0.75)) / 0.85)))); return c; }
+      const UNIT_TXT = ["EACH DOT = 1 PERSON", "EACH DOT = 1,024 PEOPLE", "EACH DOT = 1,048,576 PEOPLE", "EACH DOT ≈ 8.4 MILLION PEOPLE"];
+
+      // build dots: 32×32 grids (stages 0–2) and a world disc of 978 dots (stage 3); light order = distance from centre
+      const stages = [0, 1, 2, 3].map((k) => {
+        const g = $("rm-st" + k), pts = [];
+        if (k < 3) {
+          for (let r = 0; r < 32; r++) for (let c = 0; c < 32; c++) { const x = CX + (c - 15.5) * 12, y = CY + (r - 15.5) * 12; pts.push([x, y, Math.hypot(c - 15.5, r - 15.5) + rnd() * 0.6]); }
+        } else {
+          const all = [];
+          for (let r = -20; r <= 20; r++) for (let c = -20; c <= 20; c++) all.push([CX + c * 11, CY + r * 11, Math.hypot(c, r)]);
+          all.sort((a, b) => a[2] - b[2]);
+          all.slice(0, 978).forEach((p) => pts.push([p[0], p[1], p[2] + rnd() * 0.6]));
+        }
+        pts.sort((a, b) => a[2] - b[2]);
+        const els = pts.map(([x, y]) => { const e = document.createElementNS(NS, "circle"); e.setAttribute("cx", x.toFixed(1)); e.setAttribute("cy", y.toFixed(1)); e.setAttribute("r", k < 3 ? "4.3" : "3.9"); e.setAttribute("fill", "#232b45"); g.appendChild(e); return e; });
+        return { g, els, state: new Int8Array(els.length) };
+      });
+      const FILL = ["#1d2439", "#ffb84d", "#fff1c9"];
+
+      const CMP = [
+        [0, "Just you", "Patient zero"], [1, "You + one friend", "2 people"], [5, "A whole classroom", "Classroom: ~30 students"], [10, "Your entire school", "School: ~1,000 people"],
+        [13, "A small town", "Small town: ~8,000 people"], [16, "A packed stadium", "Stadium: ~60,000 seats"], [20, "A whole city", "City: 1 million people"],
+        [25, "All of Australia", "Australia: ~27.6 million"], [27, "Everyone in Japan", "Japan: ~124 million"], [29, "The entire EU", "European Union: ~449 million"],
+        [31, "More than India", "India: ~1.46 billion"], [32, "More than India + China", "India + China: ~2.9 billion"], [33, "Everyone on Earth", "World: over 8 billion people"],
+      ].map(([m, s, sub]) => ({ m, s, sub, v: m === 0 ? 0 : vOf(m) }));
+      const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+      const sup = (n) => String(n).split("").map((c) => SUP[+c]).join("");
+      const commas = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const TICKS = [5, 10, 13, 16, 20, 25, 27, 29, 31, 33];
+      const tk = $("rm-ticks"); TICKS.forEach((x) => { const i = document.createElement("i"); i.style.left = ((x / 33) * 740).toFixed(1) + "px"; tk.appendChild(i); });
+      const tickEls = Array.from(tk.children);
+
+      function render(v) {
+        const mc = minAt(v);
+        const m = Math.floor(mc + 1e-9);
+        const N = Math.pow(2, m);
+        const vStep = m === 0 ? 0 : vOf(m), gap = m === 0 ? 1 : vStep - vOf(m - 1);
+        const sweep = gap > 0.4 ? eout(clamp((v - vStep) / 0.3)) : 1;
+        const C = camC(v);
+        const outro = 1 - 0.22 * ease(clamp((v - 37.9) / 0.9));
+
+        stages.forEach((st, k) => {
+          const ls = POS[k] - C;
+          let sc = Math.exp(ls);
+          if (k === 0) sc *= clamp(150 / (12 * Math.sqrt(Math.min(Math.pow(2, mc), 4096)) + 10), 1, 7);
+          if (k === 3) sc *= outro;
+          let op;
+          if (ls > 1e-6) op = Math.pow(clamp(1 - ls / (POS[k] - POS[k - 1])), 3);
+          else if (ls < -1e-6) op = clamp(1 + (ls / (POS[k + 1] - POS[k])) * 1.15);
+          else op = 1;
+          const on = op > 0.002 && sc < 60;
+          st.g.style.display = on ? "" : "none";
+          if (!on) return;
+          st.g.setAttribute("opacity", op.toFixed(3));
+          st.g.setAttribute("transform", `translate(${CX} ${CY}) scale(${sc.toFixed(5)}) translate(${-CX} ${-CY})`);
+          // lit dots: everyone who knows; the newest half is brighter
+          const cells = CELLS[k];
+          const Lt = Math.min(cells, N / UNIT[k]);
+          const Lp = Math.min(cells, N / 2 / UNIT[k]);
+          const Lv = m === 0 ? Lt : Lp + (Lt - Lp) * sweep;
+          const full = m >= 33 && k === 3;
+          for (let i = 0; i < cells; i++) {
+            let s = 0;
+            if (full) s = 1;
+            else if (i < Lv - 0.5 || (i === 0 && Lv > 0.05)) s = i < Lp - 0.5 && m > 0 ? 1 : 2;
+            if (st.state[i] !== s) { st.state[i] = s; st.els[i].setAttribute("fill", FILL[s]); }
+          }
+        });
+        { // one ripple from patient zero as they hear the rumor
+          const p = clamp((v - 1.07) / 1.2), ring = $("rm-ring");
+          ring.style.display = p > 0 && p < 1 ? "" : "none";
+          ring.setAttribute("r", (34 + 170 * eout(p)).toFixed(1)); ring.setAttribute("opacity", (0.85 * (1 - p)).toFixed(3));
+        }
+        const gl = $("rm-glow");
+        const gop = 0.9 * eout(clamp((v - 35.2) / 0.6));
+        gl.setAttribute("opacity", gop.toFixed(3)); gl.setAttribute("r", (300 * outro).toFixed(1));
+
+        // counter
+        const numEl = $("rm-num"), nameEl = $("rm-name");
+        if (m >= 33) { numEl.textContent = "EVERYONE"; nameEl.textContent = "ALL 8 BILLION+ PEOPLE"; }
+        else { numEl.textContent = commas(String(N)); nameEl.textContent = m === 0 ? "PERSON KNOWS" : "PEOPLE HAVE HEARD IT"; }
+        numEl.style.fontSize = Math.min(150, 640 / (numEl.textContent.length * 0.44)).toFixed(1) + "px";
+        numEl.style.transform = `scale(${(gap > 0.25 ? 1 + 0.07 * (1 - eout(clamp((v - vStep) / 0.18))) : 1).toFixed(4)})`;
+        let ks = 0; POS.forEach((p, i) => { if (Math.abs(p - C) < Math.abs(POS[ks] - C)) ks = i; });
+        $("rm-unit").textContent = UNIT_TXT[ks];
+        $("rm-pow").textContent = "2" + sup(m);
+        $("rm-note").textContent = m >= 33 ? "8,589,934,592 > everyone alive" : m >= 2 ? "half of them heard it in the last minute" : "";
+
+        let c = CMP[0]; for (const x of CMP) if (m >= x.m) c = x;
+        const cmp = $("rm-cmp"); cmp.textContent = c.s;
+        const a = clamp((v - c.v) / 0.2);
+        cmp.style.opacity = c.m === 0 ? "1" : (0.15 + 0.85 * a).toFixed(3);
+        cmp.style.filter = c.m === 0 ? "none" : `blur(${(8 * (1 - a)).toFixed(2)}px)`;
+        cmp.style.fontSize = (c.s.length > 21 ? 38 : 44) + "px";
+        $("rm-sub").textContent = c.sub;
+
+        $("rm-clock-num").textContent = String(m);
+        $("rm-clock-word").textContent = m === 1 ? "MINUTE" : "MINUTES";
+        $("rm-clock-hand").setAttribute("transform", `rotate(${((mc % 60) * 6).toFixed(1)} 17 17)`);
+        const px = ((mc / 33) * 740).toFixed(1);
+        $("rm-track-fill").style.width = px + "px"; $("rm-track-dot").style.left = px + "px";
+        tickEls.forEach((e, i) => (e.className = m >= TICKS[i] ? "on" : ""));
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      tl.to({ p: 0 }, { p: 1, duration: D, ease: "none" }, 0);
+      tl.eventCallback("onUpdate", () => render(tl.time()));
+      tl.fromTo("#rm-hook", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in" }, 7.35);
+      tl.fromTo("#rm-clock-pill", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 7.6);
+      tl.to("#rm-clock-pill", { opacity: 0, duration: 0.2, ease: "power2.in" }, 37.7);
+      [["#rm-out1", 37.95, 39.1], ["#rm-out2", 39.17, 42.6], ["#rm-out3", 42.69, 44.25], ["#rm-out4", 44.35, D + 1]].forEach(([sel, a, b]) => {
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, a);
+        if (b < D) tl.to(sel, { opacity: 0, filter: "blur(6px)", duration: 0.13, ease: "power2.in" }, b - 0.13);
+      });
+      render(0);
+      window.__timelines["sim"] = tl;
+    })();
+  </script>
+</template>
