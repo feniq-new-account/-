@@ -14,10 +14,26 @@ description: استوديو الفيديو لعمار — نقطة البداي�
 | `reverse-video` | تفكيك كامل لفيديو أو قناة: السكريبت، الهوك، القصّات، الإيقاع، الألوان، الخطوط، الموسيقا، المؤثرات ← `teardown.md` + `style.json` | ✅ MIT، محلي (نماذج ~3GB أول مرة) |
 | `style-sampling`, `reverse-any-video` | قوالب جاهزة ونسخ فريم بفريم من HeyGen | ❌ ميزة Pro مدفوعة — لا تستعملها إلا إذا عمار طلب ودفع |
 
+## الوضع المجاني (الافتراضي، قرار عمار 2026-11-24)
+
+HyperFrames نفسه مجاني (مفتوح المصدر، والرندر على جهاز الجلسة). اللي بيكلّف كريديت هو بس خدمات HeyGen. فما منستعمل:
+- `auth login` ولا أي تسجيل دخول بـ HeyGen.
+- `media-use resolve/generate` من HeyGen (موسيقا، صور، أصوات، أفاتار).
+- `cloud render`، و`style-sampling`، و`reverse-any-video`، و`usage`.
+- و`events` (usage note): منتخطاه.
+
+بدالهم منستعمل:
+- **الصوت:** edge-tts (`reverse-engineer-video/scripts/tts.py`).
+- **الموسيقا والمؤثرات:** مولّدة بالكود (`reverse-engineer-video/scripts/score.py`) أو بلاها.
+- **الصور:** رسم بالكود (SVG/canvas/CSS).
+- **الرندر:** `render` المحلي بس.
+
+إذا ميزة طلبت تسجيل دخول أو كريديت: تخطاها بالبديل المجاني، وما توقف تسأل.
+
 ## أول مرة بالجلسة
 
 1. `bash scripts/video-setup.sh` من جذر الريبو (بينزّل three.js/puppeteer وبايثون yt-dlp/edge-tts لـ REV، وبيسخّن HyperFrames CLI). آمن تعيده.
-2. HyperFrames بيبعت «usage note» لـ HeyGen أول مرة بكل مهارة. قول لعمار مرة وحدة، وإذا رفض تخطّاها.
+2. «usage note» تبع HyperFrames: تخطاه (الوضع المجاني).
 3. المتصفح بالجلسة السحابية: `CHROME=/opt/pw-browsers/chromium`.
 
 ## الحالة 1: موضوع ← فيديو كامل
