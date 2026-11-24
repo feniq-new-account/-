@@ -1,0 +1,12 @@
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.frames_*/
+work/
+teardowns/*/work/
+videos/**/*.mp4
+videos/**/*.wav
+videos/**/renders/
+.hyperframes/
+.DS_Store
