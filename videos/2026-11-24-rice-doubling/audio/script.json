@@ -1,0 +1,16 @@
+{"lead": 0.15, "tail": 2.2, "trim": true, "lines": [
+ {"id": "hook", "text": "One grain of rice. It doubles every second. How long until it's bigger than the Sun?", "gap": 0.5},
+ {"id": "s10", "text": "Ten seconds: a thousand grains. A handful.", "gap": 0.4},
+ {"id": "s14", "text": "Fourteen: a full bowl.", "gap": 0.4},
+ {"id": "s23", "text": "Twenty-three: enough to fill a bathtub.", "gap": 0.4},
+ {"id": "s30", "text": "Thirty seconds: your kitchen, packed to the ceiling.", "gap": 0.4},
+ {"id": "s34", "text": "Thirty-four: the whole house.", "gap": 0.4},
+ {"id": "s37", "text": "Thirty-seven: an Olympic swimming pool.", "gap": 0.4},
+ {"id": "s47", "text": "Forty-seven: more rice than the Great Pyramid.", "gap": 0.4},
+ {"id": "s58", "text": "Fifty-eight: Manhattan, buried forty stories deep.", "gap": 0.4},
+ {"id": "s74", "text": "Seventy-four: the entire planet, under a meter of rice.", "gap": 0.4},
+ {"id": "s95", "text": "Ninety-five: the pile is bigger than Earth itself.", "gap": 0.5},
+ {"id": "s116a", "text": "And at one hundred and sixteen seconds...", "gap": 0.8},
+ {"id": "s116b", "text": "it's bigger than the Sun.", "gap": 0.8},
+ {"id": "outro", "text": "Under two minutes. That's the power of doubling. What should we double next?", "gap": 0.2}
+]}

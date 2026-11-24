@@ -1,0 +1,647 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      font-family: "Inter", sans-serif;
+      color: var(--ink);
+    }
+    #sim-art {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    .sim-row {
+      position: absolute;
+      left: 0;
+      width: 1080px;
+      text-align: center;
+    }
+    #sim-hook {
+      top: 300px;
+      font-weight: 900;
+      font-size: 50px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    #sim-hook .acc { color: var(--accent); }
+    #sim-clock {
+      top: 296px;
+      height: 64px;
+      display: flex;
+      justify-content: center;
+    }
+    #sim-clock-pill {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 28px;
+      height: 64px;
+      border-radius: 32px;
+      background: #151b2c;
+      border: 2px solid #2b3452;
+      font-weight: 800;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: #aab4d4;
+    }
+    #sim-clock-num {
+      font-family: "League Gothic", sans-serif;
+      font-size: 50px;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      min-width: 70px;
+      text-align: right;
+    }
+    #sim-outro {
+      top: 300px;
+      font-weight: 900;
+      font-size: 56px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    #sim-outro > span { position: absolute; left: 150px; width: 780px; top: 0; opacity: 0; }
+    #sim-outro .acc { color: var(--accent); }
+    #sim-label {
+      top: 800px;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: 0.22em;
+      color: #8f9abd;
+    }
+    #sim-label b { color: var(--ink); font-weight: 800; letter-spacing: 0.04em; }
+    #sim-counter {
+      top: 842px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #sim-num {
+      font-family: "League Gothic", sans-serif;
+      font-variant-numeric: tabular-nums;
+      line-height: 0.9;
+      color: var(--ink);
+      white-space: nowrap;
+      text-shadow: 0 0 40px rgba(255, 196, 92, 0.25);
+    }
+    #sim-name {
+      font-weight: 900;
+      font-size: 54px;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      line-height: 1;
+      margin-top: 6px;
+    }
+    #sim-digits {
+      top: 1046px;
+      left: 195px;
+      width: 690px;
+      font-family: "Space Mono", monospace;
+      font-size: 28px;
+      line-height: 34px;
+      color: #6f7aa0;
+      overflow-wrap: anywhere;
+    }
+    #sim-cmp {
+      top: 1124px;
+      font-weight: 900;
+      font-size: 44px;
+      letter-spacing: 0.01em;
+      color: var(--accent);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    #sim-track { position: absolute; left: 170px; width: 740px; top: 1320px; height: 8px; border-radius: 4px; background: #1a2135; }
+    #sim-track-fill { position: absolute; left: 0; top: 0; height: 8px; width: 0; border-radius: 4px; background: linear-gradient(90deg, #6b5a2e, var(--accent)); }
+    #sim-ticks i { position: absolute; top: -5px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #2f3a58; }
+    #sim-ticks i.on { background: var(--accent); }
+    #sim-track-dot { position: absolute; top: -9px; width: 26px; height: 26px; margin-left: -13px; border-radius: 13px; background: var(--accent); box-shadow: 0 0 24px rgba(255, 184, 77, 0.7); }
+    #sim-vol {
+      top: 1182px;
+      font-family: "Space Mono", monospace;
+      font-size: 30px;
+      color: #c9d0e6;
+    }
+  </style>
+
+  <div id="root" data-composition-id="sim" data-width="1080" data-height="1920">
+    <svg id="sim-art" viewBox="0 0 1080 1920" data-layout-ignore>
+      <defs>
+        <pattern id="sim-ricepat" width="26" height="22" patternUnits="userSpaceOnUse">
+          <rect width="26" height="22" fill="#efe3c6" />
+          <ellipse cx="6" cy="5" rx="5.5" ry="2.4" fill="#fbf5e6" transform="rotate(-25 6 5)" />
+          <ellipse cx="18" cy="9" rx="5.5" ry="2.4" fill="#e2d2ad" transform="rotate(30 18 9)" />
+          <ellipse cx="9" cy="16" rx="5.5" ry="2.4" fill="#f8efda" transform="rotate(10 9 16)" />
+          <ellipse cx="22" cy="19" rx="5.5" ry="2.4" fill="#fbf5e6" transform="rotate(-50 22 19)" />
+        </pattern>
+        <radialGradient id="sim-grain-g" cx="40%" cy="35%" r="70%">
+          <stop offset="0" stop-color="#fffaf0" />
+          <stop offset="0.6" stop-color="#f1e5c8" />
+          <stop offset="1" stop-color="#cdb98f" />
+        </radialGradient>
+        <radialGradient id="sim-ball-g" cx="40%" cy="35%" r="75%">
+          <stop offset="0" stop-color="#fff8e8" />
+          <stop offset="0.7" stop-color="#eadbb7" />
+          <stop offset="1" stop-color="#b9a379" />
+        </radialGradient>
+        <radialGradient id="sim-sun-g" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff4c2" />
+          <stop offset="0.55" stop-color="#ffc24a" />
+          <stop offset="1" stop-color="#ff7a1a" />
+        </radialGradient>
+        <radialGradient id="sim-earth-g" cx="38%" cy="32%" r="75%">
+          <stop offset="0" stop-color="#5fb0ff" />
+          <stop offset="1" stop-color="#1b4f9c" />
+        </radialGradient>
+        <linearGradient id="sim-maskg" x1="0" y1="0" x2="0" y2="1920" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fff" />
+          <stop offset="0.405" stop-color="#fff" />
+          <stop offset="0.43" stop-color="#000" />
+          <stop offset="1" stop-color="#000" />
+        </linearGradient>
+        <mask id="sim-artmask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920"><rect width="1080" height="1920" fill="url(#sim-maskg)" /></mask>
+        <clipPath id="sim-clip1"><path d="M360 510 C 360 630, 440 680, 540 680 C 640 680, 720 630, 720 510 Z" /></clipPath>
+        <clipPath id="sim-clip2"><path d="M300 500 L780 500 L770 520 Q760 690 640 700 L440 700 Q320 690 310 520 Z" /></clipPath>
+        <clipPath id="sim-clip3"><rect x="236" y="366" width="608" height="448" /></clipPath>
+        <clipPath id="sim-clip4"><polygon points="303,817 303,560 540,392 777,560 777,817" /></clipPath>
+        <clipPath id="sim-clip5"><rect x="173" y="600" width="734" height="137" /></clipPath>
+        <clipPath id="sim-clip6"><polygon points="262,818 540,452 818,818" /></clipPath>
+      </defs>
+
+      <g id="sim-band" mask="url(#sim-artmask)">
+      <g id="sim-world" transform="translate(0 -40)">
+      <!-- 0 · one grain → a handful -->
+      <g id="sim-st0">
+        <g id="sim-st0-in">
+          <path id="sim-mound0" d="" fill="url(#sim-ricepat)" />
+          <g id="sim-grains0"></g>
+        </g>
+      </g>
+
+      <!-- 1 · bowl -->
+      <g id="sim-st1">
+        <line x1="230" y1="702" x2="850" y2="702" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <path d="M360 510 C 360 630, 440 680, 540 680 C 640 680, 720 630, 720 510 Z" fill="#141a2a" />
+        <g clip-path="url(#sim-clip1)"><rect id="sim-fill1" x="350" y="680" width="380" height="20" fill="url(#sim-ricepat)" /></g>
+        <rect x="490" y="680" width="100" height="20" rx="6" fill="#33405f" />
+        <path d="M360 510 C 360 630, 440 680, 540 680 C 640 680, 720 630, 720 510" fill="none" stroke="#8b97bd" stroke-width="7" stroke-linecap="round" />
+        <path id="sim-heap1" d="" fill="url(#sim-ricepat)" />
+        <line x1="350" y1="510" x2="730" y2="510" stroke="#8b97bd" stroke-width="7" stroke-linecap="round" />
+      </g>
+
+      <!-- 2 · bathtub -->
+      <g id="sim-st2">
+        <line x1="180" y1="728" x2="900" y2="728" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <path d="M748 492 L748 420 Q748 396 724 396 L690 396" fill="none" stroke="#8b97bd" stroke-width="10" stroke-linecap="round" />
+        <path d="M300 500 L780 500 L770 520 Q760 690 640 700 L440 700 Q320 690 310 520 Z" fill="#141a2a" />
+        <g clip-path="url(#sim-clip2)"><rect id="sim-fill2" x="290" y="700" width="500" height="10" fill="url(#sim-ricepat)" /></g>
+        <path d="M310 520 Q320 690 440 700 L640 700 Q760 690 770 520" fill="none" stroke="#8b97bd" stroke-width="7" />
+        <path d="M380 698 l-18 30 M700 698 l18 30" stroke="#8b97bd" stroke-width="12" stroke-linecap="round" />
+        <rect x="288" y="488" width="504" height="18" rx="9" fill="#8b97bd" />
+        <path id="sim-heap2" d="" fill="url(#sim-ricepat)" />
+      </g>
+
+      <!-- 3 · kitchen -->
+      <g id="sim-st3">
+        <rect x="236" y="366" width="608" height="448" fill="#121726" />
+        <rect x="256" y="424" width="230" height="104" rx="6" fill="#1c2438" stroke="#4a5679" stroke-width="4" />
+        <line x1="371" y1="424" x2="371" y2="528" stroke="#4a5679" stroke-width="4" />
+        <rect x="516" y="430" width="120" height="104" fill="#1a2a4a" stroke="#6b7aa3" stroke-width="5" />
+        <line x1="576" y1="430" x2="576" y2="534" stroke="#6b7aa3" stroke-width="4" />
+        <line x1="516" y1="482" x2="636" y2="482" stroke="#6b7aa3" stroke-width="4" />
+        <rect x="250" y="676" width="396" height="16" rx="4" fill="#6b7aa3" />
+        <rect x="256" y="692" width="384" height="122" fill="#1c2438" stroke="#4a5679" stroke-width="4" />
+        <line x1="384" y1="692" x2="384" y2="814" stroke="#4a5679" stroke-width="4" />
+        <line x1="512" y1="692" x2="512" y2="814" stroke="#4a5679" stroke-width="4" />
+        <rect x="668" y="512" width="150" height="302" rx="10" fill="#222b42" stroke="#6b7aa3" stroke-width="5" />
+        <line x1="668" y1="612" x2="818" y2="612" stroke="#6b7aa3" stroke-width="4" />
+        <line x1="686" y1="560" x2="686" y2="594" stroke="#aab4d4" stroke-width="6" stroke-linecap="round" />
+        <line x1="686" y1="634" x2="686" y2="690" stroke="#aab4d4" stroke-width="6" stroke-linecap="round" />
+        <line x1="440" y1="366" x2="440" y2="600" stroke="#4a5679" stroke-width="3" />
+        <path d="M410 620 Q440 586 470 620 Z" fill="#ffb84d" />
+        <g clip-path="url(#sim-clip3)"><rect id="sim-fill3" x="230" y="814" width="620" height="10" fill="url(#sim-ricepat)" /></g>
+        <rect x="236" y="366" width="608" height="448" fill="none" stroke="#8b97bd" stroke-width="8" />
+        <path id="sim-heap3" d="" fill="url(#sim-ricepat)" />
+      </g>
+
+      <!-- 4 · house -->
+      <g id="sim-st4">
+        <line x1="120" y1="820" x2="960" y2="820" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <rect x="690" y="410" width="44" height="90" fill="#222b42" stroke="#8b97bd" stroke-width="5" />
+        <polygon points="303,817 303,560 540,392 777,560 777,817" fill="#121726" />
+        <rect x="350" y="600" width="80" height="62" fill="#1a2a4a" stroke="#6b7aa3" stroke-width="4" />
+        <rect x="650" y="600" width="80" height="62" fill="#1a2a4a" stroke="#6b7aa3" stroke-width="4" />
+        <rect x="350" y="730" width="80" height="62" fill="#1a2a4a" stroke="#6b7aa3" stroke-width="4" />
+        <rect x="500" y="724" width="80" height="93" fill="#2a3450" stroke="#6b7aa3" stroke-width="4" />
+        <circle cx="510" cy="472" r="26" fill="#1a2a4a" stroke="#6b7aa3" stroke-width="4" />
+        <line x1="303" y1="690" x2="777" y2="690" stroke="#4a5679" stroke-width="4" />
+        <g clip-path="url(#sim-clip4)"><rect id="sim-fill4" x="296" y="817" width="490" height="10" fill="url(#sim-ricepat)" /></g>
+        <polygon points="303,817 303,560 540,392 777,560 777,817" fill="none" stroke="#8b97bd" stroke-width="8" stroke-linejoin="round" />
+        <polyline points="270,580 540,384 810,580" fill="none" stroke="#8b97bd" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" />
+        <circle cx="880" cy="740" r="46" fill="#1f3a34" />
+        <rect x="874" y="770" width="12" height="50" fill="#33405f" />
+        <path id="sim-heap4" d="" fill="url(#sim-ricepat)" />
+      </g>
+
+      <!-- 5 · Olympic pool (side section) -->
+      <g id="sim-st5">
+        <line x1="90" y1="600" x2="990" y2="600" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <rect x="173" y="600" width="734" height="137" fill="#10233a" />
+        <line x1="190" y1="510" x2="190" y2="600" stroke="#8b97bd" stroke-width="5" />
+        <line x1="890" y1="510" x2="890" y2="600" stroke="#8b97bd" stroke-width="5" />
+        <path id="sim-flags5" d="M190 512 L890 512" stroke="#6b7aa3" stroke-width="3" fill="none" />
+        <g id="sim-flagset5"></g>
+        <rect x="860" y="578" width="40" height="22" fill="#6b7aa3" />
+        <path d="M200 600 L200 650 M222 600 L222 650 M200 616 L222 616 M200 634 L222 634" stroke="#aab4d4" stroke-width="4" />
+        <g clip-path="url(#sim-clip5)"><rect id="sim-fill5" x="170" y="737" width="740" height="10" fill="url(#sim-ricepat)" /></g>
+        <path d="M170 600 L170 740 L910 740 L910 600" fill="none" stroke="#8b97bd" stroke-width="7" stroke-linejoin="round" />
+        <path id="sim-heap5" d="" fill="url(#sim-ricepat)" />
+      </g>
+
+      <!-- 6 · Great Pyramid -->
+      <g id="sim-st6">
+        <line x1="80" y1="820" x2="1000" y2="820" stroke="#5a4a32" stroke-width="6" stroke-linecap="round" />
+        <circle cx="830" cy="470" r="34" fill="#ffcf73" opacity="0.8" />
+        <polygon points="262,818 540,452 818,818" fill="#3a2f20" />
+        <polygon points="540,452 818,818 600,818" fill="#2b2318" />
+        <path d="M335 722 L745 722 M393 646 L687 646 M450 570 L630 570" stroke="#5a4a32" stroke-width="4" />
+        <g clip-path="url(#sim-clip6)"><rect id="sim-fill6" x="250" y="818" width="580" height="10" fill="url(#sim-ricepat)" /></g>
+        <polygon points="262,818 540,452 818,818" fill="none" stroke="#d1ad6f" stroke-width="7" stroke-linejoin="round" />
+        <polygon id="sim-heap6" points="540,818 540,818 540,818" fill="url(#sim-ricepat)" />
+        <polygon points="262,818 540,452 818,818" fill="none" stroke="#b08a4e" stroke-width="5" stroke-dasharray="16 12" stroke-linejoin="round" opacity="0.85" />
+      </g>
+
+      <!-- 7 · Manhattan -->
+      <g id="sim-st7">
+        <g id="sim-city7"></g>
+        <path id="sim-fill7" d="M100 830 L980 830 L980 840 L100 840 Z" fill="url(#sim-ricepat)" />
+        <line x1="100" y1="832" x2="980" y2="832" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+      </g>
+
+      <!-- 8 · space: Earth, the rice ball, Jupiter, the Sun -->
+      <g id="sim-st8">
+        <g id="sim-stars8"></g>
+        <circle id="sim-sunring8" cx="540" cy="575" r="2000" fill="url(#sim-sun-g)" fill-opacity="0.03" stroke="#ffb547" stroke-width="5" />
+        <circle id="sim-jup8" cx="540" cy="575" r="2000" fill="#d8a47a" fill-opacity="0.05" stroke="#d8a47a" stroke-width="4" stroke-dasharray="14 10" />
+        <circle id="sim-ball8" cx="540" cy="575" r="200" fill="url(#sim-ball-g)" />
+        <circle id="sim-balltex8" cx="540" cy="575" r="200" fill="url(#sim-ricepat)" opacity="0.35" />
+        <g id="sim-earth8" transform="translate(540 575) scale(200)">
+          <circle r="1" fill="url(#sim-earth-g)" />
+          <path d="M-0.55 -0.55 C -0.2 -0.7, 0.05 -0.45, -0.05 -0.2 C -0.15 0.05, -0.45 0.0, -0.6 -0.2 Z" fill="#3f9b62" />
+          <path d="M0.15 -0.1 C 0.45 -0.25, 0.75 0.05, 0.6 0.35 C 0.45 0.6, 0.2 0.55, 0.15 0.3 Z" fill="#3f9b62" />
+          <path d="M-0.5 0.35 C -0.3 0.3, -0.15 0.5, -0.3 0.7 C -0.45 0.75, -0.6 0.6, -0.5 0.35 Z" fill="#3f9b62" />
+          <path d="M-0.4 -0.88 C -0.1 -0.95, 0.2 -0.95, 0.4 -0.88 C 0.1 -0.8, -0.1 -0.8, -0.4 -0.88 Z" fill="#e8f1ff" />
+        </g>
+        <circle id="sim-sun8" cx="540" cy="575" r="0" fill="url(#sim-sun-g)" opacity="0" />
+        <text id="sim-earthlbl8" x="740" y="585" text-anchor="start" font-family="Inter" font-weight="800" font-size="30" letter-spacing="5" fill="#8f9abd">EARTH</text>
+        <text id="sim-juplbl8" x="540" y="400" text-anchor="middle" font-family="Inter" font-weight="800" font-size="30" letter-spacing="5" fill="#d8a47a" opacity="0">JUPITER</text>
+        <text id="sim-sunlbl8" x="540" y="400" text-anchor="middle" font-family="Inter" font-weight="900" font-size="34" letter-spacing="6" fill="#ffb547" opacity="0">SUN</text>
+      </g>
+      </g>
+      </g>
+    </svg>
+
+    <div id="sim-hook" class="sim-row">What if one grain of rice<br /><span class="acc">doubled</span> every second?</div>
+    <div id="sim-clock" class="sim-row">
+      <div id="sim-clock-pill">
+        <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#ffb84d" stroke-width="3.5" /><path id="sim-clock-hand" d="M17 17 L17 7" stroke="#ffb84d" stroke-width="3.5" stroke-linecap="round" /></svg>
+        <span id="sim-clock-num">0</span><span>SECONDS</span>
+      </div>
+    </div>
+    <div id="sim-outro" class="sim-row">
+      <span id="sim-out1">Under <span class="acc">two minutes.</span></span>
+      <span id="sim-out2">That's the power<br />of <span class="acc">doubling.</span></span>
+      <span id="sim-out3">What should we<br /><span class="acc">double next?</span></span>
+    </div>
+    <div id="sim-label" class="sim-row">GRAINS OF RICE &nbsp;·&nbsp; <b id="sim-pow">2⁰</b></div>
+    <div id="sim-counter" class="sim-row"><div id="sim-num">1</div><div id="sim-name"></div></div>
+    <div id="sim-digits" class="sim-row"></div>
+    <div id="sim-cmp" class="sim-row">One grain of rice</div>
+    <div id="sim-vol" class="sim-row">0.03 cm³</div>
+    <div id="sim-track" data-layout-ignore><div id="sim-track-fill"></div><div id="sim-ticks"></div><div id="sim-track-dot"></div></div>
+  </div>
+
+  <script>
+    (function () {
+      const D = 49.34;
+      const C = { x: 540, y: 575 };
+      const $ = (id) => document.getElementById(id);
+      const NS = "http://www.w3.org/2000/svg";
+      const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+      const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2); // power2.inOut
+      const eout = (x) => 1 - Math.pow(1 - x, 3);
+      function mulberry32(a) {
+        return function () {
+          a |= 0; a = (a + 0x6d2b79f5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      const rnd = mulberry32(20261124);
+
+      // ---- the model: video time v → simulated seconds t (anchors = first word of each line) ----
+      const ANCH = [
+        [0, 0], [0.6, 0], [5.98, 10], [9.63, 14], [11.74, 23], [14.6, 30], [18.16, 34], [20.39, 37],
+        [23.31, 47], [26.43, 58], [30.29, 74], [34.65, 95], [37.8, 99], [40.0, 112], [41.12, 116], [D, 120],
+      ];
+      function simT(v) {
+        for (let i = 1; i < ANCH.length; i++) {
+          const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i];
+          if (v <= v1) return t0 + (t1 - t0) * clamp((v - v0) / (v1 - v0));
+        }
+        return 120;
+      }
+      function vOf(t) {
+        for (let i = 1; i < ANCH.length; i++) {
+          const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i];
+          if (t1 > t0 && t <= t1) return v0 + ((t - t0) / (t1 - t0)) * (v1 - v0);
+        }
+        return D;
+      }
+      // camera stages: stage k arrives on its line's first word
+      const ARRIVE = [9.63, 11.74, 14.6, 18.16, 20.39, 23.31, 26.43, 30.29];
+      const STAGE_T = [0, 14, 23, 30, 34, 37, 47, 58, 74]; // t where the stage is exactly "full"
+      function zOf(v) {
+        let z = 0;
+        for (const a of ARRIVE) z += ease(clamp((v - (a - 0.75)) / 0.85));
+        return z;
+      }
+
+      // ---- comparisons (first whole second past each reference; see scenes.md) ----
+      const CMP = [
+        [0, "One grain of rice"], [1, "A few grains"], [5, "≈ a pinch"], [10, "≈ a handful"], [13, "≈ a cup"],
+        [14, "≈ a full bowl"], [19, "≈ a bucket"], [23, "≈ a full bathtub"], [30, "Fills your kitchen"],
+        [34, "Fills a whole house"], [37, "Fills an Olympic pool"], [47, "Bigger than the Great Pyramid"],
+        [58, "Manhattan, 40 stories deep"], [74, "The whole planet, 1 m deep"], [95, "Bigger than Earth"],
+        [106, "Bigger than Jupiter"], [116, "Bigger than the Sun"], [117, "≈ 3.5 Suns"], [118, "≈ 7 Suns"],
+        [119, "≈ 14 Suns"], [120, "≈ 28 Suns"],
+      ].map(([t, s]) => ({ t, s, v: t === 0 ? 0 : vOf(t) }));
+
+      const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+      const sup = (n) => String(n).split("").map((c) => SUP[+c]).join("");
+      const commas = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const NAMES = ["", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion", "octillion", "nonillion", "decillion", "undecillion"];
+      function fmtSig(x, sig) {
+        const p = Math.pow(10, Math.floor(Math.log10(x)) - sig + 1);
+        const r = Math.round(x / p) * p;
+        return r >= 100 ? String(Math.round(r)) : r.toPrecision(sig).replace(/\.?0+$/, (m) => (m.startsWith(".") ? "" : m));
+      }
+      function fmtVol(n) {
+        const cm3 = 0.03 * Math.pow(2, n);
+        if (cm3 < 1000) return (cm3 < 10 ? cm3.toFixed(2).replace(/0$/, "") : fmtSig(cm3, 2)) + " cm³";
+        if (cm3 < 1e6) return fmtSig(cm3 / 1000, 3) + " liters";
+        const m3 = cm3 / 1e6;
+        if (m3 < 1e6) return commas(String(Math.round(m3))) + " m³";
+        if (m3 < 1e9) return fmtSig(m3 / 1e6, 2) + " million m³";
+        if (m3 < 1e12) return fmtSig(m3 / 1e9, 2) + " billion m³";
+        let e = Math.floor(Math.log10(m3)), mm = (m3 / Math.pow(10, e)).toFixed(1);
+        if (mm === "10.0") { mm = "1.0"; e += 1; }
+        return mm + " × 10" + sup(e) + " m³";
+      }
+
+      // ---- static generated art (seeded, built once) ----
+      const g0 = $("sim-grains0");
+      for (let i = 0; i < 128; i++) {
+        const r = 14 * Math.sqrt(i), a = i * 2.39996;
+        const x = C.x + r * Math.cos(a), y = C.y + r * Math.sin(a) * 0.8;
+        const e = document.createElementNS(NS, "ellipse");
+        e.setAttribute("cx", x.toFixed(1)); e.setAttribute("cy", y.toFixed(1));
+        e.setAttribute("rx", i === 0 ? 13 : 11); e.setAttribute("ry", i === 0 ? 5 : 4.4);
+        e.setAttribute("fill", "url(#sim-grain-g)");
+        e.setAttribute("stroke", "#b8a37a"); e.setAttribute("stroke-width", "0.6");
+        e.setAttribute("transform", `rotate(${i === 0 ? -22 : Math.round(rnd() * 180)} ${x.toFixed(1)} ${y.toFixed(1)})`);
+        e.setAttribute("opacity", "0");
+        g0.appendChild(e);
+      }
+      const grains = Array.from(g0.children);
+
+      const fl = $("sim-flagset5");
+      for (let x = 205; x < 880; x += 30) {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M${x} 512 l15 0 l-7.5 16 Z`);
+        p.setAttribute("fill", ["#ff6b6b", "#ffd166", "#4cc9f0"][((x - 205) / 30) % 3]);
+        fl.appendChild(p);
+      }
+
+      const city = $("sim-city7");
+      const H = [70, 150, 95, 230, 120, 330, 160, 443, 110, 260, 85, 541, 190, 135, 290, 75, 210, 100];
+      const PXM = 0.66; // px per metre
+      let cx = 130;
+      H.forEach((h, i) => {
+        const w = 38 + Math.round(rnd() * 22);
+        const top = 832 - h * PXM;
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", cx); r.setAttribute("y", top.toFixed(1)); r.setAttribute("width", w); r.setAttribute("height", (h * PXM).toFixed(1));
+        r.setAttribute("fill", i % 2 ? "#171e31" : "#1b2338"); r.setAttribute("stroke", "#7d89b0"); r.setAttribute("stroke-width", "3");
+        city.appendChild(r);
+        if (h === 541 || h === 443) {
+          const s = document.createElementNS(NS, "line");
+          s.setAttribute("x1", cx + w / 2); s.setAttribute("x2", cx + w / 2); s.setAttribute("y1", top); s.setAttribute("y2", top - 30);
+          s.setAttribute("stroke", "#7d89b0"); s.setAttribute("stroke-width", "3"); city.appendChild(s);
+        }
+        for (let yy = top + 10; yy < 820; yy += 18) {
+          for (let xx = cx + 7; xx < cx + w - 8; xx += 12) {
+            if (rnd() < 0.38) {
+              const wdw = document.createElementNS(NS, "rect");
+              wdw.setAttribute("x", xx); wdw.setAttribute("y", yy.toFixed(1)); wdw.setAttribute("width", 5); wdw.setAttribute("height", 7);
+              wdw.setAttribute("fill", "#ffcf73"); wdw.setAttribute("opacity", (0.35 + rnd() * 0.5).toFixed(2));
+              city.appendChild(wdw);
+            }
+          }
+        }
+        cx += w + 2;
+      });
+
+      const stars = $("sim-stars8");
+      for (let i = 0; i < 110; i++) {
+        const c = document.createElementNS(NS, "circle");
+        c.setAttribute("cx", (rnd() * 1080).toFixed(0)); c.setAttribute("cy", (120 + rnd() * 700).toFixed(0));
+        c.setAttribute("r", (0.8 + rnd() * 2).toFixed(1)); c.setAttribute("fill", "#cfd8ff"); c.setAttribute("opacity", (0.25 + rnd() * 0.6).toFixed(2));
+        stars.appendChild(c);
+      }
+
+      const TICKS = [10, 14, 23, 30, 34, 37, 47, 58, 74, 95, 116];
+      const tk = $("sim-ticks");
+      TICKS.forEach((x) => { const i = document.createElement("i"); i.style.left = ((x / 120) * 740).toFixed(1) + "px"; tk.appendChild(i); });
+      const tickEls = Array.from(tk.children);
+
+      // ---- per-frame drawing: everything is a function of v alone ----
+      const ST = [0, 1, 2, 3, 4, 5, 6, 7, 8].map((k) => $("sim-st" + k));
+      const S = 5;
+      const box = { // container fill geometry: bottom y, full height, heap top y, heap half-width
+        1: [680, 170, 510, 180], 2: [700, 200, 494, 250], 3: [814, 448, 366, 310], 4: [817, 425, 560, 280], 5: [737, 137, 600, 380],
+      };
+      const R_EARTH_PX = 165, V_EARTH = 1.083e21, R_JUP = 10.97, R_SUN = 109.1;
+
+      function setFill(k, f) {
+        const [yb, h, top, hw] = box[k];
+        const fill = $("sim-fill" + k), heap = $("sim-heap" + k);
+        const lvl = k === 4 ? Math.min(f, 1) : Math.min(f, 1);
+        const y = yb - h * lvl;
+        fill.setAttribute("y", y.toFixed(1)); fill.setAttribute("height", (yb - y + 10).toFixed(1));
+        let L = f > 1 ? Math.log2(f) : 0;
+        if (k === 1) L = f > 0.8 ? (f - 0.8) * 2.5 + (f > 1 ? Math.log2(f) : 0) : 0; // a full bowl is heaped
+        const rx = hw * (1 + 0.04 * Math.min(L, 4)), ry = Math.min(16 * L, k === 1 ? 80 : 70);
+        heap.setAttribute("d", ry < 0.5 ? "" : `M${(540 - rx).toFixed(1)} ${top + 4} A${rx.toFixed(1)} ${ry.toFixed(1)} 0 0 1 ${(540 + rx).toFixed(1)} ${top + 4} Z`);
+      }
+
+      function render(v) {
+        const t = simT(v);
+        const n = Math.floor(t + 1e-9);
+        const z = zOf(v);
+
+        // stages: zoom-out = the old world shrinks, the new one arrives from large
+        for (let k = 0; k <= 8; k++) {
+          const d = z - k;
+          const vis = d > -1 && d < 1.15 && !(k === 8 && false);
+          ST[k].style.display = vis || (k === 8 && d >= 0) ? "" : "none";
+          if (!(vis || (k === 8 && d >= 0))) continue;
+          const sc = Math.pow(S, -Math.min(d, 1.15));
+          const op = d < 0 ? Math.pow(clamp(1 + d), 1.6) : k === 8 ? 1 : clamp(1 - d * 1.25);
+          ST[k].setAttribute("transform", `translate(${C.x} ${C.y}) scale(${sc.toFixed(5)}) translate(${-C.x} ${-C.y})`);
+          ST[k].setAttribute("opacity", op.toFixed(3));
+        }
+
+        // 0 · grains pile up, the inner camera pulls back as they double
+        const Nc = Math.pow(2, t);
+        const shown = Math.min(Math.pow(2, n), 128);
+        grains.forEach((e, i) => e.setAttribute("opacity", i < shown ? "1" : "0"));
+        const k0 = clamp(150 / (14 * Math.sqrt(Math.min(Nc, 1e6)) + 10), 0.05, 6.2);
+        $("sim-st0-in").setAttribute("transform", `translate(${C.x} ${C.y}) scale(${k0.toFixed(4)}) translate(${-C.x} ${-C.y})`);
+        const mr = 14 * Math.sqrt(Nc) + 8;
+        const m = $("sim-mound0");
+        const mb = C.y + mr * 0.45;
+        m.setAttribute("d", `M${(C.x - mr * 1.15).toFixed(1)} ${mb.toFixed(1)} A${(mr * 1.15).toFixed(1)} ${(mr * 1.05).toFixed(1)} 0 0 1 ${(C.x + mr * 1.15).toFixed(1)} ${mb.toFixed(1)} Z`);
+        m.setAttribute("opacity", clamp((t - 6.3) / 1.5).toFixed(3));
+
+        // 1–5 · containers fill by volume: f = V / capacity = 2^(t − t_full)
+        for (let k = 1; k <= 5; k++) setFill(k, Math.pow(2, t - STAGE_T[k]));
+
+        // 6 · pyramid: fill height for a volume fraction, then a cone of rice buries it
+        {
+          const f = Math.pow(2, t - 47);
+          const hf = 1 - Math.pow(1 - Math.min(f, 1), 1 / 3);
+          const y = 818 - 366 * hf;
+          $("sim-fill6").setAttribute("y", y.toFixed(1)); $("sim-fill6").setAttribute("height", (818 - y + 10).toFixed(1));
+          const s = f > 1 ? Math.min(Math.cbrt(f), 1.25) : 0;
+          $("sim-heap6").setAttribute("points", `${540 - 290 * s},820 540,${820 - 380 * s} ${540 + 290 * s},820`);
+        }
+
+        // 7 · Manhattan: depth = 146 m × 2^(t − 58)
+        {
+          const depth = 146 * Math.pow(2, t - 58);
+          const y = 832 - Math.min(depth * PXM, 430);
+          $("sim-fill7").setAttribute("d", `M90 840 L90 ${(y + 6).toFixed(1)} Q300 ${(y - 8).toFixed(1)} 540 ${y.toFixed(1)} T990 ${(y + 4).toFixed(1)} L990 840 Z`);
+        }
+
+        // 8 · space, everything in Earth radii, concentric
+        {
+          const Vr = 0.03e-6 * Math.pow(2, t);
+          let rBall = Math.cbrt(1 + Vr / V_EARTH);
+          const outro = 1 - 0.42 * ease(clamp((v - 42.7) / 1.1));
+          const P = Math.min(R_EARTH_PX, 205 / rBall) * outro;
+          const coatMin = 7 * clamp((t - 71) / 3);
+          const ballPx = Math.max(rBall * P, P + coatMin);
+          const cy = C.y + 45 + 55 * ease(clamp((v - 42.7) / 1.1));
+          for (const id of ["sim-ball8", "sim-balltex8", "sim-sunring8", "sim-jup8", "sim-sun8"]) $(id).setAttribute("cy", cy.toFixed(1));
+          $("sim-ball8").setAttribute("r", ballPx.toFixed(2));
+          $("sim-balltex8").setAttribute("r", ballPx.toFixed(2));
+          $("sim-earth8").setAttribute("transform", `translate(540 ${cy.toFixed(1)}) scale(${P.toFixed(4)})`);
+          const rJ = R_JUP * P, rS = R_SUN * P;
+          $("sim-jup8").setAttribute("r", rJ.toFixed(1));
+          $("sim-jup8").setAttribute("opacity", (rJ < 1500 ? clamp((t - 97) / 2) * (1 - clamp((t - 106.5) / 1.2)) : 0).toFixed(3));
+          const inside = clamp((ballPx - rS) / (0.12 * ballPx));
+          $("sim-sunring8").setAttribute("r", rS.toFixed(1));
+          $("sim-sunring8").setAttribute("opacity", (rS < 3000 ? 0.8 * clamp((t - 104) / 3) * (1 - inside) : 0).toFixed(3));
+          $("sim-sun8").setAttribute("r", rS.toFixed(1));
+          $("sim-sun8").setAttribute("opacity", (inside * 0.95).toFixed(3));
+          const el = $("sim-earthlbl8");
+          el.setAttribute("x", (540 + ballPx + 22).toFixed(1)); el.setAttribute("y", (cy + 10).toFixed(1));
+          el.setAttribute("opacity", (1 - clamp((t - 96) / 1.5)).toFixed(3));
+          const jl = $("sim-juplbl8");
+          jl.setAttribute("y", (cy - rJ - 16).toFixed(1));
+          jl.setAttribute("opacity", (rJ > ballPx + 20 && cy - rJ - 16 > 380 ? clamp((t - 99) / 1.5) : 0).toFixed(3));
+          const sl = $("sim-sunlbl8");
+          if (inside > 0.5) { sl.setAttribute("y", (cy + 12).toFixed(1)); sl.setAttribute("fill", "#5a2a00"); }
+          else { sl.setAttribute("y", (cy - rS - 16).toFixed(1)); sl.setAttribute("fill", "#ffb547"); }
+          sl.setAttribute("opacity", (inside > 0.5 ? clamp((inside - 0.5) * 2) : cy - rS - 16 > 380 ? clamp((t - 110) / 1.5) : 0).toFixed(3));
+        }
+
+        // ---- counter: exact 2^n ----
+        const N = 2n ** BigInt(n);
+        const ds = N.toString();
+        const numEl = $("sim-num"), nameEl = $("sim-name");
+        const vStep = n === 0 ? 0 : vOf(n);
+        const gap = n === 0 ? 1 : vOf(n) - vOf(n - 1);
+        const bump = gap > 0.25 ? 1 + 0.07 * (1 - eout(clamp((v - vStep) / 0.18))) : 1;
+        if (ds.length <= 12) {
+          const s = commas(ds);
+          const commasN = (s.match(/,/g) || []).length;
+          const fs = Math.min(230, 680 / (ds.length * 0.44 + commasN * 0.2));
+          numEl.textContent = s; numEl.style.fontSize = fs.toFixed(1) + "px";
+          nameEl.textContent = ""; nameEl.style.display = "none";
+          $("sim-digits").textContent = "";
+        } else {
+          const k = Math.floor((ds.length - 1) / 3);
+          const lead = ds.length - 3 * k;
+          const mant = lead === 3 ? ds.slice(0, 3) : ds.slice(0, lead) + "." + ds.slice(lead, 3);
+          numEl.textContent = mant; numEl.style.fontSize = "158px";
+          nameEl.textContent = NAMES[k].toUpperCase(); nameEl.style.display = "";
+          $("sim-digits").textContent = commas(ds).replace(/,/g, ",\u200b");
+        }
+        numEl.style.transform = `scale(${bump.toFixed(4)})`;
+        $("sim-pow").textContent = "2" + sup(n);
+
+        // comparison line: the latest reference passed; it blurs in on arrival
+        let c = CMP[0];
+        for (const x of CMP) if (n >= x.t) c = x;
+        const cmp = $("sim-cmp");
+        cmp.textContent = c.s;
+        const a = clamp((v - c.v) / 0.2);
+        cmp.style.opacity = c.t === 0 ? "1" : (0.15 + 0.85 * a).toFixed(3);
+        cmp.style.filter = c.t === 0 ? "none" : `blur(${(8 * (1 - a)).toFixed(2)}px)`;
+        cmp.style.fontSize = (c.s.length > 24 ? 36 : c.s.length > 19 ? 40 : 44) + "px";
+        $("sim-vol").textContent = fmtVol(n);
+
+        // progress track (sim seconds out of 120)
+        const px = ((t / 120) * 740).toFixed(1);
+        $("sim-track-fill").style.width = px + "px";
+        $("sim-track-dot").style.left = px + "px";
+        tickEls.forEach((e, i) => (e.className = n >= TICKS[i] ? "on" : ""));
+
+        // clock
+        $("sim-clock-num").textContent = String(n);
+        $("sim-clock-hand").setAttribute("transform", `rotate(${((t % 60) * 6).toFixed(1)} 17 17)`);
+      }
+
+      // ---- timeline: a driver tween for the full length + titles ----
+      const tl = gsap.timeline({ paused: true });
+      const drv = { p: 0 };
+      tl.to(drv, { p: 1, duration: D, ease: "none" }, 0);
+      tl.eventCallback("onUpdate", () => render(tl.time()));
+
+      // hook on frame 0, out at 3.2 s; clock in
+      tl.fromTo("#sim-hook", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in" }, 3.15);
+      tl.fromTo("#sim-clock-pill", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 3.35);
+      tl.to("#sim-clock-pill", { opacity: 0, duration: 0.2, ease: "power2.in" }, 42.55);
+      // outro lines on their words
+      const outs = [["#sim-out1", 42.95, 44.15], ["#sim-out2", 44.26, 45.8], ["#sim-out3", 45.93, D + 1]];
+      outs.forEach(([sel, a, b]) => {
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, a);
+        if (b < D) tl.to(sel, { opacity: 0, filter: "blur(6px)", duration: 0.13, ease: "power2.in" }, b - 0.13);
+      });
+
+      render(0);
+      window.__timelines["sim"] = tl;
+    })();
+  </script>
+</template>

@@ -21,6 +21,10 @@ SR = 24000
 
 async def synth(text, voice, rate, mp3):
     import edge_tts
+    ca = os.environ.get('SSL_CERT_FILE')  # cloud sessions re-terminate TLS: trust the session CA bundle (edge-tts pins certifi)
+    if ca and os.path.exists(ca):
+        import ssl, edge_tts.communicate as _ec
+        _ec._SSL_CTX = ssl.create_default_context(cafile=ca)
     c = edge_tts.Communicate(text, voice, rate=rate, boundary='WordBoundary')
     words = []
     with open(mp3, 'wb') as f:

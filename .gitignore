@@ -10,3 +10,7 @@ videos/**/*.wav
 videos/**/renders/
 .hyperframes/
 .DS_Store
+videos/**/audio/*.mp3
+videos/**/audio/*.mp3.json
+videos/**/work-*/
+videos/**/.*.hf-transaction-*/
