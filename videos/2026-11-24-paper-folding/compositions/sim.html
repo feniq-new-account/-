@@ -1,0 +1,285 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); }
+    #pf-art { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .pf-row { position: absolute; left: 0; width: 1080px; text-align: center; }
+    #pf-hook { top: 300px; font-weight: 900; font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+    #pf-hook .acc, #pf-outro .acc { color: var(--accent); }
+    #pf-clock { top: 296px; height: 64px; display: flex; justify-content: center; }
+    #pf-clock-pill { display: flex; align-items: center; gap: 14px; padding: 0 28px; height: 64px; border-radius: 32px; background: #151b2c; border: 2px solid #2b3452; font-weight: 800; font-size: 30px; letter-spacing: 0.06em; color: #aab4d4; }
+    #pf-clock-num { font-family: "League Gothic", sans-serif; font-size: 50px; letter-spacing: 0.02em; color: var(--accent); font-variant-numeric: tabular-nums; min-width: 60px; text-align: right; }
+    #pf-outro { top: 300px; font-weight: 900; font-size: 56px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+    #pf-outro > span { position: absolute; left: 150px; width: 780px; top: 0; opacity: 0; }
+    #pf-label { top: 800px; font-weight: 700; font-size: 28px; letter-spacing: 0.22em; color: #8f9abd; }
+    #pf-label b { color: var(--ink); font-weight: 800; letter-spacing: 0.04em; }
+    #pf-counter { top: 842px; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #pf-num { font-family: "League Gothic", sans-serif; font-variant-numeric: tabular-nums; line-height: 0.9; font-size: 172px; color: var(--ink); white-space: nowrap; text-shadow: 0 0 40px rgba(255, 196, 92, 0.25); }
+    #pf-unit { font-weight: 900; font-size: 54px; letter-spacing: 0.12em; color: var(--accent); line-height: 1; margin-top: 6px; white-space: nowrap; }
+    #pf-digits { top: 1046px; left: 195px; width: 690px; font-family: "Space Mono", monospace; font-size: 28px; line-height: 34px; color: #6f7aa0; overflow-wrap: anywhere; }
+    #pf-cmp { top: 1124px; font-weight: 900; font-size: 44px; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
+    #pf-sub { top: 1182px; font-family: "Space Mono", monospace; font-size: 30px; color: #c9d0e6; white-space: nowrap; }
+    #pf-track { position: absolute; left: 170px; width: 740px; top: 1320px; height: 8px; border-radius: 4px; background: #1a2135; }
+    #pf-track-fill { position: absolute; left: 0; top: 0; height: 8px; width: 0; border-radius: 4px; background: linear-gradient(90deg, #6b5a2e, var(--accent)); }
+    #pf-ticks i { position: absolute; top: -5px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #2f3a58; }
+    #pf-ticks i.on { background: var(--accent); }
+    #pf-track-dot { position: absolute; top: -9px; width: 26px; height: 26px; margin-left: -13px; border-radius: 13px; background: var(--accent); box-shadow: 0 0 24px rgba(255, 184, 77, 0.7); }
+  </style>
+
+  <div id="root" data-composition-id="sim" data-width="1080" data-height="1920">
+    <svg id="pf-art" viewBox="0 0 1080 1920" data-layout-ignore>
+      <defs>
+        <pattern id="pf-paper" width="40" height="7" patternUnits="userSpaceOnUse">
+          <rect width="40" height="7" fill="#fbf8f0" />
+          <rect y="6" width="40" height="1" fill="#d9d2c0" />
+        </pattern>
+        <radialGradient id="pf-sun-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff4c2" /><stop offset="0.55" stop-color="#ffc24a" /><stop offset="1" stop-color="#ff7a1a" /></radialGradient>
+        <radialGradient id="pf-earth-g" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#5fb0ff" /><stop offset="1" stop-color="#1b4f9c" /></radialGradient>
+        <radialGradient id="pf-gal-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff1d0" stop-opacity="0.95" /><stop offset="0.25" stop-color="#c9b6ff" stop-opacity="0.55" /><stop offset="1" stop-color="#5b4fa8" stop-opacity="0" /></radialGradient>
+        <radialGradient id="pf-uni-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#2a1f55" stop-opacity="0.2" /><stop offset="0.85" stop-color="#3b2d7a" stop-opacity="0.35" /><stop offset="1" stop-color="#ff9e5e" stop-opacity="0.55" /></radialGradient>
+        <linearGradient id="pf-atmo-g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#4c8dff" stop-opacity="0.35" /><stop offset="1" stop-color="#4c8dff" stop-opacity="0" /></linearGradient>
+        <linearGradient id="pf-maskg" x1="0" y1="0" x2="0" y2="1920" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" /><stop offset="0.405" stop-color="#fff" /><stop offset="0.43" stop-color="#000" /><stop offset="1" stop-color="#000" /></linearGradient>
+        <mask id="pf-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920"><rect width="1080" height="1920" fill="url(#pf-maskg)" /></mask>
+      </defs>
+      <g mask="url(#pf-mask)">
+        <g id="pf-stars"></g>
+        <rect id="pf-atmo" x="0" y="0" width="1080" height="10" fill="url(#pf-atmo-g)" opacity="0" />
+        <line id="pf-karman" x1="60" x2="1020" y1="0" y2="0" stroke="#7fb2ff" stroke-width="3" stroke-dasharray="14 10" opacity="0" />
+        <!-- deep space -->
+        <circle id="pf-uni" cx="360" cy="0" r="0" fill="url(#pf-uni-g)" stroke="#ff9e5e" stroke-width="4" opacity="0" />
+        <g id="pf-uni-dots"></g>
+        <ellipse id="pf-andro" cx="740" cy="0" rx="0" ry="0" fill="url(#pf-gal-g)" transform="" opacity="0" />
+        <g id="pf-mw" opacity="0">
+          <circle r="100" fill="url(#pf-gal-g)" />
+          <path d="M0 0 C 30 -10, 60 10, 70 45 M0 0 C -30 10, -60 -10, -70 -45 M0 0 C 10 30, -10 60, -45 70 M0 0 C -10 -30, 10 -60, 45 -70" stroke="#e9dcff" stroke-opacity="0.55" stroke-width="7" fill="none" stroke-linecap="round" />
+        </g>
+        <path id="pf-prox" d="M0 -22 L5 -5 L22 0 L5 5 L0 22 L-5 5 L-22 0 L-5 -5 Z" fill="#ff9b7a" opacity="0" />
+        <circle id="pf-pluto" r="9" fill="#d8c3a5" opacity="0" />
+        <circle id="pf-sun" r="18" fill="url(#pf-sun-g)" opacity="0" />
+        <circle id="pf-moon" r="12" fill="#d9dbe3" opacity="0" />
+        <circle id="pf-earth" cx="360" cy="0" r="10" fill="url(#pf-earth-g)" opacity="0" />
+        <!-- ground scale -->
+        <g id="pf-everest" opacity="0">
+          <polygon points="-170,0 -60,-70 -20,-100 30,-62 70,-75 190,0" fill="#2b3550" stroke="#8b97bd" stroke-width="3" vector-effect="non-scaling-stroke" />
+          <polygon points="-48,-78 -20,-100 22,-68 6,-72 -10,-64 -30,-74" fill="#eef2fb" />
+        </g>
+        <g id="pf-plane" opacity="0">
+          <path d="M-34 0 L30 -3 Q38 0 30 3 Z M-6 -1 L-16 -16 L-8 -16 L8 -1 Z M-6 1 L-16 16 L-8 16 L8 1 Z M-30 -1 L-36 -9 L-31 -9 L-24 -1 Z" fill="#aab4d4" />
+        </g>
+        <g id="pf-burj" opacity="0">
+          <polygon points="-9,0 -9,-30 -7,-30 -7,-55 -5,-55 -5,-75 -3,-75 -3,-88 -1,-88 0,-100 1,-88 3,-88 3,-75 5,-75 5,-55 7,-55 7,-30 9,-30 9,0" fill="#9fb4d8" stroke="#cfdaf0" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+        </g>
+        <g id="pf-liberty" opacity="0">
+          <rect x="-12" y="-50" width="24" height="50" fill="#6b7aa3" />
+          <path d="M-8 -50 L-6 -82 L-3 -88 L3 -88 L6 -82 L8 -50 Z" fill="#5fb3a1" />
+          <path d="M3 -82 L9 -96 L12 -95 L6 -80 Z" fill="#5fb3a1" />
+          <circle cx="0" cy="-91" r="4" fill="#5fb3a1" />
+          <path d="M8 -97 Q11 -103 12 -97 Z" fill="#ffcf73" />
+        </g>
+        <g id="pf-room" opacity="0">
+          <line id="pf-ceil" x1="120" x2="960" y1="0" y2="0" stroke="#8b97bd" stroke-width="6" />
+        </g>
+        <g id="pf-person" opacity="0">
+          <circle cx="0" cy="-90" r="9" fill="#8b97bd" />
+          <path d="M-10 -78 L10 -78 L13 -40 L7 -40 L6 0 L1 0 L0 -36 L-1 0 L-6 0 L-7 -40 L-13 -40 Z" fill="#8b97bd" />
+        </g>
+        <g id="pf-mug" opacity="0">
+          <path d="M-35 -100 L35 -100 L32 -6 Q30 0 24 0 L-24 0 Q-30 0 -32 -6 Z" fill="#e85d5d" />
+          <path d="M35 -78 Q62 -76 60 -48 Q58 -24 33 -26" fill="none" stroke="#e85d5d" stroke-width="10" />
+        </g>
+        <rect id="pf-note" x="700" y="0" width="190" height="0" fill="#e85d5d" opacity="0" />
+        <rect id="pf-note-pages" x="704" y="0" width="182" height="0" fill="#f3efe4" opacity="0" />
+        <rect id="pf-card" x="560" y="0" width="150" height="0" rx="1" fill="#4cc9f0" opacity="0" />
+        <line id="pf-ground" x1="60" x2="1020" y1="770" y2="770" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <!-- the paper -->
+        <rect id="pf-col" x="210" y="768" width="300" height="2" fill="url(#pf-paper)" />
+        <rect id="pf-col-top" x="210" y="768" width="300" height="2" fill="#ffffff" />
+      </g>
+    </svg>
+
+    <div id="pf-hook" class="pf-row">How many folds to cross<br /><span class="acc">the universe?</span></div>
+    <div id="pf-clock" class="pf-row">
+      <div id="pf-clock-pill">
+        <svg width="34" height="34" viewBox="0 0 34 34"><path d="M6 4 H22 L28 10 V30 H6 Z" fill="none" stroke="#ffb84d" stroke-width="3" stroke-linejoin="round" /><path d="M22 4 V10 H28" fill="none" stroke="#ffb84d" stroke-width="3" stroke-linejoin="round" /></svg>
+        <span id="pf-clock-num">0</span><span id="pf-clock-word">FOLDS</span>
+      </div>
+    </div>
+    <div id="pf-outro" class="pf-row">
+      <span id="pf-out1">One sheet<br />of <span class="acc">paper.</span></span>
+      <span id="pf-out2">That's the power<br />of <span class="acc">doubling.</span></span>
+      <span id="pf-out3">What should we<br /><span class="acc">double next?</span></span>
+    </div>
+    <div id="pf-label" class="pf-row">THICKNESS &nbsp;·&nbsp; <b id="pf-pow">2⁰</b> LAYERS</div>
+    <div id="pf-counter" class="pf-row"><div id="pf-num">0.1</div><div id="pf-unit">MILLIMETERS</div></div>
+    <div id="pf-digits" class="pf-row">1 layer</div>
+    <div id="pf-cmp" class="pf-row">One sheet of paper</div>
+    <div id="pf-sub" class="pf-row">Office paper: 0.1 mm</div>
+    <div id="pf-track" data-layout-ignore><div id="pf-track-fill"></div><div id="pf-ticks"></div><div id="pf-track-dot"></div></div>
+  </div>
+
+  <script>
+    (function () {
+      const D = 48.09;
+      const GY = 770, CX = 360, RX = 760; // ground y, paper x, reference x
+      const $ = (id) => document.getElementById(id);
+      const NS = "http://www.w3.org/2000/svg";
+      const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+      const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+      const eout = (x) => 1 - Math.pow(1 - x, 3);
+      function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const rnd = mulberry32(103);
+      const LY = 9.4607e15;
+      const T = (n) => 1e-4 * Math.pow(2, n); // thickness in metres
+
+      // video time → folds (anchors = first word of each narrated line)
+      const ANCH = [[0, 0], [1.3, 0], [5.35, 2], [6.9, 4], [7.74, 7], [10.83, 15], [13.3, 23], [16.36, 27], [19.42, 30], [21.75, 42], [24.2, 51], [26.52, 56], [29.31, 69], [32.55, 83], [34.95, 86], [36.41, 101.5], [38.27, 103], [D, 106]];
+      function foldsAt(v) { for (let i = 1; i < ANCH.length; i++) { const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i]; if (v <= v1) return t0 + (t1 - t0) * clamp((v - v0) / (v1 - v0)); } return 106; }
+      function rateAt(v) { for (let i = 1; i < ANCH.length; i++) { const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i]; if (v <= v1) return (t1 - t0) / (v1 - v0); } return 0; }
+      function vOf(n) { for (let i = 1; i < ANCH.length; i++) { const [v0, t0] = ANCH[i - 1], [v1, t1] = ANCH[i]; if (t1 > t0 && n <= t1) return v0 + ((n - t0) / (t1 - t0)) * (v1 - v0); } return D; }
+
+      // camera: pixels per metre, one stop per milestone, moved on a log scale
+      const CAM = [[0, 150000], [7.74, 25000], [10.83, 115], [13.3, 0.345], [16.36, 0.0316], [19.42, 0.0026], [21.75, 300 / 4.1e8], [24.2, 300 / 1.6e11], [26.52, 300 / 6.3e12], [29.31, 300 / 4.3e16], [32.55, 300 / 1.0e21], [35.4, 300 / 2.9e22], [38.27, 300 / 8.8e26]];
+      function camLog(v) { let L = Math.log10(CAM[0][1]); for (let i = 1; i < CAM.length; i++) L += (Math.log10(CAM[i][1]) - Math.log10(CAM[i - 1][1])) * ease(clamp((v - (CAM[i][0] - 0.75)) / 0.85)); return L; }
+
+      const CMP = [
+        [0, "One sheet of paper", "Office paper: 0.1 mm"], [1, "Folded once", "Office paper: 0.1 mm"], [3, "≈ a credit card", "Credit card: 0.76 mm"],
+        [7, "As thick as a notebook", "Notebook: about 1.2 cm"], [10, "≈ a coffee mug", "Mug: about 9.5 cm tall"], [15, "Taller than your ceiling", "Ceiling: about 2.5 m"],
+        [20, "Past the Statue of Liberty", "Statue of Liberty: 93 m"], [23, "Taller than the Burj Khalifa", "Burj Khalifa: 828 m"], [27, "Higher than Mount Everest", "Everest: 8,849 m"],
+        [30, "You've reached space", "Edge of space: 100 km up"], [42, "Past the Moon", "Moon: 384,400 km away"], [51, "Past the Sun", "Sun: 150 million km away"],
+        [56, "Beyond Pluto", "Pluto: ~5.9 billion km away"], [69, "To the nearest star", "Proxima Centauri: 4.24 ly"], [83, "Across the Milky Way", "Milky Way: ~100,000 ly wide"],
+        [88, "Past the Andromeda galaxy", "Andromeda: 2.5 million ly"], [103, "Wider than the universe", "Observable universe: 93 billion ly"],
+        [104, "≈ 2× the universe", "Observable universe: 93 billion ly"], [105, "≈ 4.6× the universe", "Observable universe: 93 billion ly"], [106, "≈ 9× the universe", "Observable universe: 93 billion ly"],
+      ].map(([n, s, sub]) => ({ n, s, sub, v: n === 0 ? 0 : vOf(n) }));
+
+      const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+      const sup = (n) => String(n).split("").map((c) => SUP[+c]).join("");
+      const commas = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const sig3 = (x) => (x >= 100 ? String(Math.round(x)) : x >= 10 ? x.toFixed(1) : x.toFixed(2)).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+      const BIG = ["", "THOUSAND", "MILLION", "BILLION", "TRILLION"];
+      function bigName(x, unit) { const k = Math.min(4, Math.floor(Math.log10(x) / 3)); return [sig3(x / Math.pow(1000, k)), (BIG[k] ? BIG[k] + " " : "") + unit]; }
+      function fmtT(n) {
+        const t = T(n);
+        if (t < 0.01) return [(t * 1000).toFixed(1), "MILLIMETERS"];
+        if (t < 1) return [sig3(t * 100), "CENTIMETERS"];
+        if (t < 1000) return [sig3(t), "METERS"];
+        if (t < 1e9) { const km = t / 1000; return [km >= 1000 ? commas(String(Math.round(km))) : sig3(km), "KILOMETERS"]; }
+        if (t < 0.1 * LY) return bigName(t / 1000, "KILOMETERS");
+        const ly = t / LY;
+        if (ly < 1000) return [sig3(ly), "LIGHT-YEARS"];
+        return bigName(ly, "LIGHT-YEARS");
+      }
+
+      // static decoration (seeded)
+      const stars = $("pf-stars");
+      for (let i = 0; i < 120; i++) { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", (rnd() * 1080).toFixed(0)); c.setAttribute("cy", (120 + rnd() * 640).toFixed(0)); c.setAttribute("r", (0.8 + rnd() * 2).toFixed(1)); c.setAttribute("fill", "#cfd8ff"); c.setAttribute("opacity", (0.25 + rnd() * 0.6).toFixed(2)); stars.appendChild(c); }
+      const ud = $("pf-uni-dots"); const udots = [];
+      for (let i = 0; i < 90; i++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 0.95; const c = document.createElementNS(NS, "circle"); c.setAttribute("r", (1 + rnd() * 1.6).toFixed(1)); c.setAttribute("fill", ["#c9b6ff", "#ffd9a8", "#9fd0ff"][i % 3]); c.setAttribute("opacity", (0.35 + rnd() * 0.5).toFixed(2)); ud.appendChild(c); udots.push([Math.cos(a) * r, Math.sin(a) * r, c]); }
+      const TICKS = [3, 7, 15, 23, 27, 30, 42, 51, 56, 69, 83, 103];
+      const tk = $("pf-ticks"); TICKS.forEach((x) => { const i = document.createElement("i"); i.style.left = ((x / 106) * 740).toFixed(1) + "px"; tk.appendChild(i); });
+      const tickEls = Array.from(tk.children);
+
+      const vis = (px, lo, hi) => clamp((px - lo) / lo) * clamp((hi - px) / (hi * 0.35));
+      const show = (e, op) => { const on = op > 0.001; e.style.display = on ? "" : "none"; e.setAttribute("opacity", op.toFixed(3)); return on; };
+      function place(id, x, y, s, op) { const e = $(id); if (show(e, op)) e.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${s.toFixed(5)})`); }
+      function dot(id, x, y, r, rmin, op) { const e = $(id); if (!show(e, op)) return; e.setAttribute("cx", x.toFixed(1)); e.setAttribute("cy", y.toFixed(1)); e.setAttribute("r", Math.min(Math.max(r, rmin), 5000).toFixed(2)); }
+
+      function render(v) {
+        const nc = foldsAt(v);
+        const n = Math.floor(nc + 1e-9);
+        // the paper snaps fold by fold while folds are slow, then grows continuously
+        const k = Math.floor(nc + 1e-9), f = nc - k;
+        const snapped = k - 1 + eout(clamp(f / 0.35)) + (k === 0 ? 1 : 0) * (1 - eout(clamp(f / 0.35)));
+        const w8 = clamp((rateAt(v) - 2) / 2);
+        const nv = Math.max(0, snapped * (1 - w8) + nc * w8);
+        let L = camLog(v);
+        if (v > 38.9) { const want = Math.log10(330 / T(nv)); L = L + (Math.min(L, want) - L) * ease(clamp((v - 38.9) / 0.8)); }
+        const P = Math.pow(10, L);
+
+        // paper column: width halves every two folds, height = true thickness
+        const hc = Math.max(T(nv) * P, 2);
+        const w = Math.max(28, 300 * Math.pow(2, -nv / 2));
+        const ch = Math.min(hc, 3000);
+        for (const id of ["pf-col", "pf-col-top"]) { const e = $(id); e.setAttribute("x", (CX - w / 2).toFixed(1)); e.setAttribute("width", w.toFixed(1)); }
+        $("pf-col").setAttribute("y", (GY - ch).toFixed(1)); $("pf-col").setAttribute("height", ch.toFixed(1));
+        $("pf-col-top").setAttribute("y", (GY - ch).toFixed(1)); $("pf-col-top").setAttribute("height", Math.min(3, ch).toFixed(1));
+
+        // ground / Earth
+        const rE = 6.371e6 * P;
+        $("pf-ground").setAttribute("opacity", clamp((rE - 3000) / 3000).toFixed(3));
+        const er = Math.max(rE, 8);
+        dot("pf-earth", CX, GY + er, er, 8, rE < 60000 ? clamp((6000 - rE) / 3000) : 0);
+
+        // references, true height × P
+        const card = 0.00076 * P, note = 0.012 * P;
+        if (show($("pf-card"), vis(card, 3, 520))) { $("pf-card").setAttribute("y", (GY - card).toFixed(1)); $("pf-card").setAttribute("height", Math.max(card, 1).toFixed(1)); }
+        const nop = vis(note, 4, 520);
+        if (show($("pf-note"), nop)) { $("pf-note").setAttribute("y", (GY - note).toFixed(1)); $("pf-note").setAttribute("height", note.toFixed(1)); }
+        if (show($("pf-note-pages"), nop)) { $("pf-note-pages").setAttribute("y", (GY - note * 0.88).toFixed(1)); $("pf-note-pages").setAttribute("height", (note * 0.76).toFixed(1)); }
+        place("pf-mug", 600, GY, (0.095 * P) / 100, vis(0.095 * P, 6, 900));
+        place("pf-person", RX, GY, (1.75 * P) / 100, vis(1.75 * P, 8, 900));
+        const ceil = 2.5 * P; $("pf-ceil").setAttribute("y1", (GY - ceil).toFixed(1)); $("pf-ceil").setAttribute("y2", (GY - ceil).toFixed(1));
+        show($("pf-room"), vis(ceil, 20, 900));
+        place("pf-liberty", 610, GY, (93 * P) / 100, vis(93 * P, 6, 900));
+        place("pf-burj", RX, GY, (828 * P) / 100, vis(828 * P, 8, 1200));
+        place("pf-everest", 700, GY, (8849 * P) / 100, vis(8849 * P, 8, 1500));
+        place("pf-plane", 620, GY - 11000 * P, 1, vis(11000 * P, 60, 700));
+        const kh = 1e5 * P;
+        if (show($("pf-karman"), vis(kh, 15, 900))) { $("pf-karman").setAttribute("y1", (GY - kh).toFixed(1)); $("pf-karman").setAttribute("y2", (GY - kh).toFixed(1)); }
+        if (show($("pf-atmo"), vis(kh, 8, 1500))) { $("pf-atmo").setAttribute("y", (GY - Math.min(kh, 1500)).toFixed(1)); $("pf-atmo").setAttribute("height", Math.min(Math.max(kh, 1), 1500).toFixed(1)); }
+        const sky = (d) => GY - d * P;
+        dot("pf-moon", RX, sky(3.844e8), 1.737e6 * P, 12, vis(3.844e8 * P, 40, 1400));
+        dot("pf-sun", RX, sky(1.496e11), 6.96e8 * P, 18, vis(1.496e11 * P, 40, 1400));
+        dot("pf-pluto", RX, sky(5.9e12), 1.19e6 * P, 9, vis(5.9e12 * P, 40, 1400));
+        place("pf-prox", RX, sky(4.24 * LY), 1, vis(4.24 * LY * P, 40, 1400));
+        const mwR = 0.5e5 * LY * P;
+        place("pf-mw", CX, GY - mwR, mwR / 100, vis(mwR * 2, 14, 1400));
+        const ar = Math.max(0.7e5 * LY * P, 40), ay = sky(2.5e6 * LY);
+        const aop = vis(2.5e6 * LY * P, 40, 1400);
+        const an = $("pf-andro"); if (show(an, aop)) { an.setAttribute("cy", ay.toFixed(1)); an.setAttribute("rx", ar.toFixed(1)); an.setAttribute("ry", (ar * 0.38).toFixed(1)); an.setAttribute("transform", `rotate(-30 ${RX - 20} ${ay.toFixed(1)})`); }
+        const uR = 0.5 * 93e9 * LY * P, uop = vis(uR * 2, 14, 2400);
+        dot("pf-uni", CX, GY - uR, uR, 0, uop);
+        show($("pf-uni-dots"), uop);
+        if (uop > 0.001) udots.forEach(([x, y, c]) => { c.setAttribute("cx", (CX + x * uR).toFixed(1)); c.setAttribute("cy", (GY - uR + y * uR).toFixed(1)); });
+        $("pf-stars").setAttribute("opacity", clamp(Math.log10(0.03 / P) / 1.5).toFixed(3));
+
+        // counter (exact layers 2^n, thickness from n)
+        const [num, unit] = fmtT(n);
+        const numEl = $("pf-num"), unitEl = $("pf-unit");
+        numEl.textContent = num; unitEl.textContent = unit;
+        numEl.style.fontSize = Math.min(150, 640 / Math.max(num.length * 0.44, 1)).toFixed(1) + "px";
+        unitEl.style.fontSize = Math.min(48, 700 / (unit.length * 0.78)).toFixed(1) + "px";
+        const vStep = n === 0 ? 0 : vOf(n), gap = n === 0 ? 1 : vOf(n) - vOf(n - 1);
+        numEl.style.transform = `scale(${(gap > 0.25 ? 1 + 0.07 * (1 - eout(clamp((v - vStep) / 0.18))) : 1).toFixed(4)})`;
+        $("pf-pow").textContent = "2" + sup(n);
+        const L2 = (2n ** BigInt(n)).toString();
+        $("pf-digits").textContent = commas(L2).replace(/,/g, ",​") + (n === 0 ? " layer" : " layers");
+
+        let c = CMP[0]; for (const x of CMP) if (n >= x.n) c = x;
+        const cmp = $("pf-cmp"); cmp.textContent = c.s;
+        const a = clamp((v - c.v) / 0.2);
+        cmp.style.opacity = c.n === 0 ? "1" : (0.15 + 0.85 * a).toFixed(3);
+        cmp.style.filter = c.n === 0 ? "none" : `blur(${(8 * (1 - a)).toFixed(2)}px)`;
+        cmp.style.fontSize = (c.s.length > 24 ? 36 : c.s.length > 19 ? 40 : 44) + "px";
+        $("pf-sub").textContent = c.sub;
+
+        $("pf-clock-num").textContent = String(n);
+        $("pf-clock-word").textContent = n === 1 ? "FOLD" : "FOLDS";
+        const px = ((nc / 106) * 740).toFixed(1);
+        $("pf-track-fill").style.width = px + "px"; $("pf-track-dot").style.left = px + "px";
+        tickEls.forEach((e, i) => (e.className = n >= TICKS[i] ? "on" : ""));
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      tl.to({ p: 0 }, { p: 1, duration: D, ease: "none" }, 0);
+      tl.eventCallback("onUpdate", () => render(tl.time()));
+      tl.fromTo("#pf-hook", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in" }, 4.75);
+      tl.fromTo("#pf-clock-pill", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 5.0);
+      tl.to("#pf-clock-pill", { opacity: 0, duration: 0.2, ease: "power2.in" }, 40.6);
+      [["#pf-out1", 40.9, 42.49], ["#pf-out2", 42.49, 44.1], ["#pf-out3", 44.24, D + 1]].forEach(([sel, a, b]) => {
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, a);
+        if (b < D) tl.to(sel, { opacity: 0, filter: "blur(6px)", duration: 0.13, ease: "power2.in" }, b - 0.13);
+      });
+      render(0);
+      window.__timelines["sim"] = tl;
+    })();
+  </script>
+</template>

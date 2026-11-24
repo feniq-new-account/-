@@ -82,3 +82,19 @@ Episode ideas: a single bacterium; a $1 bill (stacked height); a drop of water; 
 - The first take was 41.7 s. Slower rate (+2%), 0.4 s gaps and one extra milestone brought it to 49.3 s.
 - Sim time is not real time after the first beats. Show a "SECONDS" clock so viewers see it's simulated, and make sure no non-narrated label (e.g. Jupiter) lands while the voice is still saying the previous one.
 - `fmtVol` rounding produced "10.0 × 10²⁷". Carry the rounding into the exponent.
+
+## Episode 2: paper folding (`videos/2026-11-24-paper-folding/`)
+
+A variant for anything that grows in **length** (height, distance), not volume. Copy this project instead of the rice one when the punchline is a distance.
+
+- Model: T = 0.1 mm × 2ⁿ, n = folds. The clock pill says "23 FOLDS", the counter shows the thickness with its unit as the name line (MILLIMETERS → … → BILLION LIGHT-YEARS), and the digits line shows the exact layer count 2ⁿ.
+- **One continuous scene, no stage groups.** Everything is in metres, drawn on screen as `ground_y − height × P`, where P (px per metre) moves on a log scale between camera stops (`CAM = [[arrival, P], …]`, each stop ≈ 300 px / reference height). References sit beside the paper at true height: card, notebook, mug, person + ceiling, Statue of Liberty, Burj Khalifa, Everest + airliner, Kármán line + atmosphere, Moon, Sun, Pluto, Proxima, Milky Way, Andromeda, the observable universe. Each fades by its on-screen size (`vis(px, lo, hi)`), so the zoom-out feels continuous.
+- The sub-line under the comparison gives the reference's real size ("Burj Khalifa: 828 m"), so the frame carries both numbers.
+- The paper column narrows as it folds (width × 2^(−n/2)). While folds are slow (< 2 per second) it snaps fold by fold in 0.35 s; faster than that it grows continuously.
+- After the payoff the camera keeps pulling back so the universe shrinks to a dot next to the paper (P = min(P_cam, 330 px / T)).
+
+Lessons:
+- **Hide what is invisible.** A shape with opacity 0 but a 10¹² px radius (the universe circle during the star stage) made Chrome's screenshot time out. `show()` sets `display:none` when opacity is 0, and radii are capped at 5,000 px.
+- Counter box is 200 px: number ≤ 150 px + unit line ≤ 48 px, or the unit runs into the digits line.
+- Keep big reference objects out of the hook frame (notebook at 150,000 px/m covered the title). Cap each one with `vis(…, hi)`.
+- Outro lines need ≥ 1.3 s on screen (`line_unread`): start the first one ~0.4 s before its word, and fade the clock pill earlier.

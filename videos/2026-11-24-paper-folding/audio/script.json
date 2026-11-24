@@ -1,0 +1,17 @@
+{"lead": 0.15, "tail": 2.6, "trim": true, "lines": [
+ {"id": "hook", "text": "How many times would you have to fold a sheet of paper to cross the entire universe?", "gap": 0.45},
+ {"id": "rule", "text": "Every fold doubles its thickness.", "gap": 0.5},
+ {"id": "f07", "text": "Seven folds: as thick as a notebook.", "gap": 0.5},
+ {"id": "f15", "text": "Fifteen: taller than your ceiling.", "gap": 0.5},
+ {"id": "f23", "text": "Twenty-three: taller than the Burj Khalifa.", "gap": 0.5},
+ {"id": "f27", "text": "Twenty-seven: higher than Mount Everest.", "gap": 0.5},
+ {"id": "f30", "text": "Thirty: you've reached space.", "gap": 0.5},
+ {"id": "f42", "text": "Forty-two: it passes the Moon.", "gap": 0.5},
+ {"id": "f51", "text": "Fifty-one: it's past the Sun.", "gap": 0.5},
+ {"id": "f56", "text": "Fifty-six: beyond Pluto.", "gap": 0.5},
+ {"id": "f69", "text": "Sixty-nine: it reaches the nearest star.", "gap": 0.5},
+ {"id": "f83", "text": "Eighty-three: across the entire Milky Way.", "gap": 0.5},
+ {"id": "f103a", "text": "And at one hundred and three folds...", "gap": 0.8},
+ {"id": "f103b", "text": "it's wider than the observable universe.", "gap": 0.8},
+ {"id": "outro", "text": "One sheet of paper. That's the power of doubling. What should we double next?", "gap": 0.2}
+]}
