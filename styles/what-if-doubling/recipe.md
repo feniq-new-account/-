@@ -114,3 +114,20 @@ Lessons:
 - Pops 0.6 s apart overlap (`duplicate_audio_track`). Keep pops ≥ 0.75 s apart, or skip some.
 - Space Mono has no superscript digits (2³³ renders as "2' '"). Keep superscripts in Inter only.
 - Pick milestone references whose population sits between 0.5× and 1× of 2^m at the minute before. NYC (8.8 M) fails at 2²³ (8.39 M), so check every population against the exact power of two.
+
+## Episode 4: the penny vs $1 million (`videos/2026-11-25-penny-doubling/`)
+
+The **money variant**: a dilemma hook ("$1 million now, or a penny that doubles every day for 30 days?") and a bar chart against a fixed offer. It sits in the high-RPM finance niche (#1 in NICHES.md).
+
+- Model: balance on day d = 1¢ × 2^(d−1). It passes $1M on day 28; day 30 = $5,368,709.12, and exactly half of it arrives on the last day.
+- **Discrete days, not continuous time.** `MS` lists the narrated days with three word times each: `vDay` (the clock flips on "Day N"), `vAmt` (the counter rolls up on a log scale from the day before and lands on the spoken amount) and `vEnd` (hold until the line ends). The days in between pass quickly in the gaps. This keeps the number on screen identical to the number being said.
+- One bar per day (30 bars). The y-scale (`CAM`, px per $) pulls back on a log scale at each narrated day, so earlier bars flatten to nothing, which shows the exponential shape by itself. Reference lines (coffee $5, phone $1,000, car $30,000) fade by on-screen size, and the white dashed "$1M offer" line stays as the target.
+- Sub-line = % of the $1M offer (less than 0.01% → 67% → 134% → 537%). The tension builds without extra narration.
+- Holds get one small, motivated change: "$329K SHORT ↑" on "Still behind", "+$342K AHEAD ↓" on "You just passed it", and at the end the day-30 bar split in half ("+$2.68M on day 30" / "days 1–29").
+- Hook: the two offers side by side (a copper 1¢ coin and a green $1,000,000 stack). Each punches on its word, then "×2" and "30 DAYS" badges appear, so the opening is never still for more than 3 s.
+
+Lessons:
+- Anchor the counter to the **amount** word, not the "Day N" word. The first pass had the clock running ahead, showing $1.28 while the voice said "sixty-four cents".
+- A label that only says what holds ("Not even a dollar") goes stale as soon as the next day passes. Add the next state ("Just over a dollar").
+- Spoken money rounds normally ($81.92 → "eighty-two dollars"). Write the rounding rule in `scenes.md`.
+- Labels that live inside an outro group with opacity 0 stay invisible. Keep mid-film labels outside it.

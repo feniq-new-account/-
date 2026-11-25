@@ -1,0 +1,245 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink); }
+    #pn-art { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    .pn-row { position: absolute; left: 0; width: 1080px; text-align: center; }
+    #pn-hook { top: 300px; font-weight: 900; font-size: 44px; line-height: 1.12; letter-spacing: -0.02em; text-transform: uppercase; }
+    #pn-hook .acc, #pn-outro .acc { color: var(--accent); }
+    #pn-clock { top: 296px; height: 64px; display: flex; justify-content: center; }
+    #pn-clock-pill { display: flex; align-items: center; gap: 14px; padding: 0 28px; height: 64px; border-radius: 32px; background: #151b2c; border: 2px solid #2b3452; font-weight: 800; font-size: 30px; letter-spacing: 0.06em; color: #aab4d4; }
+    #pn-clock-num { font-family: "League Gothic", sans-serif; font-size: 50px; letter-spacing: 0.02em; color: var(--accent); font-variant-numeric: tabular-nums; min-width: 44px; text-align: left; }
+    #pn-outro { top: 300px; font-weight: 900; font-size: 54px; line-height: 1.1; letter-spacing: -0.02em; text-transform: uppercase; }
+    #pn-outro > span { position: absolute; left: 150px; width: 780px; top: 0; opacity: 0; }
+    #pn-label { top: 800px; font-weight: 700; font-size: 28px; letter-spacing: 0.12em; color: #8f9abd; }
+    #pn-label b { color: var(--ink); font-weight: 800; letter-spacing: 0.04em; }
+    #pn-counter { top: 842px; height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #pn-num { font-family: "League Gothic", sans-serif; font-variant-numeric: tabular-nums; line-height: 0.9; font-size: 150px; color: var(--ink); white-space: nowrap; text-shadow: 0 0 40px rgba(255, 196, 92, 0.25); }
+    #pn-name { font-weight: 900; font-size: 44px; letter-spacing: 0.14em; color: var(--accent); line-height: 1; margin-top: 8px; white-space: nowrap; }
+    #pn-note { top: 1060px; font-family: "Space Mono", monospace; font-size: 28px; line-height: 34px; color: #7d88ad; white-space: nowrap; }
+    #pn-cmp { top: 1124px; font-weight: 900; font-size: 44px; color: var(--accent); text-transform: uppercase; white-space: nowrap; }
+    #pn-sub { top: 1182px; font-family: "Space Mono", monospace; font-size: 30px; color: #c9d0e6; white-space: nowrap; }
+    #pn-track { position: absolute; left: 170px; width: 740px; top: 1320px; height: 8px; border-radius: 4px; background: #1a2135; }
+    #pn-track-fill { position: absolute; left: 0; top: 0; height: 8px; width: 0; border-radius: 4px; background: linear-gradient(90deg, #6b5a2e, var(--accent)); }
+    #pn-ticks i { position: absolute; top: -5px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: #2f3a58; }
+    #pn-ticks i.on { background: var(--accent); }
+    #pn-track-dot { position: absolute; top: -9px; width: 26px; height: 26px; margin-left: -13px; border-radius: 13px; background: var(--accent); box-shadow: 0 0 24px rgba(255, 184, 77, 0.7); }
+  </style>
+
+  <div id="root" data-composition-id="sim" data-width="1080" data-height="1920">
+    <svg id="pn-art" viewBox="0 0 1080 1920" data-layout-ignore>
+      <defs>
+        <radialGradient id="pn-coin-g" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#f6b37a" /><stop offset="0.6" stop-color="#c46a33" /><stop offset="1" stop-color="#7d3d18" /></radialGradient>
+        <linearGradient id="pn-bar-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc766" /><stop offset="1" stop-color="#b9741f" /></linearGradient>
+        <linearGradient id="pn-bar-now" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3cf" /><stop offset="1" stop-color="#ffb84d" /></linearGradient>
+        <linearGradient id="pn-maskg" x1="0" y1="0" x2="0" y2="1920" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" /><stop offset="0.19" stop-color="#000" /><stop offset="0.208" stop-color="#fff" /><stop offset="0.405" stop-color="#fff" /><stop offset="0.43" stop-color="#000" /><stop offset="1" stop-color="#000" /></linearGradient>
+        <mask id="pn-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920"><rect width="1080" height="1920" fill="url(#pn-maskg)" /></mask>
+      </defs>
+      <!-- hook: the two offers -->
+      <g id="pn-offers">
+        <g id="pn-coin">
+        <circle cx="300" cy="600" r="118" fill="url(#pn-coin-g)" stroke="#e79a5e" stroke-width="6" />
+        <circle cx="300" cy="600" r="94" fill="none" stroke="#8a4320" stroke-width="3" stroke-dasharray="5 7" />
+        <text x="300" y="634" text-anchor="middle" font-family="Archivo Black" font-size="96" fill="#5a2a0e">1¢</text>
+        </g>
+        <g id="pn-x2" opacity="0"><rect x="350" y="470" width="96" height="56" rx="28" fill="#ffb84d" /><text x="398" y="510" text-anchor="middle" font-family="Inter" font-weight="900" font-size="34" fill="#1a1205">×2</text></g>
+        <g id="pn-30d" opacity="0"><rect x="208" y="742" width="184" height="52" rx="26" fill="#151b2c" stroke="#ffb84d" stroke-width="3" /><text x="300" y="779" text-anchor="middle" font-family="Inter" font-weight="900" font-size="30" fill="#ffb84d">30 DAYS</text></g>
+        <text x="540" y="618" text-anchor="middle" font-family="Inter" font-weight="900" font-size="48" fill="#8f9abd">OR</text>
+        <g id="pn-stack">
+          <rect x="672" y="664" width="200" height="40" rx="6" fill="#2f7d4f" stroke="#7fd19b" stroke-width="3" />
+          <rect x="672" y="620" width="200" height="40" rx="6" fill="#358a58" stroke="#7fd19b" stroke-width="3" />
+          <rect x="672" y="576" width="200" height="40" rx="6" fill="#3b9762" stroke="#7fd19b" stroke-width="3" />
+          <rect x="672" y="532" width="200" height="40" rx="6" fill="#42a56c" stroke="#7fd19b" stroke-width="3" />
+          <rect x="672" y="488" width="200" height="40" rx="6" fill="#49b276" stroke="#7fd19b" stroke-width="3" />
+          <rect x="744" y="488" width="56" height="216" fill="#e9f3e2" opacity="0.85" />
+          <text x="772" y="760" text-anchor="middle" font-family="Inter" font-weight="900" font-size="46" fill="#7fd19b">$1,000,000</text>
+        </g>
+      </g>
+      <!-- the chart -->
+      <g id="pn-chart" mask="url(#pn-mask)" opacity="0">
+        <g id="pn-refs"></g>
+        <g id="pn-bars"></g>
+        <line x1="150" x2="930" y1="770" y2="770" stroke="#2b3452" stroke-width="6" stroke-linecap="round" />
+        <text id="pn-gap" x="0" y="0" text-anchor="end" font-family="Inter" font-weight="900" font-size="30" fill="#ffffff" opacity="0"></text>
+        <g id="pn-split" opacity="0">
+          <line id="pn-split-line" x1="884" x2="926" y1="0" y2="0" stroke="#ffffff" stroke-width="4" stroke-dasharray="6 5" />
+          <text id="pn-split-a" x="874" y="0" text-anchor="end" font-family="Inter" font-weight="900" font-size="30" fill="#ffb84d">+$2.68M ON DAY 30 →</text>
+          <text id="pn-split-b" x="874" y="0" text-anchor="end" font-family="Inter" font-weight="800" font-size="30" fill="#aab4d4">DAYS 1–29 →</text>
+        </g>
+      </g>
+    </svg>
+
+    <div id="pn-hook" class="pn-row">$1 million now, or a penny<br />that <span class="acc">doubles every day?</span></div>
+    <div id="pn-clock" class="pn-row">
+      <div id="pn-clock-pill">
+        <svg width="34" height="34" viewBox="0 0 34 34"><rect x="4" y="7" width="26" height="23" rx="4" fill="none" stroke="#ffb84d" stroke-width="3" /><path d="M4 14 H30 M11 3 V10 M23 3 V10" stroke="#ffb84d" stroke-width="3" stroke-linecap="round" /></svg>
+        <span>DAY</span><span id="pn-clock-num">1</span>
+      </div>
+    </div>
+    <div id="pn-outro" class="pn-row">
+      <span id="pn-out1">Half came on<br />the <span class="acc">last day.</span></span>
+      <span id="pn-out2">That's the power<br />of <span class="acc">doubling.</span></span>
+      <span id="pn-out3">What should we<br /><span class="acc">double next?</span></span>
+    </div>
+    <div id="pn-label" class="pn-row">1¢ × <b id="pn-pow">2⁰</b></div>
+    <div id="pn-counter" class="pn-row"><div id="pn-num">$0.01</div><div id="pn-name">YOUR PENNY</div></div>
+    <div id="pn-note" class="pn-row">1 cent</div>
+    <div id="pn-cmp" class="pn-row">Just one cent</div>
+    <div id="pn-sub" class="pn-row">The other offer: $1,000,000</div>
+    <div id="pn-track" data-layout-ignore><div id="pn-track-fill"></div><div id="pn-ticks"></div><div id="pn-track-dot"></div></div>
+  </div>
+
+  <script>
+    (function () {
+      const D = 49.12;
+      const GY = 770;
+      const $ = (id) => document.getElementById(id);
+      const NS = "http://www.w3.org/2000/svg";
+      const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+      const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+      const eout = (x) => 1 - Math.pow(1 - x, 3);
+      const B = (d) => 0.01 * Math.pow(2, d - 1); // balance on day d
+
+      // narrated days: the clock reaches them on "Day", the counter lands on the spoken amount, then holds
+      const MS = [
+        { k: 1, vDay: 6.92, vAmt: 7.6, vEnd: 7.95 }, { k: 7, vDay: 8.64, vAmt: 9.62, vEnd: 11.9 }, { k: 14, vDay: 12.45, vAmt: 13.77, vEnd: 16.8 },
+        { k: 20, vDay: 17.44, vAmt: 18.5, vEnd: 19.5 }, { k: 24, vDay: 20.08, vAmt: 21.4, vEnd: 22.4 }, { k: 27, vDay: 23.02, vAmt: 24.2, vEnd: 27.3 },
+        { k: 28, vDay: 27.91, vAmt: 28.91, vEnd: 32.1 }, { k: 29, vDay: 32.47, vAmt: 33.7, vEnd: 35.4 }, { k: 30, vDay: 36.47, vAmt: 37.97, vEnd: D + 1 },
+      ];
+      function state(v) {
+        let day = 1, money = B(1), ms = null;
+        for (let i = 0; i < MS.length; i++) {
+          const m = MS[i];
+          if (v >= m.vDay) { day = m.k; ms = m; }
+          if (i + 1 < MS.length && v > m.vEnd && v < MS[i + 1].vDay) {
+            const n = MS[i + 1];
+            day = Math.min(n.k - 1, m.k + Math.floor((n.k - 1 - m.k + 0.999) * clamp((v - m.vEnd) / (n.vDay - m.vEnd))));
+            ms = null;
+          }
+        }
+        money = B(day);
+        let sweep = 1;
+        if (ms && ms.k > 1 && v < ms.vAmt) {
+          sweep = eout(clamp((v - ms.vDay) / (ms.vAmt - ms.vDay)));
+          money = Math.exp(Math.log(B(ms.k - 1)) + (Math.log(B(ms.k)) - Math.log(B(ms.k - 1))) * sweep);
+        }
+        return { day, money, ms, sweep };
+      }
+
+      const CAM = [[0, 315 / 0.64], [12.45, 315 / 81.92], [17.44, 315 / 5242.88], [20.08, 315 / 83886.08], [23.02, 315 / 1e6], [27.91, 315 / 1342177.28], [32.47, 315 / 2684354.56], [36.47, 315 / 5368709.12]];
+      function camP(v) { let L = Math.log(CAM[0][1]); for (let i = 1; i < CAM.length; i++) L += (Math.log(CAM[i][1]) - Math.log(CAM[i - 1][1])) * ease(clamp((v - (CAM[i][0] - 0.75)) / 0.85)); return Math.exp(L); }
+
+      // bars and reference lines
+      const bars = [];
+      const bg = $("pn-bars");
+      for (let d = 1; d <= 30; d++) { const r = document.createElementNS(NS, "rect"); r.setAttribute("x", (165 + (d - 1) * 25.3).toFixed(1)); r.setAttribute("width", "20"); r.setAttribute("rx", "3"); r.setAttribute("fill", "url(#pn-bar-g)"); bg.appendChild(r); bars.push(r); }
+      const REFS = [[5, "COFFEE · $5", "#8f9abd", 3], [1000, "NEW PHONE · $1,000", "#8f9abd", 3], [30000, "NEW CAR · $30,000", "#8f9abd", 3], [1e6, "THE $1M OFFER", "#ffffff", 6]];
+      const refEls = REFS.map(([val, txt, col, w]) => {
+        const g = document.createElementNS(NS, "g");
+        const l = document.createElementNS(NS, "line"); l.setAttribute("x1", "150"); l.setAttribute("x2", "930"); l.setAttribute("stroke", col); l.setAttribute("stroke-width", w); l.setAttribute("stroke-dasharray", val === 1e6 ? "18 10" : "10 9");
+        const t = document.createElementNS(NS, "text"); t.setAttribute("x", "160"); t.setAttribute("font-family", "Inter"); t.setAttribute("font-weight", val === 1e6 ? "900" : "800"); t.setAttribute("font-size", val === 1e6 ? "32" : "28"); t.setAttribute("fill", col); t.textContent = txt;
+        g.appendChild(l); g.appendChild(t); $("pn-refs").appendChild(g); return { val, g, l, t };
+      });
+      const vis = (px, lo, hi) => clamp((px - lo) / lo) * clamp((hi - px) / (hi * 0.25));
+
+      const CMP = [[1, "Just one cent"], [4, "Still pocket change"], [7, "Not even a dollar"], [8, "Just over a dollar"], [10, "≈ a coffee"], [14, "The million looks smart"], [18, "≈ a new phone"], [20, "Still way behind"], [23, "≈ a new car"], [27, "Still behind"], [28, "You passed the million!"], [29, "≈ 2.7× the million"], [30, "≈ 5.4× the million"]];
+      const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+      const sup = (n) => String(n).split("").map((c) => SUP[+c]).join("");
+      const commas = (s) => s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const money = (x) => { const c = Math.round(x * 100); return "$" + commas(String(Math.floor(c / 100))) + "." + String(c % 100).padStart(2, "0"); };
+      const TICKS = [7, 14, 20, 24, 27, 28, 29, 30];
+      const tk = $("pn-ticks"); TICKS.forEach((x) => { const i = document.createElement("i"); i.style.left = (((x - 1) / 29) * 740).toFixed(1) + "px"; tk.appendChild(i); });
+      const tickEls = Array.from(tk.children);
+      let cmpStart = {}; CMP.forEach(([d]) => { const m = MS.find((x) => x.k === d); cmpStart[d] = m ? m.vAmt : null; });
+
+      function render(v) {
+        const s = state(v);
+        const P = camP(v);
+        // the offers fade out, the chart fades in
+        $("pn-offers").setAttribute("opacity", (1 - clamp((v - 6.35) / 0.45)).toFixed(3));
+        $("pn-offers").style.display = v > 6.85 ? "none" : "";
+        $("pn-chart").setAttribute("opacity", clamp((v - 6.5) / 0.45).toFixed(3));
+        bars.forEach((r, i) => {
+          const d = i + 1;
+          if (d > s.day) { r.style.display = "none"; return; }
+          r.style.display = "";
+          const val = d === s.day ? s.money : B(d);
+          const h = Math.min(Math.max(val * P, 2), 2000);
+          r.setAttribute("y", (GY - h).toFixed(1)); r.setAttribute("height", h.toFixed(1));
+          r.setAttribute("fill", d === s.day ? "url(#pn-bar-now)" : "url(#pn-bar-g)");
+        });
+        refEls.forEach((r) => {
+          const px = r.val * P, op = vis(px, 12, 380);
+          r.g.style.display = op > 0.001 ? "" : "none"; if (op <= 0.001) return;
+          r.g.setAttribute("opacity", op.toFixed(3));
+          const y = (GY - px).toFixed(1);
+          r.l.setAttribute("y1", y); r.l.setAttribute("y2", y); r.t.setAttribute("y", (GY - px - 12).toFixed(1));
+        });
+        // hook: punch each offer on its word, then the ×2 and 30-day badges
+        const punch = (t0) => 1 + 0.1 * Math.sin(Math.PI * clamp((v - t0) / 0.35));
+        $("pn-stack").setAttribute("transform", `translate(772 596) scale(${punch(0.9).toFixed(4)}) translate(-772 -596)`);
+        $("pn-coin").setAttribute("transform", `translate(300 600) scale(${punch(3.22).toFixed(4)}) translate(-300 -600)`);
+        $("pn-x2").setAttribute("opacity", eout(clamp((v - 3.8) / 0.2)).toFixed(3));
+        $("pn-30d").setAttribute("opacity", eout(clamp((v - 5.45) / 0.2)).toFixed(3));
+        // the gap to the million on day 27, the lead on day 28
+        {
+          const g = $("pn-gap");
+          const show27 = v >= 26.65 && v < 27.8, show28 = v >= 31.2 && v < 32.35;
+          if (show27 || show28) {
+            const d = show27 ? 27 : 28, t0 = show27 ? 26.65 : 31.2;
+            const top = GY - B(d) * P, line = GY - 1e6 * P;
+            g.textContent = show27 ? "$329K SHORT ↑" : "+$342K AHEAD ↓";
+            g.setAttribute("x", (165 + (d - 1) * 25.3 - 12).toFixed(1));
+            g.setAttribute("y", ((top + line) / 2 + 10).toFixed(1));
+            g.setAttribute("fill", show27 ? "#ff8f7a" : "#7fd19b");
+            g.setAttribute("opacity", (eout(clamp((v - t0) / 0.2)) * (1 - clamp((v - (show27 ? 27.65 : 32.2)) / 0.15))).toFixed(3));
+          } else g.setAttribute("opacity", "0");
+        }
+        // outro: the last day's bar split in half
+        const sp = clamp((v - 41.35) / 0.3);
+        $("pn-split").setAttribute("opacity", sp.toFixed(3));
+        if (sp > 0) {
+          const h = Math.min(B(30) * P, 2000), mid = GY - h / 2;
+          $("pn-split-line").setAttribute("y1", mid.toFixed(1)); $("pn-split-line").setAttribute("y2", mid.toFixed(1));
+          $("pn-split-a").setAttribute("y", (GY - h * 0.75 + 10).toFixed(1)); $("pn-split-b").setAttribute("y", (GY - h * 0.38 + 10).toFixed(1));
+        }
+
+        // counter and labels
+        const numEl = $("pn-num");
+        numEl.textContent = money(s.money);
+        numEl.style.fontSize = Math.min(150, 640 / (numEl.textContent.length * 0.44)).toFixed(1) + "px";
+        const pop = s.ms && s.ms.k > 1 ? 1 + 0.06 * (1 - eout(clamp((v - s.ms.vAmt) / 0.2))) * (v >= s.ms.vAmt ? 1 : 0) : 1;
+        numEl.style.transform = `scale(${pop.toFixed(4)})`;
+        const n = s.day - 1;
+        $("pn-pow").textContent = "2" + sup(n);
+        const cents = (2n ** BigInt(n)).toString();
+        $("pn-note").textContent = n === 0 ? "1 cent" : commas(cents) + " cents";
+        let c = CMP[0]; for (const x of CMP) if (s.day >= x[0]) c = x;
+        const cmp = $("pn-cmp"); cmp.textContent = c[1];
+        const cv = cmpStart[c[0]];
+        const a = cv == null ? 1 : clamp((v - cv) / 0.2);
+        cmp.style.opacity = c[0] === 1 ? "1" : (0.15 + 0.85 * a).toFixed(3);
+        cmp.style.filter = c[0] === 1 ? "none" : `blur(${(8 * (1 - a)).toFixed(2)}px)`;
+        cmp.style.fontSize = (c[1].length > 21 ? 38 : 44) + "px";
+        const pct = (s.money / 1e6) * 100;
+        $("pn-sub").textContent = v < 6.9 ? "The other offer: $1,000,000" : pct < 0.01 ? "< 0.01% of the $1M offer" : (pct < 1 ? pct.toFixed(2) : pct < 10 ? pct.toFixed(1) : Math.round(pct)) + "% of the $1M offer";
+        $("pn-clock-num").textContent = String(s.day);
+        const px = (((s.day - 1) / 29) * 740).toFixed(1);
+        $("pn-track-fill").style.width = px + "px"; $("pn-track-dot").style.left = px + "px";
+        tickEls.forEach((e, i) => (e.className = s.day >= TICKS[i] ? "on" : ""));
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      tl.to({ p: 0 }, { p: 1, duration: D, ease: "none" }, 0);
+      tl.eventCallback("onUpdate", () => render(tl.time()));
+      tl.fromTo("#pn-hook", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(10px)", duration: 0.25, ease: "power3.in" }, 6.4);
+      tl.fromTo("#pn-clock-pill", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 6.7);
+      tl.to("#pn-clock-pill", { opacity: 0, duration: 0.2, ease: "power2.in" }, 40.95);
+      [["#pn-out1", 41.25, 43.4], ["#pn-out2", 43.5, 45.15], ["#pn-out3", 45.25, D + 1]].forEach(([sel, a, b]) => {
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, a);
+        if (b < D) tl.to(sel, { opacity: 0, filter: "blur(6px)", duration: 0.13, ease: "power2.in" }, b - 0.13);
+      });
+      render(0);
+      window.__timelines["sim"] = tl;
+    })();
+  </script>
+</template>

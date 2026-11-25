@@ -1,0 +1,14 @@
+{"lead": 0.15, "tail": 2.6, "trim": true, "lines": [
+ {"id": "hook", "text": "Would you take one million dollars right now, or one penny that doubles every day for thirty days?", "gap": 0.5},
+ {"id": "d01", "text": "Day one: one cent.", "gap": 0.45},
+ {"id": "d07", "text": "Day seven: sixty-four cents. Not even a dollar.", "gap": 0.45},
+ {"id": "d14", "text": "Day fourteen: eighty-two dollars. The million is looking smart.", "gap": 0.45},
+ {"id": "d20", "text": "Day twenty: about five thousand.", "gap": 0.45},
+ {"id": "d24", "text": "Day twenty-four: eighty-four thousand.", "gap": 0.45},
+ {"id": "d27", "text": "Day twenty-seven: six hundred seventy-one thousand. Still behind.", "gap": 0.45},
+ {"id": "d28", "text": "Day twenty-eight: one point three four million. You just passed it.", "gap": 0.45},
+ {"id": "d29", "text": "Day twenty-nine: two point six eight million.", "gap": 0.55},
+ {"id": "d30a", "text": "And on day thirty...", "gap": 0.8},
+ {"id": "d30b", "text": "five point three seven million dollars.", "gap": 0.8},
+ {"id": "outro", "text": "Half of it came on the very last day. That's the power of doubling. What should we double next?", "gap": 0.2}
+]}

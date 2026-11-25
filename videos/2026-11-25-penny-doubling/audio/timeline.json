@@ -1,0 +1,616 @@
+{
+ "duration": 49.116,
+ "lines": [
+  {
+   "id": "hook",
+   "text": "Would you take one million dollars right now, or one penny that doubles every day for thirty days?",
+   "start": 0.15,
+   "end": 6.424,
+   "words": [
+    {
+     "w": "Would",
+     "start": 0.15,
+     "end": 0.222
+    },
+    {
+     "w": "you",
+     "start": 0.222,
+     "end": 0.297
+    },
+    {
+     "w": "take",
+     "start": 0.297,
+     "end": 0.547
+    },
+    {
+     "w": "one",
+     "start": 0.622,
+     "end": 0.897
+    },
+    {
+     "w": "million",
+     "start": 0.897,
+     "end": 1.222
+    },
+    {
+     "w": "dollars",
+     "start": 1.222,
+     "end": 1.584
+    },
+    {
+     "w": "right",
+     "start": 1.584,
+     "end": 1.772
+    },
+    {
+     "w": "now",
+     "start": 1.784,
+     "end": 2.197
+    },
+    {
+     "w": "or",
+     "start": 2.409,
+     "end": 2.672
+    },
+    {
+     "w": "one",
+     "start": 2.959,
+     "end": 3.222
+    },
+    {
+     "w": "penny",
+     "start": 3.222,
+     "end": 3.547
+    },
+    {
+     "w": "that",
+     "start": 3.547,
+     "end": 3.784
+    },
+    {
+     "w": "doubles",
+     "start": 3.797,
+     "end": 4.272
+    },
+    {
+     "w": "every",
+     "start": 4.372,
+     "end": 4.672
+    },
+    {
+     "w": "day",
+     "start": 4.684,
+     "end": 5.122
+    },
+    {
+     "w": "for",
+     "start": 5.309,
+     "end": 5.447
+    },
+    {
+     "w": "thirty",
+     "start": 5.447,
+     "end": 5.822
+    },
+    {
+     "w": "days",
+     "start": 5.822,
+     "end": 6.384
+    }
+   ]
+  },
+  {
+   "id": "d01",
+   "text": "Day one: one cent.",
+   "start": 6.924,
+   "end": 8.19,
+   "words": [
+    {
+     "w": "Day",
+     "start": 6.924,
+     "end": 7.026
+    },
+    {
+     "w": "one",
+     "start": 7.026,
+     "end": 7.326
+    },
+    {
+     "w": "one",
+     "start": 7.601,
+     "end": 7.764
+    },
+    {
+     "w": "cent",
+     "start": 7.764,
+     "end": 8.139
+    }
+   ]
+  },
+  {
+   "id": "d07",
+   "text": "Day seven: sixty-four cents. Not even a dollar.",
+   "start": 8.64,
+   "end": 11.997,
+   "words": [
+    {
+     "w": "Day",
+     "start": 8.64,
+     "end": 8.836
+    },
+    {
+     "w": "seven",
+     "start": 8.836,
+     "end": 9.236
+    },
+    {
+     "w": "sixty-four",
+     "start": 9.623,
+     "end": 10.198
+    },
+    {
+     "w": "cents",
+     "start": 10.198,
+     "end": 10.836
+    },
+    {
+     "w": "Not",
+     "start": 11.223,
+     "end": 11.348
+    },
+    {
+     "w": "even",
+     "start": 11.348,
+     "end": 11.498
+    },
+    {
+     "w": "a",
+     "start": 11.498,
+     "end": 11.536
+    },
+    {
+     "w": "dollar",
+     "start": 11.536,
+     "end": 11.948
+    }
+   ]
+  },
+  {
+   "id": "d14",
+   "text": "Day fourteen: eighty-two dollars. The million is looking smart.",
+   "start": 12.447,
+   "end": 16.993,
+   "words": [
+    {
+     "w": "Day",
+     "start": 12.447,
+     "end": 12.631
+    },
+    {
+     "w": "fourteen",
+     "start": 12.643,
+     "end": 13.343
+    },
+    {
+     "w": "eighty-two",
+     "start": 13.768,
+     "end": 14.206
+    },
+    {
+     "w": "dollars",
+     "start": 14.218,
+     "end": 14.83
+    },
+    {
+     "w": "The",
+     "start": 15.243,
+     "end": 15.306
+    },
+    {
+     "w": "million",
+     "start": 15.318,
+     "end": 15.856
+    },
+    {
+     "w": "is",
+     "start": 16.006,
+     "end": 16.156
+    },
+    {
+     "w": "looking",
+     "start": 16.156,
+     "end": 16.456
+    },
+    {
+     "w": "smart",
+     "start": 16.456,
+     "end": 16.943
+    }
+   ]
+  },
+  {
+   "id": "d20",
+   "text": "Day twenty: about five thousand.",
+   "start": 17.443,
+   "end": 19.631,
+   "words": [
+    {
+     "w": "Day",
+     "start": 17.443,
+     "end": 17.542
+    },
+    {
+     "w": "twenty",
+     "start": 17.542,
+     "end": 17.942
+    },
+    {
+     "w": "about",
+     "start": 18.205,
+     "end": 18.505
+    },
+    {
+     "w": "five",
+     "start": 18.505,
+     "end": 19.005
+    },
+    {
+     "w": "thousand",
+     "start": 19.005,
+     "end": 19.58
+    }
+   ]
+  },
+  {
+   "id": "d24",
+   "text": "Day twenty-four: eighty-four thousand.",
+   "start": 20.081,
+   "end": 22.575,
+   "words": [
+    {
+     "w": "Day",
+     "start": 20.081,
+     "end": 20.246
+    },
+    {
+     "w": "twenty-four",
+     "start": 20.258,
+     "end": 20.946
+    },
+    {
+     "w": "eighty-four",
+     "start": 21.396,
+     "end": 21.921
+    },
+    {
+     "w": "thousand",
+     "start": 21.921,
+     "end": 22.521
+    }
+   ]
+  },
+  {
+   "id": "d27",
+   "text": "Day twenty-seven: six hundred seventy-one thousand. Still behind.",
+   "start": 23.025,
+   "end": 27.457,
+   "words": [
+    {
+     "w": "Day",
+     "start": 23.025,
+     "end": 23.148
+    },
+    {
+     "w": "twenty-seven",
+     "start": 23.148,
+     "end": 23.798
+    },
+    {
+     "w": "six",
+     "start": 24.198,
+     "end": 24.448
+    },
+    {
+     "w": "hundred",
+     "start": 24.461,
+     "end": 24.723
+    },
+    {
+     "w": "seventy-one",
+     "start": 24.836,
+     "end": 25.573
+    },
+    {
+     "w": "thousand",
+     "start": 25.686,
+     "end": 26.298
+    },
+    {
+     "w": "Still",
+     "start": 26.711,
+     "end": 26.936
+    },
+    {
+     "w": "behind",
+     "start": 26.936,
+     "end": 27.398
+    }
+   ]
+  },
+  {
+   "id": "d28",
+   "text": "Day twenty-eight: one point three four million. You just passed it.",
+   "start": 27.907,
+   "end": 32.022,
+   "words": [
+    {
+     "w": "Day",
+     "start": 27.907,
+     "end": 28.027
+    },
+    {
+     "w": "twenty-eight",
+     "start": 28.027,
+     "end": 28.489
+    },
+    {
+     "w": "one",
+     "start": 28.914,
+     "end": 29.114
+    },
+    {
+     "w": "point",
+     "start": 29.127,
+     "end": 29.427
+    },
+    {
+     "w": "three",
+     "start": 29.427,
+     "end": 29.964
+    },
+    {
+     "w": "four",
+     "start": 30.089,
+     "end": 30.439
+    },
+    {
+     "w": "million",
+     "start": 30.439,
+     "end": 30.877
+    },
+    {
+     "w": "You",
+     "start": 31.277,
+     "end": 31.339
+    },
+    {
+     "w": "just",
+     "start": 31.339,
+     "end": 31.502
+    },
+    {
+     "w": "passed",
+     "start": 31.502,
+     "end": 31.889
+    },
+    {
+     "w": "it",
+     "start": 31.889,
+     "end": 32.014
+    }
+   ]
+  },
+  {
+   "id": "d29",
+   "text": "Day twenty-nine: two point six eight million.",
+   "start": 32.472,
+   "end": 35.324,
+   "words": [
+    {
+     "w": "Day",
+     "start": 32.472,
+     "end": 32.591
+    },
+    {
+     "w": "twenty-nine",
+     "start": 32.591,
+     "end": 33.291
+    },
+    {
+     "w": "two",
+     "start": 33.703,
+     "end": 33.866
+    },
+    {
+     "w": "point",
+     "start": 33.866,
+     "end": 34.128
+    },
+    {
+     "w": "six",
+     "start": 34.128,
+     "end": 34.503
+    },
+    {
+     "w": "eight",
+     "start": 34.666,
+     "end": 34.816
+    },
+    {
+     "w": "million",
+     "start": 34.828,
+     "end": 35.278
+    }
+   ]
+  },
+  {
+   "id": "d30a",
+   "text": "And on day thirty...",
+   "start": 35.874,
+   "end": 37.168,
+   "words": [
+    {
+     "w": "And",
+     "start": 35.874,
+     "end": 35.96
+    },
+    {
+     "w": "on",
+     "start": 35.972,
+     "end": 36.122
+    },
+    {
+     "w": "day",
+     "start": 36.122,
+     "end": 36.46
+    },
+    {
+     "w": "thirty",
+     "start": 36.472,
+     "end": 37.122
+    }
+   ]
+  },
+  {
+   "id": "d30b",
+   "text": "five point three seven million dollars.",
+   "start": 37.968,
+   "end": 40.551,
+   "words": [
+    {
+     "w": "five",
+     "start": 37.968,
+     "end": 38.198
+    },
+    {
+     "w": "point",
+     "start": 38.198,
+     "end": 38.461
+    },
+    {
+     "w": "three",
+     "start": 38.461,
+     "end": 39.023
+    },
+    {
+     "w": "seven",
+     "start": 39.248,
+     "end": 39.661
+    },
+    {
+     "w": "million",
+     "start": 39.661,
+     "end": 39.923
+    },
+    {
+     "w": "dollars",
+     "start": 39.923,
+     "end": 40.511
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "text": "Half of it came on the very last day. That's the power of doubling. What should we double next?",
+   "start": 41.351,
+   "end": 46.316,
+   "words": [
+    {
+     "w": "Half",
+     "start": 41.351,
+     "end": 41.537
+    },
+    {
+     "w": "of",
+     "start": 41.55,
+     "end": 41.625
+    },
+    {
+     "w": "it",
+     "start": 41.625,
+     "end": 41.75
+    },
+    {
+     "w": "came",
+     "start": 41.762,
+     "end": 41.975
+    },
+    {
+     "w": "on",
+     "start": 41.975,
+     "end": 42.025
+    },
+    {
+     "w": "the",
+     "start": 42.025,
+     "end": 42.087
+    },
+    {
+     "w": "very",
+     "start": 42.087,
+     "end": 42.4
+    },
+    {
+     "w": "last",
+     "start": 42.4,
+     "end": 42.775
+    },
+    {
+     "w": "day",
+     "start": 42.787,
+     "end": 43.125
+    },
+    {
+     "w": "That's",
+     "start": 43.525,
+     "end": 43.687
+    },
+    {
+     "w": "the",
+     "start": 43.687,
+     "end": 43.787
+    },
+    {
+     "w": "power",
+     "start": 43.787,
+     "end": 44.275
+    },
+    {
+     "w": "of",
+     "start": 44.275,
+     "end": 44.4
+    },
+    {
+     "w": "doubling",
+     "start": 44.4,
+     "end": 44.85
+    },
+    {
+     "w": "What",
+     "start": 45.262,
+     "end": 45.312
+    },
+    {
+     "w": "should",
+     "start": 45.325,
+     "end": 45.425
+    },
+    {
+     "w": "we",
+     "start": 45.425,
+     "end": 45.5
+    },
+    {
+     "w": "double",
+     "start": 45.5,
+     "end": 45.75
+    },
+    {
+     "w": "next",
+     "start": 45.762,
+     "end": 46.262
+    }
+   ]
+  }
+ ]
+}
