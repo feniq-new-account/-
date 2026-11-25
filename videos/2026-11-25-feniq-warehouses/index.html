@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Alexandria"; src: url("assets/fonts/Alexandria.ttf"); font-weight: 100 900; }
+      :root { --orange: #F2760A; --obg: #C25600; --navy: #16283F; --navy2: #0E1B2C; --ink: #ffffff; --soft: #C9D3E0; --green: #1E8A52; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--navy2); }
+      #root { position: relative; width: 1080px; height: 1920px; font-family: "Alexandria", sans-serif; color: var(--ink); direction: rtl;
+        background: radial-gradient(1200px 900px at 50% 30%, #1E3656 0%, var(--navy) 45%, var(--navy2) 100%); overflow: hidden; }
+      .scene { position: absolute; inset: 0; }
+      .in { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 64px; }
+      .headline { font-size: 80px; font-weight: 800; line-height: 1.3; text-align: center; padding: 0 100px; }
+      .o { color: var(--orange); }
+      .sub { font-size: 50px; font-weight: 500; color: var(--soft); text-align: center; padding: 0 110px; line-height: 1.45; }
+      .card { background: #fff; color: var(--navy); border-radius: 44px; box-shadow: 0 50px 120px rgba(0,0,0,.45); }
+
+      /* s1 chaos */
+      .mess { position: relative; width: 800px; height: 640px; }
+      .note { position: absolute; width: 340px; height: 440px; right: 20px; top: 150px; background: #FFF6D8; border-radius: 18px; padding: 40px 36px; color: #5a4a20; font-size: 34px; line-height: 1.9; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+      .note s { color: #b33; }
+      .wa { position: absolute; left: 0px; top: 0px; background: #DCF8C6; color: #1b1b1b; border-radius: 30px; padding: 24px 34px; font-size: 36px; font-weight: 500; box-shadow: 0 18px 40px rgba(0,0,0,.35); white-space: nowrap; }
+      .wa2 { top: 250px; left: 30px; background: #fff; }
+      .missed { position: absolute; left: 20px; top: 450px; background: #E5484D; border-radius: 30px; padding: 22px 34px; font-size: 34px; font-weight: 700; white-space: nowrap; box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+
+      /* s2 order */
+      .order { width: 860px; padding: 50px; display: flex; flex-direction: column; gap: 14px; }
+      .order h3 { font-size: 46px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+      .tag { background: var(--obg); color: #fff; font-size: 30px; border-radius: 40px; padding: 8px 26px; }
+      .ln { display: flex; justify-content: space-between; font-size: 38px; padding: 20px 0; border-bottom: 2px solid #E7ECF2; }
+      .ln b { font-weight: 800; }
+      .tot { display: flex; justify-content: space-between; font-size: 42px; font-weight: 800; padding-top: 18px; color: var(--obg); }
+
+      /* s3 notifications */
+      .phones { display: flex; gap: 50px; }
+      .ph { width: 460px; height: 540px; border-radius: 64px; background: #0A1422; border: 12px solid #2A3F5C; padding: 70px 26px; display: flex; flex-direction: column; align-items: center; gap: 30px; box-shadow: 0 40px 100px rgba(0,0,0,.5); }
+      .ph .who { font-size: 40px; font-weight: 800; color: var(--soft); }
+      .notif { width: 100%; background: rgba(255,255,255,.95); color: var(--navy); border-radius: 28px; padding: 26px; display: flex; gap: 18px; align-items: flex-start; }
+      .notif .ic { flex: none; width: 62px; height: 62px; border-radius: 16px; background: var(--obg); display: flex; align-items: center; justify-content: center; }
+      .notif .ic svg { width: 38px; height: 38px; }
+      .notif b { display: block; font-size: 38px; font-weight: 800; }
+      .notif span { font-size: 32px; color: #3c4b60; }
+
+      /* s4 network */
+      .net { position: relative; width: 900px; height: 900px; }
+      .net svg.lines { position: absolute; inset: 0; }
+      .wh { position: absolute; left: 350px; top: 350px; width: 200px; height: 200px; border-radius: 50px; background: var(--obg); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 80px rgba(242,118,10,.45); }
+      .wh svg { width: 120px; height: 120px; }
+      .ph-dot { position: absolute; width: 110px; height: 110px; margin: -55px 0 0 -55px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 14px 36px rgba(0,0,0,.4); }
+      .ph-dot svg { width: 62px; height: 62px; }
+
+      /* s5 split */
+      .split { display: flex; gap: 40px; }
+      .role { width: 430px; padding: 50px 36px; border-radius: 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+      .role.a { background: rgba(255,255,255,.08); border: 3px solid rgba(255,255,255,.2); }
+      .role.b { background: var(--obg); }
+      .role .ico { width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center; }
+      .role .ico svg { width: 90px; height: 90px; }
+      .role h4 { font-size: 50px; font-weight: 800; }
+      .role p { font-size: 38px; line-height: 1.45; font-weight: 500; }
+
+      /* s6 end */
+      .logo { display: flex; align-items: center; gap: 30px; }
+      .mark { flex: none; width: 180px; height: 180px; border-radius: 50px; background: var(--obg); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 80px rgba(242,118,10,.45); }
+      .mark svg { width: 120px; height: 120px; }
+      .word { white-space: nowrap; font-size: 118px; font-weight: 900; }
+      .url { font-size: 44px; font-weight: 600; direction: ltr; background: rgba(255,255,255,.1); border: 3px solid rgba(255,255,255,.25); border-radius: 30px; padding: 22px 44px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="26.4" data-width="1080" data-height="1920">
+
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="26.37" data-track-index="5"></audio>
+
+      <!-- s1 0 – 5.25 -->
+      <div id="s1" class="scene clip" data-start="0" data-duration="5.25" data-track-index="0">
+        <div class="in" id="s1in">
+          <div class="headline" id="s1h">صاحب مستودع؟<br />الطلبيات عم <span class="o">تضيع</span></div>
+          <div class="mess">
+            <div class="note" id="note">صيدلية الشفاء:<br /><s>أموكسي 6</s> 8؟<br />باراسيت… ؟؟<br />رجّع اتصل الضهر</div>
+            <div class="wa" id="w1">ابعتلي 10 من هداك الصنف</div>
+            <div class="wa wa2" id="w2">أي صنف؟ 🤔</div>
+            <div class="missed" id="miss">3 مكالمات فائتة</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s2 5.25 – 9.65 -->
+      <div id="s2" class="scene clip" data-start="5.25" data-duration="4.4" data-track-index="0">
+        <div class="in" id="s2in">
+          <div class="headline" id="s2h" style="font-size:72px">الطلبية بتوصلك<br /><span class="o">مكتوبة ومرتّبة</span></div>
+          <div class="card order" id="order">
+            <h3>طلبية جديدة <span class="tag">صيدلية الشفاء</span></h3>
+            <div class="ln" id="l1"><span>باراسيتامول 500</span><b>× 10</b></div>
+            <div class="ln" id="l2"><span>أموكسيسيلين 500</span><b>× 6</b></div>
+            <div class="ln" id="l3"><span>أوميبرازول 20</span><b>× 4</b></div>
+            <div class="ln" id="l4"><span>فيتامين د 50000</span><b>× 5</b></div>
+            <div class="tot" id="tot"><span>المجموع</span><span>1,905 ل.س</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s3 9.65 – 12.55 -->
+      <div id="s3" class="scene clip" data-start="9.65" data-duration="2.9" data-track-index="0">
+        <div class="in" id="s3in">
+          <div class="headline" id="s3h" style="font-size:72px">إشعار <span class="o">بنفس اللحظة</span></div>
+          <div class="phones">
+            <div class="ph" id="p1"><div class="who">المدير</div>
+              <div class="notif" id="n1"><div class="ic"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 22a2.5 2.5 0 0 0 2.5-2.5h-5A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg></div><div><b>طلبية جديدة</b><span>صيدلية الشفاء</span></div></div>
+            </div>
+            <div class="ph" id="p2"><div class="who">المحاسب</div>
+              <div class="notif" id="n2"><div class="ic"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 22a2.5 2.5 0 0 0 2.5-2.5h-5A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg></div><div><b>طلبية جديدة</b><span>صيدلية الشفاء</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s4 12.55 – 16.65 -->
+      <div id="s4" class="scene clip" data-start="12.55" data-duration="4.1" data-track-index="0">
+        <div class="in" id="s4in" style="gap:30px">
+          <div class="headline" id="s4h" style="font-size:66px">أصنافك <span class="o">بالليرة السورية</span><br />قدّام صيدليات أكتر</div>
+          <div class="net">
+            <svg class="lines" viewBox="0 0 900 900" fill="none" stroke="#F2760A" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round">
+              <path id="k1" d="M450 450 L160 170" /><path id="k2" d="M450 450 L740 160" /><path id="k3" d="M450 450 L820 470" />
+              <path id="k4" d="M450 450 L700 770" /><path id="k5" d="M450 450 L200 760" /><path id="k6" d="M450 450 L90 470" />
+            </svg>
+            <div class="wh" id="wh"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 3 2 8v13h4v-8h12v8h4V8zM8 15h8v2H8zm0 3h8v3H8z"/></svg></div>
+            <div class="ph-dot" id="d1" style="left:160px;top:170px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+            <div class="ph-dot" id="d2" style="left:740px;top:160px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+            <div class="ph-dot" id="d3" style="left:820px;top:470px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+            <div class="ph-dot" id="d4" style="left:700px;top:770px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+            <div class="ph-dot" id="d5" style="left:200px;top:760px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+            <div class="ph-dot" id="d6" style="left:90px;top:470px"><svg viewBox="0 0 24 24" fill="#C25600"><path d="M10 3h4v7h7v4h-7v7h-4v-7H3v-4h7z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s5 16.65 – 20.75 -->
+      <div id="s5" class="scene clip" data-start="16.65" data-duration="4.1" data-track-index="0">
+        <div class="in" id="s5in">
+          <div class="headline" id="s5h" style="font-size:72px">كل واحد <span class="o">بشغلته</span></div>
+          <div class="split">
+            <div class="role a" id="ra"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7a3 3 0 1 0 0 .01M16 7a3 3 0 1 0 0 .01M3 20c0-3 2.2-5 5-5s5 2 5 5M11 20c0-3 2.2-5 5-5s5 2 5 5"/></svg></div><h4>المندوب</h4><p>بيضل يبني<br />العلاقة</p></div>
+            <div class="role b" id="rb"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18h4M9 9l2 2 4-4"/></svg></div><h4>التطبيق</h4><p>بياخد الطلبيات<br />الروتينية</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s6 20.75 – 26.4 -->
+      <div id="s6" class="scene clip" data-start="20.75" data-duration="5.65" data-track-index="0">
+        <div class="in" id="s6in">
+          <div class="logo" id="logo">
+            <div class="mark"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6c6 10 18 14 18 30a18 18 0 0 1-36 0c0-8 4-12 8-16 0 6 3 9 6 9 0-9 2-16 4-23z"/></svg></div>
+            <div class="word">فينيق <span class="o">لينك</span></div>
+          </div>
+          <div class="headline" id="s6h" style="font-size:70px">خلّي مستودعك<br /><span class="o">أقرب لكل صيدلية</span></div>
+          <div class="url" id="url">feniq-site.onrender.com</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", OUT = "power2.in";
+      // s1
+      tl.from("#s1h", { y: 30, scale: 0.97, duration: 0.5, ease: E }, 0);
+      tl.from("#note", { rotation: -12, y: 120, opacity: 0, duration: 0.5, ease: E }, 0.5);
+      tl.from("#w1", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 1.2);
+      tl.from("#w2", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 2.4);
+      tl.from("#miss", { x: -60, opacity: 0, duration: 0.35, ease: E }, 3.2);
+      tl.to("#note", { rotation: 4, duration: 0.6, ease: "sine.inOut" }, 3.6);
+      tl.to("#s1in", { opacity: 0, scale: 0.94, duration: 0.3, ease: OUT }, 4.9);
+      // s2
+      tl.from("#s2h", { y: 40, opacity: 0, duration: 0.45, ease: E }, 5.3);
+      tl.from("#order", { y: 200, opacity: 0, duration: 0.55, ease: E }, 5.4);
+      tl.from(["#l1", "#l2", "#l3", "#l4"], { x: 70, opacity: 0, duration: 0.3, stagger: 0.28, ease: E }, 6.0);
+      tl.from("#tot", { opacity: 0, y: 20, duration: 0.35, ease: E }, 7.3);
+      tl.to("#s2in", { opacity: 0, y: -40, duration: 0.3, ease: OUT }, 9.3);
+      // s3
+      tl.from("#s3h", { y: 40, opacity: 0, duration: 0.4, ease: E }, 9.7);
+      tl.from(["#p1", "#p2"], { y: 260, opacity: 0, duration: 0.45, stagger: 0.08, ease: E }, 9.7);
+      tl.from(["#n1", "#n2"], { y: -60, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 10.15);
+      tl.to(["#n1", "#n2"], { x: 8, duration: 0.06, yoyo: true, repeat: 5, ease: "none" }, 10.5);
+      tl.to("#s3in", { opacity: 0, duration: 0.3, ease: OUT }, 12.2);
+      // s4
+      tl.from("#s4h", { y: 40, opacity: 0, duration: 0.45, ease: E }, 12.6);
+      tl.from("#wh", { scale: 0, duration: 0.45, ease: "back.out(2)" }, 12.7);
+      ["#k1", "#k2", "#k3", "#k4", "#k5", "#k6"].forEach((k, i) => tl.from(k, { opacity: 0, duration: 0.25 }, 13.2 + i * 0.3));
+      ["#d1", "#d2", "#d3", "#d4", "#d5", "#d6"].forEach((d, i) => tl.from(d, { scale: 0, duration: 0.35, ease: "back.out(2.4)" }, 13.3 + i * 0.3));
+      tl.to("#wh", { scale: 1.08, duration: 0.4, yoyo: true, repeat: 1, ease: "sine.inOut" }, 15.3);
+      tl.to("#s4in", { opacity: 0, duration: 0.3, ease: OUT }, 16.3);
+      // s5
+      tl.from("#s5h", { y: 40, opacity: 0, duration: 0.45, ease: E }, 16.7);
+      tl.from("#ra", { x: 120, opacity: 0, duration: 0.5, ease: E }, 16.9);
+      tl.from("#rb", { x: -120, opacity: 0, duration: 0.5, ease: E }, 18.4);
+      tl.to("#s5in", { opacity: 0, duration: 0.3, ease: OUT }, 20.4);
+      // s6
+      tl.from("#logo", { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.6)" }, 20.8);
+      tl.from("#s6h", { y: 40, opacity: 0, duration: 0.5, ease: E }, 22.0);
+      tl.from("#url", { y: 40, opacity: 0, duration: 0.5, ease: E }, 23.0);
+      tl.to("#logo", { scale: 1.04, duration: 0.6, yoyo: true, repeat: 2, ease: "sine.inOut" }, 24.0);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
