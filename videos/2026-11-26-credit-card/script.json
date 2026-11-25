@@ -1,0 +1,47 @@
+{
+ "lead": 0.3,
+ "tail": 1.8,
+ "trim": true,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "Five thousand dollars on a credit card. Just pay the minimum?",
+   "gap": 0.3
+  },
+  {
+   "id": "s2",
+   "text": "Mason and Lily both owe five thousand dollars.",
+   "gap": 0.3
+  },
+  {
+   "id": "s3",
+   "text": "Same card. Twenty-four percent interest.",
+   "gap": 0.3
+  },
+  {
+   "id": "s4",
+   "text": "Mason pays the minimum. Lily pays two hundred fifty a month.",
+   "gap": 0.3
+  },
+  {
+   "id": "s5",
+   "text": "Mason takes nineteen years, and pays eight thousand nine hundred in interest.",
+   "gap": 0.3
+  },
+  {
+   "id": "s6",
+   "text": "Lily is done in two years, with fourteen hundred in interest.",
+   "gap": 0.4
+  },
+  {
+   "id": "s7",
+   "text": "The minimum cost Mason over seven thousand dollars extra.",
+   "gap": 0.3
+  },
+  {
+   "id": "s8",
+   "text": "Always pay more than the minimum. Follow for more money math.",
+   "gap": 0.2
+  }
+ ]
+}

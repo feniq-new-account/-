@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 42px; font-weight: 700; padding: 12px 28px; border-radius: 30px; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 56px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: 150px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.0" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="26.86" data-track-index="5"></audio>
+
+      <div id="stage" class="stage clip" data-start="0" data-duration="27.0" data-track-index="0" data-track-kind="graphics">
+        <!-- top panels -->
+        <div class="top" id="p1"><div class="kicker">Two friends invest</div><div class="big num">$100<small>/mo</small></div></div>
+        <div class="top" id="p3"><div class="badge">until age <b>67</b> · <b>10%</b> a year</div></div>
+        <div class="top" id="p4">
+          <div class="kicker">Money put in</div>
+          <div class="rows">
+            <div class="row"><span style="color:var(--alex)">Alex</span><span class="num">$56,400</span></div>
+            <div class="row"><span style="color:var(--sam)">Sam</span><span class="num">$44,400</span></div>
+          </div>
+          <div class="plus">Only $12,000 apart</div>
+        </div>
+        <div class="top" id="p5">
+          <div class="kicker">At 67</div>
+          <div class="ctr">
+            <div class="line" id="lsam"><span class="who" style="color:var(--sam)">Sam</span><span class="num" id="vsam" style="color:var(--sam)">$0</span></div>
+            <div class="line" id="lalex"><span class="who" style="color:var(--alex)">Alex</span><span class="num" id="valex" style="color:var(--alex)">$0</span></div>
+          </div>
+        </div>
+
+        <!-- people -->
+        <div class="people" id="people">
+          <div class="person alex" id="pa1"><div class="av num">A</div><h2>Alex</h2><div class="age" id="agea">starts at 20</div></div>
+          <div class="person sam" id="ps1"><div class="av num">S</div><h2>Sam</h2><div class="age" id="ages">starts at 30</div></div>
+        </div>
+
+        <!-- chart -->
+        <svg class="chart" id="chart" viewBox="0 0 1000 780">
+          <line x1="120" x2="940" y1="586.7" y2="586.7" class="g"/><text x="102" y="596.7" class="gl">$250k</text><line x1="120" x2="940" y1="453.3" y2="453.3" class="g"/><text x="102" y="463.3" class="gl">$500k</text><line x1="120" x2="940" y1="320.0" y2="320.0" class="g"/><text x="102" y="330.0" class="gl">$750k</text><line x1="120" x2="940" y1="186.7" y2="186.7" class="g"/><text x="102" y="196.7" class="gl">$1M</text>
+          <line class="ax" x1="120" x2="940" y1="720" y2="720" />
+          <text x="120.0" y="772" class="tk">20</text><text x="294.5" y="772" class="tk">30</text><text x="468.9" y="772" class="tk">40</text><text x="643.4" y="772" class="tk">50</text><text x="817.9" y="772" class="tk">60</text><text x="940.0" y="772" class="tk">67</text>
+          <path id="cs" class="curve" d="M294.5 720.0 L311.9 719.3 L329.4 718.5 L346.8 717.7 L364.3 716.7 L381.7 715.7 L399.1 714.6 L416.6 713.3 L434.0 711.9 L451.5 710.4 L468.9 708.8 L486.4 707.0 L503.8 704.9 L521.3 702.7 L538.7 700.3 L556.2 697.6 L573.6 694.7 L591.1 691.5 L608.5 687.9 L626.0 684.0 L643.4 679.7 L660.9 674.9 L678.3 669.7 L695.7 664.0 L713.2 657.7 L730.6 650.8 L748.1 643.1 L765.5 634.7 L783.0 625.5 L800.4 615.4 L817.9 604.2 L835.3 591.9 L852.8 578.4 L870.2 563.5 L887.7 547.2 L905.1 529.2 L922.6 509.4 L940.0 487.7" stroke="#FF6B6B" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <path id="ca" class="curve" d="M120.0 720.0 L137.4 719.3 L154.9 718.5 L172.3 717.7 L189.8 716.7 L207.2 715.7 L224.7 714.6 L242.1 713.3 L259.6 711.9 L277.0 710.4 L294.5 708.8 L311.9 707.0 L329.4 704.9 L346.8 702.7 L364.3 700.3 L381.7 697.6 L399.1 694.7 L416.6 691.5 L434.0 687.9 L451.5 684.0 L468.9 679.7 L486.4 674.9 L503.8 669.7 L521.3 664.0 L538.7 657.7 L556.2 650.8 L573.6 643.1 L591.1 634.7 L608.5 625.5 L626.0 615.4 L643.4 604.2 L660.9 591.9 L678.3 578.4 L695.7 563.5 L713.2 547.2 L730.6 529.2 L748.1 509.4 L765.5 487.7 L783.0 463.7 L800.4 437.4 L817.9 408.4 L835.3 376.6 L852.8 341.5 L870.2 302.9 L887.7 260.5 L905.1 213.9 L922.6 162.6 L940.0 106.1" stroke="#3DDC97" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <circle id="dots" cx="940.0" cy="487.7" r="20" fill="#FF6B6B" />
+          <circle id="dota" cx="940.0" cy="106.1" r="20" fill="#3DDC97" />
+        </svg>
+
+        <div class="stamp" id="stamp"><div class="k">Cost of waiting 10 years</div><div class="num" id="vgap">−$715,355</div></div>
+
+        <div class="end" id="end">
+          <div class="num">START<br /><span>TODAY.</span></div>
+          <div class="follow">Follow for more money math</div>
+          <div class="disc">Illustration only, not financial advice. Assumes a 10% average yearly return, $1,200 added each year, before fees, taxes and inflation.</div>
+        </div>
+      </div>
+
+      <div id="captions" class="caps clip" data-start="0" data-duration="27.0" data-track-index="1" data-track-kind="captions">
+<div class="cap" id="cap0"><span class="w" id="c0w0">Two</span> <span class="w" id="c0w1">friends.</span> <span class="w" id="c0w2">Both</span> <span class="w" id="c0w3">invest</span> <span class="w" id="c0w4">one</span> <span class="w" id="c0w5">hundred</span> <span class="w" id="c0w6">dollars</span> <span class="w" id="c0w7">a</span> <span class="w" id="c0w8">month.</span> </div>
+<div class="cap" id="cap1"><span class="w" id="c1w0">Alex</span> <span class="w" id="c1w1">starts</span> <span class="w" id="c1w2">at</span> <span class="w" id="c1w3">twenty.</span> <span class="w" id="c1w4">Sam</span> <span class="w" id="c1w5">waits</span> <span class="w" id="c1w6">until</span> <span class="w" id="c1w7">thirty.</span> </div>
+<div class="cap" id="cap2"><span class="w" id="c2w0">Both</span> <span class="w" id="c2w1">keep</span> <span class="w" id="c2w2">going</span> <span class="w" id="c2w3">until</span> <span class="w" id="c2w4">sixty-seven,</span> <span class="w" id="c2w5">at</span> <span class="w" id="c2w6">ten</span> <span class="w" id="c2w7">percent</span> <span class="w" id="c2w8">a</span> <span class="w" id="c2w9">year.</span> </div>
+<div class="cap" id="cap3"><span class="w" id="c3w0">Alex</span> <span class="w" id="c3w1">puts</span> <span class="w" id="c3w2">in</span> <span class="w" id="c3w3">just</span> <span class="w" id="c3w4">twelve</span> <span class="w" id="c3w5">thousand</span> <span class="w" id="c3w6">dollars</span> <span class="w" id="c3w7">more</span> <span class="w" id="c3w8">than</span> <span class="w" id="c3w9">Sam.</span> </div>
+<div class="cap" id="cap4"><span class="w" id="c4w0">At</span> <span class="w" id="c4w1">sixty-seven,</span> <span class="w" id="c4w2">Sam</span> <span class="w" id="c4w3">has</span> <span class="w" id="c4w4">four</span> <span class="w" id="c4w5">hundred</span> <span class="w" id="c4w6">thirty-five</span> <span class="w" id="c4w7">thousand.</span> </div>
+<div class="cap" id="cap5"><span class="w" id="c5w0">Alex</span> <span class="w" id="c5w1">has</span> <span class="w" id="c5w2">one</span> <span class="w" id="c5w3">point</span> <span class="w" id="c5w4">one</span> <span class="w" id="c5w5">five</span> <span class="w" id="c5w6">million.</span> </div>
+<div class="cap" id="cap6"><span class="w" id="c6w0">Ten</span> <span class="w" id="c6w1">years</span> <span class="w" id="c6w2">of</span> <span class="w" id="c6w3">waiting</span> <span class="w" id="c6w4">cost</span> <span class="w" id="c6w5">Sam</span> <span class="w" id="c6w6">over</span> <span class="w" id="c6w7">seven</span> <span class="w" id="c6w8">hundred</span> <span class="w" id="c6w9">thousand</span> <span class="w" id="c6w10">dollars.</span> </div>
+<div class="cap" id="cap7"><span class="w" id="c7w0">The</span> <span class="w" id="c7w1">best</span> <span class="w" id="c7w2">time</span> <span class="w" id="c7w3">to</span> <span class="w" id="c7w4">start</span> <span class="w" id="c7w5">was</span> <span class="w" id="c7w6">yesterday.</span> <span class="w" id="c7w7">The</span> <span class="w" id="c7w8">second</span> <span class="w" id="c7w9">best</span> <span class="w" id="c7w10">is</span> <span class="w" id="c7w11">today.</span> </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US"); } }, at);
+      };
+      // hidden by default (children of clips)
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });
+      // s1 title + people (title visible at frame 0)
+      tl.from("#p1 .big", { scale: 0.85, duration: 0.6, ease: "back.out(1.7)" }, 0);
+      tl.from("#pa1", { y: 120, opacity: 0, duration: 0.5, ease: E }, 1.2);
+      tl.from("#ps1", { y: 120, opacity: 0, duration: 0.5, ease: E }, 1.4);
+      gsap.set(["#agea", "#ages"], { opacity: 0 });
+      tl.fromTo("#agea", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, 3.85);
+      tl.fromTo("#ages", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)" }, 5.3);
+      tl.to(["#p1", "#people"], { opacity: 0, y: -40, duration: 0.3, ease: IN }, 6.3);
+      // s3 chart
+      tl.to("#p3", { opacity: 1, duration: 0.35 }, 6.6);
+      tl.to("#chart", { opacity: 1, duration: 0.35 }, 6.6);
+      tl.to("#ca", { attr: { "stroke-dashoffset": 0 }, duration: 2.8, ease: "power1.in" }, 6.8);
+      tl.to("#cs", { attr: { "stroke-dashoffset": 0 }, duration: 2.2, ease: "power1.in" }, 7.4);
+      tl.from(["#dota", "#dots"], { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 9.6);
+      // s4 put in
+      tl.to("#p3", { opacity: 0, duration: 0.25 }, 9.7);
+      tl.to("#p4", { opacity: 1, duration: 0.35 }, 9.85);
+      tl.from("#p4 .row", { x: 80, opacity: 0, duration: 0.35, stagger: 0.15, ease: E }, 9.85);
+      tl.from("#p4 .plus", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 10.6);
+      // s5/s6 counters
+      tl.to("#p4", { opacity: 0, duration: 0.25 }, 12.5);
+      tl.to("#p5", { opacity: 1, duration: 0.3 }, 12.65);
+      gsap.set("#lalex", { opacity: 0 });
+      money("#vsam", 435652, 13.6, 1.8);
+      tl.to("#dots", { attr: { r: 30 }, duration: 0.3, yoyo: true, repeat: 1 }, 15.2);
+      tl.to("#lalex", { opacity: 1, duration: 0.25 }, 16.06);
+      money("#valex", 1151007, 16.3, 1.5);
+      tl.to("#dota", { attr: { r: 34 }, duration: 0.3, yoyo: true, repeat: 1 }, 17.6);
+      tl.to("#valex", { scale: 1.08, transformOrigin: "100% 50%", duration: 0.25, yoyo: true, repeat: 1 }, 17.8);
+      // s7 stamp
+      tl.to("#chart", { opacity: 0.25, duration: 0.3 }, 18.3);
+      tl.fromTo("#stamp", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.35, ease: "power4.in" }, 18.45);
+      // s8 end
+      tl.to(["#stamp", "#p5", "#chart"], { opacity: 0, duration: 0.3, ease: IN }, 21.45);
+      tl.to("#end", { opacity: 1, duration: 0.2 }, 21.7);
+      tl.from("#end .num", { scale: 0.7, duration: 0.6, ease: "back.out(1.7)" }, 21.7);
+      tl.from("#end .follow", { y: 40, opacity: 0, duration: 0.45, ease: E }, 23.5);
+      tl.from("#end .disc", { opacity: 0, duration: 0.4 }, 22.2);
+      // captions
+      tl.set("#cap0", {opacity: 1}, 0.30); tl.set("#cap0", {opacity: 0}, 3.47);
+      tl.set("#c0w0", {color: "#FFD43B", scale: 1.08}, 0.30); tl.set("#c0w0", {color: "#ffffff", scale: 1}, 0.43);
+      tl.set("#c0w1", {color: "#FFD43B", scale: 1.08}, 0.44); tl.set("#c0w1", {color: "#ffffff", scale: 1}, 0.96);
+      tl.set("#c0w2", {color: "#FFD43B", scale: 1.08}, 1.29); tl.set("#c0w2", {color: "#ffffff", scale: 1}, 1.57);
+      tl.set("#c0w3", {color: "#FFD43B", scale: 1.08}, 1.58); tl.set("#c0w3", {color: "#ffffff", scale: 1}, 1.94);
+      tl.set("#c0w4", {color: "#FFD43B", scale: 1.08}, 1.96); tl.set("#c0w4", {color: "#ffffff", scale: 1}, 2.06);
+      tl.set("#c0w5", {color: "#FFD43B", scale: 1.08}, 2.07); tl.set("#c0w5", {color: "#ffffff", scale: 1}, 2.37);
+      tl.set("#c0w6", {color: "#FFD43B", scale: 1.08}, 2.38); tl.set("#c0w6", {color: "#ffffff", scale: 1}, 2.72);
+      tl.set("#c0w7", {color: "#FFD43B", scale: 1.08}, 2.73); tl.set("#c0w7", {color: "#ffffff", scale: 1}, 2.77);
+      tl.set("#c0w8", {color: "#FFD43B", scale: 1.08}, 2.78); tl.set("#c0w8", {color: "#ffffff", scale: 1}, 3.17);
+      tl.set("#cap1", {opacity: 1}, 3.52); tl.set("#cap1", {opacity: 0}, 6.52);
+      tl.set("#c1w0", {color: "#FFD43B", scale: 1.08}, 3.52); tl.set("#c1w0", {color: "#ffffff", scale: 1}, 3.83);
+      tl.set("#c1w1", {color: "#FFD43B", scale: 1.08}, 3.85); tl.set("#c1w1", {color: "#ffffff", scale: 1}, 4.12);
+      tl.set("#c1w2", {color: "#FFD43B", scale: 1.08}, 4.13); tl.set("#c1w2", {color: "#ffffff", scale: 1}, 4.20);
+      tl.set("#c1w3", {color: "#FFD43B", scale: 1.08}, 4.21); tl.set("#c1w3", {color: "#ffffff", scale: 1}, 4.60);
+      tl.set("#c1w4", {color: "#FFD43B", scale: 1.08}, 4.93); tl.set("#c1w4", {color: "#ffffff", scale: 1}, 5.28);
+      tl.set("#c1w5", {color: "#FFD43B", scale: 1.08}, 5.29); tl.set("#c1w5", {color: "#ffffff", scale: 1}, 5.53);
+      tl.set("#c1w6", {color: "#FFD43B", scale: 1.08}, 5.54); tl.set("#c1w6", {color: "#ffffff", scale: 1}, 5.82);
+      tl.set("#c1w7", {color: "#FFD43B", scale: 1.08}, 5.83); tl.set("#c1w7", {color: "#ffffff", scale: 1}, 6.20);
+      tl.set("#cap2", {opacity: 1}, 6.57); tl.set("#cap2", {opacity: 0}, 9.77);
+      tl.set("#c2w0", {color: "#FFD43B", scale: 1.08}, 6.57); tl.set("#c2w0", {color: "#ffffff", scale: 1}, 6.74);
+      tl.set("#c2w1", {color: "#FFD43B", scale: 1.08}, 6.76); tl.set("#c2w1", {color: "#ffffff", scale: 1}, 6.96);
+      tl.set("#c2w2", {color: "#FFD43B", scale: 1.08}, 6.98); tl.set("#c2w2", {color: "#ffffff", scale: 1}, 7.23);
+      tl.set("#c2w3", {color: "#FFD43B", scale: 1.08}, 7.24); tl.set("#c2w3", {color: "#ffffff", scale: 1}, 7.50);
+      tl.set("#c2w4", {color: "#FFD43B", scale: 1.08}, 7.51); tl.set("#c2w4", {color: "#ffffff", scale: 1}, 8.26);
+      tl.set("#c2w5", {color: "#FFD43B", scale: 1.08}, 8.47); tl.set("#c2w5", {color: "#ffffff", scale: 1}, 8.54);
+      tl.set("#c2w6", {color: "#FFD43B", scale: 1.08}, 8.55); tl.set("#c2w6", {color: "#ffffff", scale: 1}, 8.75);
+      tl.set("#c2w7", {color: "#FFD43B", scale: 1.08}, 8.76); tl.set("#c2w7", {color: "#ffffff", scale: 1}, 9.09);
+      tl.set("#c2w8", {color: "#FFD43B", scale: 1.08}, 9.11); tl.set("#c2w8", {color: "#ffffff", scale: 1}, 9.13);
+      tl.set("#c2w9", {color: "#FFD43B", scale: 1.08}, 9.14); tl.set("#c2w9", {color: "#ffffff", scale: 1}, 9.46);
+      tl.set("#cap3", {opacity: 1}, 9.82); tl.set("#cap3", {opacity: 0}, 12.61);
+      tl.set("#c3w0", {color: "#FFD43B", scale: 1.08}, 9.82); tl.set("#c3w0", {color: "#ffffff", scale: 1}, 10.08);
+      tl.set("#c3w1", {color: "#FFD43B", scale: 1.08}, 10.10); tl.set("#c3w1", {color: "#ffffff", scale: 1}, 10.29);
+      tl.set("#c3w2", {color: "#FFD43B", scale: 1.08}, 10.30); tl.set("#c3w2", {color: "#ffffff", scale: 1}, 10.36);
+      tl.set("#c3w3", {color: "#FFD43B", scale: 1.08}, 10.37); tl.set("#c3w3", {color: "#ffffff", scale: 1}, 10.59);
+      tl.set("#c3w4", {color: "#FFD43B", scale: 1.08}, 10.61); tl.set("#c3w4", {color: "#ffffff", scale: 1}, 10.84);
+      tl.set("#c3w5", {color: "#FFD43B", scale: 1.08}, 10.85); tl.set("#c3w5", {color: "#ffffff", scale: 1}, 11.17);
+      tl.set("#c3w6", {color: "#FFD43B", scale: 1.08}, 11.18); tl.set("#c3w6", {color: "#ffffff", scale: 1}, 11.52);
+      tl.set("#c3w7", {color: "#FFD43B", scale: 1.08}, 11.54); tl.set("#c3w7", {color: "#ffffff", scale: 1}, 11.76);
+      tl.set("#c3w8", {color: "#FFD43B", scale: 1.08}, 11.77); tl.set("#c3w8", {color: "#ffffff", scale: 1}, 11.88);
+      tl.set("#c3w9", {color: "#FFD43B", scale: 1.08}, 11.89); tl.set("#c3w9", {color: "#ffffff", scale: 1}, 12.28);
+      tl.set("#cap4", {opacity: 1}, 12.66); tl.set("#cap4", {opacity: 0}, 16.01);
+      tl.set("#c4w0", {color: "#FFD43B", scale: 1.08}, 12.66); tl.set("#c4w0", {color: "#ffffff", scale: 1}, 12.76);
+      tl.set("#c4w1", {color: "#FFD43B", scale: 1.08}, 12.77); tl.set("#c4w1", {color: "#ffffff", scale: 1}, 13.52);
+      tl.set("#c4w2", {color: "#FFD43B", scale: 1.08}, 13.62); tl.set("#c4w2", {color: "#ffffff", scale: 1}, 13.87);
+      tl.set("#c4w3", {color: "#FFD43B", scale: 1.08}, 13.88); tl.set("#c4w3", {color: "#ffffff", scale: 1}, 14.05);
+      tl.set("#c4w4", {color: "#FFD43B", scale: 1.08}, 14.06); tl.set("#c4w4", {color: "#ffffff", scale: 1}, 14.31);
+      tl.set("#c4w5", {color: "#FFD43B", scale: 1.08}, 14.32); tl.set("#c4w5", {color: "#ffffff", scale: 1}, 14.64);
+      tl.set("#c4w6", {color: "#FFD43B", scale: 1.08}, 14.65); tl.set("#c4w6", {color: "#ffffff", scale: 1}, 15.24);
+      tl.set("#c4w7", {color: "#FFD43B", scale: 1.08}, 15.26); tl.set("#c4w7", {color: "#ffffff", scale: 1}, 15.71);
+      tl.set("#cap5", {opacity: 1}, 16.06); tl.set("#cap5", {opacity: 0}, 18.25);
+      tl.set("#c5w0", {color: "#FFD43B", scale: 1.08}, 16.06); tl.set("#c5w0", {color: "#ffffff", scale: 1}, 16.35);
+      tl.set("#c5w1", {color: "#FFD43B", scale: 1.08}, 16.36); tl.set("#c5w1", {color: "#ffffff", scale: 1}, 16.50);
+      tl.set("#c5w2", {color: "#FFD43B", scale: 1.08}, 16.51); tl.set("#c5w2", {color: "#ffffff", scale: 1}, 16.73);
+      tl.set("#c5w3", {color: "#FFD43B", scale: 1.08}, 16.74); tl.set("#c5w3", {color: "#ffffff", scale: 1}, 17.04);
+      tl.set("#c5w4", {color: "#FFD43B", scale: 1.08}, 17.05); tl.set("#c5w4", {color: "#ffffff", scale: 1}, 17.23);
+      tl.set("#c5w5", {color: "#FFD43B", scale: 1.08}, 17.24); tl.set("#c5w5", {color: "#ffffff", scale: 1}, 17.53);
+      tl.set("#c5w6", {color: "#FFD43B", scale: 1.08}, 17.54); tl.set("#c5w6", {color: "#ffffff", scale: 1}, 17.89);
+      tl.set("#cap6", {opacity: 1}, 18.30); tl.set("#cap6", {opacity: 0}, 21.64);
+      tl.set("#c6w0", {color: "#FFD43B", scale: 1.08}, 18.30); tl.set("#c6w0", {color: "#ffffff", scale: 1}, 18.46);
+      tl.set("#c6w1", {color: "#FFD43B", scale: 1.08}, 18.48); tl.set("#c6w1", {color: "#ffffff", scale: 1}, 18.70);
+      tl.set("#c6w2", {color: "#FFD43B", scale: 1.08}, 18.71); tl.set("#c6w2", {color: "#ffffff", scale: 1}, 18.79);
+      tl.set("#c6w3", {color: "#FFD43B", scale: 1.08}, 18.80); tl.set("#c6w3", {color: "#ffffff", scale: 1}, 19.07);
+      tl.set("#c6w4", {color: "#FFD43B", scale: 1.08}, 19.08); tl.set("#c6w4", {color: "#ffffff", scale: 1}, 19.39);
+      tl.set("#c6w5", {color: "#FFD43B", scale: 1.08}, 19.40); tl.set("#c6w5", {color: "#ffffff", scale: 1}, 19.70);
+      tl.set("#c6w6", {color: "#FFD43B", scale: 1.08}, 19.71); tl.set("#c6w6", {color: "#ffffff", scale: 1}, 19.90);
+      tl.set("#c6w7", {color: "#FFD43B", scale: 1.08}, 19.91); tl.set("#c6w7", {color: "#ffffff", scale: 1}, 20.23);
+      tl.set("#c6w8", {color: "#FFD43B", scale: 1.08}, 20.25); tl.set("#c6w8", {color: "#ffffff", scale: 1}, 20.52);
+      tl.set("#c6w9", {color: "#FFD43B", scale: 1.08}, 20.54); tl.set("#c6w9", {color: "#ffffff", scale: 1}, 20.87);
+      tl.set("#c6w10", {color: "#FFD43B", scale: 1.08}, 20.88); tl.set("#c6w10", {color: "#ffffff", scale: 1}, 21.34);
+      tl.set("#cap7", {opacity: 1}, 21.69); tl.set("#cap7", {opacity: 0}, 25.46);
+      tl.set("#c7w0", {color: "#FFD43B", scale: 1.08}, 21.69); tl.set("#c7w0", {color: "#ffffff", scale: 1}, 21.74);
+      tl.set("#c7w1", {color: "#FFD43B", scale: 1.08}, 21.75); tl.set("#c7w1", {color: "#ffffff", scale: 1}, 22.00);
+      tl.set("#c7w2", {color: "#FFD43B", scale: 1.08}, 22.01); tl.set("#c7w2", {color: "#ffffff", scale: 1}, 22.19);
+      tl.set("#c7w3", {color: "#FFD43B", scale: 1.08}, 22.20); tl.set("#c7w3", {color: "#ffffff", scale: 1}, 22.25);
+      tl.set("#c7w4", {color: "#FFD43B", scale: 1.08}, 22.26); tl.set("#c7w4", {color: "#ffffff", scale: 1}, 22.53);
+      tl.set("#c7w5", {color: "#FFD43B", scale: 1.08}, 22.54); tl.set("#c7w5", {color: "#ffffff", scale: 1}, 22.67);
+      tl.set("#c7w6", {color: "#FFD43B", scale: 1.08}, 22.68); tl.set("#c7w6", {color: "#ffffff", scale: 1}, 23.18);
+      tl.set("#c7w7", {color: "#FFD43B", scale: 1.08}, 23.51); tl.set("#c7w7", {color: "#ffffff", scale: 1}, 23.70);
+      tl.set("#c7w8", {color: "#FFD43B", scale: 1.08}, 23.71); tl.set("#c7w8", {color: "#ffffff", scale: 1}, 24.03);
+      tl.set("#c7w9", {color: "#FFD43B", scale: 1.08}, 24.04); tl.set("#c7w9", {color: "#ffffff", scale: 1}, 24.27);
+      tl.set("#c7w10", {color: "#FFD43B", scale: 1.08}, 24.30); tl.set("#c7w10", {color: "#ffffff", scale: 1}, 24.39);
+      tl.set("#c7w11", {color: "#FFD43B", scale: 1.08}, 24.40); tl.set("#c7w11", {color: "#ffffff", scale: 1}, 24.77);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

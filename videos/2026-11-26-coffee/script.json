@@ -1,0 +1,47 @@
+{
+ "lead": 0.3,
+ "tail": 1.8,
+ "trim": true,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "Five dollars a day. What's it really costing you?",
+   "gap": 0.3
+  },
+  {
+   "id": "s2",
+   "text": "Emma and Noah both have five dollars a day to spare.",
+   "gap": 0.3
+  },
+  {
+   "id": "s3",
+   "text": "Thirty years. The market averages eight percent.",
+   "gap": 0.3
+  },
+  {
+   "id": "s4",
+   "text": "Emma buys coffee. Noah invests it.",
+   "gap": 0.3
+  },
+  {
+   "id": "s5",
+   "text": "After thirty years, Emma spent fifty-four thousand dollars on coffee.",
+   "gap": 0.3
+  },
+  {
+   "id": "s6",
+   "text": "Noah has two hundred twenty-six thousand.",
+   "gap": 0.4
+  },
+  {
+   "id": "s7",
+   "text": "So that daily coffee really cost about two hundred twenty-six thousand dollars.",
+   "gap": 0.3
+  },
+  {
+   "id": "s8",
+   "text": "Enjoy the coffee. Just know the price. Follow for more money math.",
+   "gap": 0.2
+  }
+ ]
+}

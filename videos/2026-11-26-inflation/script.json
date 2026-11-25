@@ -1,0 +1,47 @@
+{
+ "lead": 0.3,
+ "tail": 1.8,
+ "trim": true,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "A hundred thousand dollars in cash. Safe, right?",
+   "gap": 0.3
+  },
+  {
+   "id": "s2",
+   "text": "Ava and Ben each get one hundred thousand dollars.",
+   "gap": 0.3
+  },
+  {
+   "id": "s3",
+   "text": "Thirty years go by. Prices rise three percent a year.",
+   "gap": 0.3
+  },
+  {
+   "id": "s4",
+   "text": "Ava keeps it in cash. Ben invests it at seven percent.",
+   "gap": 0.3
+  },
+  {
+   "id": "s5",
+   "text": "In today's money, Ava's cash buys what forty-one thousand buys now.",
+   "gap": 0.3
+  },
+  {
+   "id": "s6",
+   "text": "Ben's is worth three hundred thirteen thousand.",
+   "gap": 0.4
+  },
+  {
+   "id": "s7",
+   "text": "Doing nothing quietly cost Ava almost sixty percent.",
+   "gap": 0.3
+  },
+  {
+   "id": "s8",
+   "text": "Cash is safe from crashes, not from inflation. Follow for more money math.",
+   "gap": 0.2
+  }
+ ]
+}

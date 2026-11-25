@@ -1,0 +1,444 @@
+{
+ "duration": 26.858,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "Two friends. Both invest one hundred dollars a month.",
+   "start": 0.3,
+   "end": 3.221,
+   "words": [
+    {
+     "w": "Two",
+     "start": 0.3,
+     "end": 0.431
+    },
+    {
+     "w": "friends",
+     "start": 0.442,
+     "end": 0.963
+    },
+    {
+     "w": "Both",
+     "start": 1.295,
+     "end": 1.573
+    },
+    {
+     "w": "invest",
+     "start": 1.584,
+     "end": 1.943
+    },
+    {
+     "w": "one",
+     "start": 1.955,
+     "end": 2.059
+    },
+    {
+     "w": "hundred",
+     "start": 2.07,
+     "end": 2.371
+    },
+    {
+     "w": "dollars",
+     "start": 2.383,
+     "end": 2.719
+    },
+    {
+     "w": "a",
+     "start": 2.73,
+     "end": 2.765
+    },
+    {
+     "w": "month",
+     "start": 2.776,
+     "end": 3.17
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "text": "Alex starts at twenty. Sam waits until thirty.",
+   "start": 3.521,
+   "end": 6.266,
+   "words": [
+    {
+     "w": "Alex",
+     "start": 3.521,
+     "end": 3.833
+    },
+    {
+     "w": "starts",
+     "start": 3.845,
+     "end": 4.123
+    },
+    {
+     "w": "at",
+     "start": 4.134,
+     "end": 4.204
+    },
+    {
+     "w": "twenty",
+     "start": 4.215,
+     "end": 4.597
+    },
+    {
+     "w": "Sam",
+     "start": 4.929,
+     "end": 5.276
+    },
+    {
+     "w": "waits",
+     "start": 5.288,
+     "end": 5.531
+    },
+    {
+     "w": "until",
+     "start": 5.543,
+     "end": 5.82
+    },
+    {
+     "w": "thirty",
+     "start": 5.832,
+     "end": 6.202
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "text": "Both keep going until sixty-seven, at ten percent a year.",
+   "start": 6.566,
+   "end": 9.516,
+   "words": [
+    {
+     "w": "Both",
+     "start": 6.566,
+     "end": 6.744
+    },
+    {
+     "w": "keep",
+     "start": 6.756,
+     "end": 6.964
+    },
+    {
+     "w": "going",
+     "start": 6.976,
+     "end": 7.23
+    },
+    {
+     "w": "until",
+     "start": 7.242,
+     "end": 7.497
+    },
+    {
+     "w": "sixty-seven",
+     "start": 7.508,
+     "end": 8.261
+    },
+    {
+     "w": "at",
+     "start": 8.469,
+     "end": 8.538
+    },
+    {
+     "w": "ten",
+     "start": 8.55,
+     "end": 8.747
+    },
+    {
+     "w": "percent",
+     "start": 8.758,
+     "end": 9.094
+    },
+    {
+     "w": "a",
+     "start": 9.106,
+     "end": 9.129
+    },
+    {
+     "w": "year",
+     "start": 9.14,
+     "end": 9.464
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "text": "Alex puts in just twelve thousand dollars more than Sam.",
+   "start": 9.816,
+   "end": 12.361,
+   "words": [
+    {
+     "w": "Alex",
+     "start": 9.816,
+     "end": 10.084
+    },
+    {
+     "w": "puts",
+     "start": 10.096,
+     "end": 10.292
+    },
+    {
+     "w": "in",
+     "start": 10.304,
+     "end": 10.362
+    },
+    {
+     "w": "just",
+     "start": 10.373,
+     "end": 10.593
+    },
+    {
+     "w": "twelve",
+     "start": 10.605,
+     "end": 10.836
+    },
+    {
+     "w": "thousand",
+     "start": 10.848,
+     "end": 11.172
+    },
+    {
+     "w": "dollars",
+     "start": 11.184,
+     "end": 11.519
+    },
+    {
+     "w": "more",
+     "start": 11.542,
+     "end": 11.762
+    },
+    {
+     "w": "than",
+     "start": 11.774,
+     "end": 11.878
+    },
+    {
+     "w": "Sam",
+     "start": 11.89,
+     "end": 12.283
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "text": "At sixty-seven, Sam has four hundred thirty-five thousand.",
+   "start": 12.661,
+   "end": 15.756,
+   "words": [
+    {
+     "w": "At",
+     "start": 12.661,
+     "end": 12.756
+    },
+    {
+     "w": "sixty-seven",
+     "start": 12.767,
+     "end": 13.519
+    },
+    {
+     "w": "Sam",
+     "start": 13.624,
+     "end": 13.867
+    },
+    {
+     "w": "has",
+     "start": 13.878,
+     "end": 14.052
+    },
+    {
+     "w": "four",
+     "start": 14.063,
+     "end": 14.306
+    },
+    {
+     "w": "hundred",
+     "start": 14.318,
+     "end": 14.642
+    },
+    {
+     "w": "thirty-five",
+     "start": 14.654,
+     "end": 15.244
+    },
+    {
+     "w": "thousand",
+     "start": 15.256,
+     "end": 15.707
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "text": "Alex has one point one five million.",
+   "start": 16.056,
+   "end": 17.903,
+   "words": [
+    {
+     "w": "Alex",
+     "start": 16.056,
+     "end": 16.346
+    },
+    {
+     "w": "has",
+     "start": 16.358,
+     "end": 16.497
+    },
+    {
+     "w": "one",
+     "start": 16.508,
+     "end": 16.728
+    },
+    {
+     "w": "point",
+     "start": 16.74,
+     "end": 17.041
+    },
+    {
+     "w": "one",
+     "start": 17.052,
+     "end": 17.226
+    },
+    {
+     "w": "five",
+     "start": 17.237,
+     "end": 17.527
+    },
+    {
+     "w": "million",
+     "start": 17.538,
+     "end": 17.886
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "text": "Ten years of waiting cost Sam over seven hundred thousand dollars.",
+   "start": 18.303,
+   "end": 21.391,
+   "words": [
+    {
+     "w": "Ten",
+     "start": 18.303,
+     "end": 18.464
+    },
+    {
+     "w": "years",
+     "start": 18.476,
+     "end": 18.696
+    },
+    {
+     "w": "of",
+     "start": 18.707,
+     "end": 18.788
+    },
+    {
+     "w": "waiting",
+     "start": 18.8,
+     "end": 19.066
+    },
+    {
+     "w": "cost",
+     "start": 19.078,
+     "end": 19.39
+    },
+    {
+     "w": "Sam",
+     "start": 19.402,
+     "end": 19.703
+    },
+    {
+     "w": "over",
+     "start": 19.714,
+     "end": 19.899
+    },
+    {
+     "w": "seven",
+     "start": 19.911,
+     "end": 20.235
+    },
+    {
+     "w": "hundred",
+     "start": 20.247,
+     "end": 20.524
+    },
+    {
+     "w": "thousand",
+     "start": 20.536,
+     "end": 20.872
+    },
+    {
+     "w": "dollars",
+     "start": 20.883,
+     "end": 21.335
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "text": "The best time to start was yesterday. The second best is today.",
+   "start": 21.691,
+   "end": 24.859,
+   "words": [
+    {
+     "w": "The",
+     "start": 21.691,
+     "end": 21.742
+    },
+    {
+     "w": "best",
+     "start": 21.754,
+     "end": 21.997
+    },
+    {
+     "w": "time",
+     "start": 22.009,
+     "end": 22.194
+    },
+    {
+     "w": "to",
+     "start": 22.205,
+     "end": 22.252
+    },
+    {
+     "w": "start",
+     "start": 22.263,
+     "end": 22.529
+    },
+    {
+     "w": "was",
+     "start": 22.541,
+     "end": 22.668
+    },
+    {
+     "w": "yesterday",
+     "start": 22.68,
+     "end": 23.177
+    },
+    {
+     "w": "The",
+     "start": 23.509,
+     "end": 23.695
+    },
+    {
+     "w": "second",
+     "start": 23.706,
+     "end": 24.03
+    },
+    {
+     "w": "best",
+     "start": 24.042,
+     "end": 24.273
+    },
+    {
+     "w": "is",
+     "start": 24.296,
+     "end": 24.389
+    },
+    {
+     "w": "today",
+     "start": 24.401,
+     "end": 24.771
+    }
+   ]
+  }
+ ]
+}

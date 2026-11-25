@@ -1,0 +1,9 @@
+{"bpm": 112, "music_db": -21, "events": [
+ {"line": "*", "type": "whoosh", "db": -17},
+ {"line": "s2", "offset": 1.4, "type": "tick", "db": -13},
+ {"line": "s4", "offset": 0.4, "type": "pop", "db": -12},
+ {"line": "s5", "offset": 0.3, "type": "thud", "db": -10},
+ {"line": "s6", "offset": 0.2, "type": "boom", "db": -9},
+ {"line": "s7", "offset": 0.3, "type": "stamp", "db": -10},
+ {"line": "s8", "offset": 0.1, "type": "sting", "db": -11}
+]}

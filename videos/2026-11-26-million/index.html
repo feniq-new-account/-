@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 38px; font-weight: 700; padding: 12px 24px; border-radius: 30px; white-space: nowrap; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 50px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: 150px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.81" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="27.66" data-track-index="5"></audio>
+
+      <div id="stage" class="stage clip" data-start="0" data-duration="27.81" data-track-index="0" data-track-kind="graphics">
+        <div class="top" id="p1"><div class="kicker">Retire a millionaire</div><div class="big num">$1M</div></div>
+        <div class="top" id="p3"><div class="badge">goal <b>$1M</b> at <b>65</b> · <b>8%</b> a year</div></div>
+        <div class="top" id="p4">
+          <div class="kicker">Time to grow</div>
+          <div class="rows">
+            <div class="row"><span style="color:var(--alex)">Olivia</span><span class="num">40 years</span></div>
+            <div class="row"><span style="color:var(--sam)">Jack</span><span class="num">20 years</span></div>
+          </div>
+          <div class="plus">Same goal: $1,000,000</div>
+        </div>
+        <div class="top" id="p5">
+          <div class="kicker">Needed per month</div>
+          <div class="ctr">
+            <div class="line" id="lsam"><span class="who" style="color:var(--sam)">Jack</span><span class="num" id="vsam" style="color:var(--sam)">$0</span></div>
+            <div class="line" id="lalex"><span class="who" style="color:var(--alex)">Olivia</span><span class="num" id="valex" style="color:var(--alex)">$0</span></div>
+          </div>
+        </div>
+        <div class="people" id="people">
+          <div class="person alex" id="pa1"><div class="av num">O</div><h2>Olivia</h2><div class="age" id="agea">starts at 25</div></div>
+          <div class="person sam" id="ps1"><div class="av num">J</div><h2>Jack</h2><div class="age" id="ages">starts at 45</div></div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 1000 780">
+          <line x1="120" x2="940" y1="574.5" y2="574.5" class="g"/><text x="102" y="584.5" class="gl">$250k</text><line x1="120" x2="940" y1="429.1" y2="429.1" class="g"/><text x="102" y="439.1" class="gl">$500k</text><line x1="120" x2="940" y1="283.6" y2="283.6" class="g"/><text x="102" y="293.6" class="gl">$750k</text><line x1="120" x2="940" y1="138.2" y2="138.2" class="g"/><text x="102" y="148.2" class="gl">$1M</text>
+          <line class="ax" x1="120" x2="940" y1="720" y2="720" />
+          <text x="120.0" y="772" class="tk">25</text><text x="325.0" y="772" class="tk">35</text><text x="530.0" y="772" class="tk">45</text><text x="735.0" y="772" class="tk">55</text><text x="940.0" y="772" class="tk">65</text>
+          <path id="cs" class="curve" d="M530.0 720.0 L550.5 707.7 L571.0 694.4 L591.5 680.0 L612.0 664.3 L632.5 647.4 L653.0 629.1 L673.5 609.3 L694.0 587.8 L714.5 564.5 L735.0 539.3 L755.5 512.0 L776.0 482.4 L796.5 450.4 L817.0 415.7 L837.5 378.2 L858.0 337.5 L878.5 293.5 L899.0 245.8 L919.5 194.1 L940.0 138.2" stroke="#FF6B6B" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <path id="ca" class="curve" d="M120.0 720.0 L140.5 717.9 L161.0 715.7 L181.5 713.2 L202.0 710.6 L222.5 707.8 L243.0 704.7 L263.5 701.3 L284.0 697.7 L304.5 693.8 L325.0 689.5 L345.5 684.9 L366.0 679.9 L386.5 674.5 L407.0 668.7 L427.5 662.3 L448.0 655.5 L468.5 648.0 L489.0 640.0 L509.5 631.3 L530.0 621.8 L550.5 611.6 L571.0 600.5 L591.5 588.5 L612.0 575.6 L632.5 561.5 L653.0 546.3 L673.5 529.8 L694.0 511.9 L714.5 492.6 L735.0 471.6 L755.5 448.9 L776.0 424.3 L796.5 397.7 L817.0 368.9 L837.5 337.7 L858.0 303.9 L878.5 267.3 L899.0 227.6 L919.5 184.7 L940.0 138.2" stroke="#3DDC97" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <circle id="dots" cx="940.0" cy="138.2" r="20" fill="#FF6B6B" />
+          <circle id="dota" cx="940.0" cy="138.2" r="20" fill="#3DDC97" />
+        </svg>
+        <div class="stamp" id="stamp"><div class="k">Extra Jack pays in</div><div class="num" id="vgap">+$269,960</div></div>
+        <div class="end" id="end">
+          <div class="num">TIME IS<br /><span>MONEY.</span></div>
+          <div class="follow">Follow for more money math</div>
+          <div class="disc">Illustration only, not financial advice. Assumes monthly deposits and an 8% average yearly return compounded monthly, before fees, taxes and inflation.</div>
+        </div>
+      </div>
+
+      <div id="captions" class="caps clip" data-start="0" data-duration="27.81" data-track-index="1" data-track-kind="captions">
+<div class="cap" id="cap0"><span class="w" id="c0w0">How</span> <span class="w" id="c0w1">much</span> <span class="w" id="c0w2">do</span> <span class="w" id="c0w3">you</span> <span class="w" id="c0w4">need</span> <span class="w" id="c0w5">to</span> <span class="w" id="c0w6">save</span> <span class="w" id="c0w7">to</span> <span class="w" id="c0w8">retire</span> <span class="w" id="c0w9">a</span> <span class="w" id="c0w10">millionaire?</span> </div>
+<div class="cap" id="cap1"><span class="w" id="c1w0">Olivia</span> <span class="w" id="c1w1">starts</span> <span class="w" id="c1w2">at</span> <span class="w" id="c1w3">twenty-five.</span> <span class="w" id="c1w4">Jack</span> <span class="w" id="c1w5">starts</span> <span class="w" id="c1w6">at</span> <span class="w" id="c1w7">forty-five.</span> </div>
+<div class="cap" id="cap2"><span class="w" id="c2w0">Both</span> <span class="w" id="c2w1">want</span> <span class="w" id="c2w2">one</span> <span class="w" id="c2w3">million</span> <span class="w" id="c2w4">dollars</span> <span class="w" id="c2w5">by</span> <span class="w" id="c2w6">sixty-five.</span> </div>
+<div class="cap" id="cap3"><span class="w" id="c3w0">Eight</span> <span class="w" id="c3w1">percent</span> <span class="w" id="c3w2">a</span> <span class="w" id="c3w3">year.</span> </div>
+<div class="cap" id="cap4"><span class="w" id="c4w0">Olivia</span> <span class="w" id="c4w1">has</span> <span class="w" id="c4w2">forty</span> <span class="w" id="c4w3">years.</span> <span class="w" id="c4w4">Jack</span> <span class="w" id="c4w5">has</span> <span class="w" id="c4w6">only</span> <span class="w" id="c4w7">twenty.</span> </div>
+<div class="cap" id="cap5"><span class="w" id="c5w0">Jack</span> <span class="w" id="c5w1">needs</span> <span class="w" id="c5w2">one</span> <span class="w" id="c5w3">thousand</span> <span class="w" id="c5w4">six</span> <span class="w" id="c5w5">hundred</span> <span class="w" id="c5w6">ninety-eight</span> <span class="w" id="c5w7">dollars</span> <span class="w" id="c5w8">a</span> <span class="w" id="c5w9">month.</span> </div>
+<div class="cap" id="cap6"><span class="w" id="c6w0">Olivia</span> <span class="w" id="c6w1">needs</span> <span class="w" id="c6w2">just</span> <span class="w" id="c6w3">two</span> <span class="w" id="c6w4">hundred</span> <span class="w" id="c6w5">eighty-six.</span> </div>
+<div class="cap" id="cap7"><span class="w" id="c7w0">Jack</span> <span class="w" id="c7w1">pays</span> <span class="w" id="c7w2">in</span> <span class="w" id="c7w3">two</span> <span class="w" id="c7w4">hundred</span> <span class="w" id="c7w5">seventy</span> <span class="w" id="c7w6">thousand</span> <span class="w" id="c7w7">dollars</span> <span class="w" id="c7w8">more,</span> </div>
+<div class="cap" id="cap8"><span class="w" id="c8w0">for</span> <span class="w" id="c8w1">the</span> <span class="w" id="c8w2">same</span> <span class="w" id="c8w3">million.</span> </div>
+<div class="cap" id="cap9"><span class="w" id="c9w0">Time</span> <span class="w" id="c9w1">is</span> <span class="w" id="c9w2">the</span> <span class="w" id="c9w3">cheapest</span> <span class="w" id="c9w4">money</span> <span class="w" id="c9w5">you</span> <span class="w" id="c9w6">have.</span> </div>
+<div class="cap" id="cap10"><span class="w" id="c10w0">Follow</span> <span class="w" id="c10w1">for</span> <span class="w" id="c10w2">more</span> <span class="w" id="c10w3">money</span> <span class="w" id="c10w4">math.</span> </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur, suf) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US") + (suf || ""); } }, at);
+      };
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });
+      // s1
+      tl.from("#p1 .big", { scale: 0.6, duration: 0.6, ease: "back.out(1.7)" }, 0);
+      tl.to("#p1 .big", { color: "#FFD43B", scale: 1.1, duration: 0.25, ease: "power4.in" }, 1.40);
+      tl.to("#p1", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 2.46);
+      // s2 people
+      tl.fromTo("#pa1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 2.76);
+      tl.fromTo("#ps1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.21);
+      tl.fromTo(["#agea", "#ages"], { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.3 }, 3.86);
+      tl.to("#people", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 5.91);
+      // s3 chart
+      tl.to("#p3", { opacity: 1, duration: 0.35 }, 6.21);
+      tl.to("#chart", { opacity: 1, duration: 0.35 }, 6.21);
+      tl.to("#ca", { attr: { "stroke-dashoffset": 0 }, duration: 6.44, ease: "power1.in" }, 6.41);
+      tl.to("#cs", { attr: { "stroke-dashoffset": 0 }, duration: 6.44, ease: "power1.in" }, 6.41);
+      tl.from("#dota", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 12.85);
+      tl.from("#dots", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 12.85);
+      // s4 difference
+      tl.to("#p3", { opacity: 0, duration: 0.25 }, 9.87);
+      tl.to("#p4", { opacity: 1, duration: 0.35 }, 9.97);
+      tl.from("#p4 .row", { x: 80, opacity: 0, duration: 0.35, stagger: 1.26, ease: E }, 9.97);
+      tl.from("#p4 .plus", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 12.25);
+      // s5/s6 counters
+      tl.to("#p4", { opacity: 0, duration: 0.25 }, 12.93);
+      tl.to("#p5", { opacity: 1, duration: 0.3 }, 13.05);
+      gsap.set("#lalex", { opacity: 0 });
+      money("#vsam", 1698, 13.55, 2.19, "/mo");
+      tl.to("#dots", { attr: { r: 30 }, duration: 0.3, yoyo: true, repeat: 1 }, 15.54);
+      tl.to("#lalex", { opacity: 1, duration: 0.25 }, 16.24);
+      money("#valex", 286, 16.44, 1.74, "/mo");
+      tl.to("#dota", { attr: { r: 34 }, duration: 0.3, yoyo: true, repeat: 1 }, 18.08);
+      tl.to("#valex", { scale: 1.08, transformOrigin: "100% 50%", duration: 0.25, yoyo: true, repeat: 1 }, 18.18);
+      // s7 stamp
+      tl.to("#chart", { opacity: 0, duration: 0.3 }, 18.68);
+      tl.fromTo("#stamp", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.35, ease: "power4.in" }, 18.93);
+      tl.to("#stamp", { scale: 1.05, duration: 0.25, yoyo: true, repeat: 1 }, 21.54);
+      // s8 end
+      tl.to(["#stamp", "#p5"], { opacity: 0, duration: 0.3, ease: IN }, 22.14);
+      tl.to("#end", { opacity: 1, duration: 0.2 }, 22.45);
+      tl.from("#end .num", { scale: 0.7, duration: 0.6, ease: "back.out(1.7)" }, 22.45);
+      tl.from("#end .disc", { opacity: 0, duration: 0.4 }, 22.64);
+      tl.from("#end .follow", { y: 40, opacity: 0, duration: 0.45, ease: E }, 23.45);
+      // captions
+      tl.set("#cap0", {opacity: 1}, 0.30); tl.set("#cap0", {opacity: 0}, 2.71);
+      tl.set("#c0w0", {color: "#FFD43B", scale: 1.08}, 0.30); tl.set("#c0w0", {color: "#ffffff", scale: 1}, 0.39);
+      tl.set("#c0w1", {color: "#FFD43B", scale: 1.08}, 0.40); tl.set("#c0w1", {color: "#ffffff", scale: 1}, 0.57);
+      tl.set("#c0w2", {color: "#FFD43B", scale: 1.08}, 0.58); tl.set("#c0w2", {color: "#ffffff", scale: 1}, 0.64);
+      tl.set("#c0w3", {color: "#FFD43B", scale: 1.08}, 0.65); tl.set("#c0w3", {color: "#ffffff", scale: 1}, 0.72);
+      tl.set("#c0w4", {color: "#FFD43B", scale: 1.08}, 0.73); tl.set("#c0w4", {color: "#ffffff", scale: 1}, 0.89);
+      tl.set("#c0w5", {color: "#FFD43B", scale: 1.08}, 0.90); tl.set("#c0w5", {color: "#ffffff", scale: 1}, 0.94);
+      tl.set("#c0w6", {color: "#FFD43B", scale: 1.08}, 0.95); tl.set("#c0w6", {color: "#ffffff", scale: 1}, 1.23);
+      tl.set("#c0w7", {color: "#FFD43B", scale: 1.08}, 1.24); tl.set("#c0w7", {color: "#ffffff", scale: 1}, 1.34);
+      tl.set("#c0w8", {color: "#FFD43B", scale: 1.08}, 1.35); tl.set("#c0w8", {color: "#ffffff", scale: 1}, 1.82);
+      tl.set("#c0w9", {color: "#FFD43B", scale: 1.08}, 1.83); tl.set("#c0w9", {color: "#ffffff", scale: 1}, 1.87);
+      tl.set("#c0w10", {color: "#FFD43B", scale: 1.08}, 1.88); tl.set("#c0w10", {color: "#ffffff", scale: 1}, 2.40);
+      tl.set("#cap1", {opacity: 1}, 2.76); tl.set("#cap1", {opacity: 0}, 6.16);
+      tl.set("#c1w0", {color: "#FFD43B", scale: 1.08}, 2.76); tl.set("#c1w0", {color: "#ffffff", scale: 1}, 3.16);
+      tl.set("#c1w1", {color: "#FFD43B", scale: 1.08}, 3.17); tl.set("#c1w1", {color: "#ffffff", scale: 1}, 3.47);
+      tl.set("#c1w2", {color: "#FFD43B", scale: 1.08}, 3.48); tl.set("#c1w2", {color: "#ffffff", scale: 1}, 3.56);
+      tl.set("#c1w3", {color: "#FFD43B", scale: 1.08}, 3.57); tl.set("#c1w3", {color: "#ffffff", scale: 1}, 4.21);
+      tl.set("#c1w4", {color: "#FFD43B", scale: 1.08}, 4.54); tl.set("#c1w4", {color: "#ffffff", scale: 1}, 4.83);
+      tl.set("#c1w5", {color: "#FFD43B", scale: 1.08}, 4.84); tl.set("#c1w5", {color: "#ffffff", scale: 1}, 5.12);
+      tl.set("#c1w6", {color: "#FFD43B", scale: 1.08}, 5.13); tl.set("#c1w6", {color: "#ffffff", scale: 1}, 5.19);
+      tl.set("#c1w7", {color: "#FFD43B", scale: 1.08}, 5.20); tl.set("#c1w7", {color: "#ffffff", scale: 1}, 5.86);
+      tl.set("#cap2", {opacity: 1}, 6.21); tl.set("#cap2", {opacity: 0}, 8.67);
+      tl.set("#c2w0", {color: "#FFD43B", scale: 1.08}, 6.21); tl.set("#c2w0", {color: "#ffffff", scale: 1}, 6.41);
+      tl.set("#c2w1", {color: "#FFD43B", scale: 1.08}, 6.42); tl.set("#c2w1", {color: "#ffffff", scale: 1}, 6.60);
+      tl.set("#c2w2", {color: "#FFD43B", scale: 1.08}, 6.61); tl.set("#c2w2", {color: "#ffffff", scale: 1}, 6.76);
+      tl.set("#c2w3", {color: "#FFD43B", scale: 1.08}, 6.77); tl.set("#c2w3", {color: "#ffffff", scale: 1}, 7.06);
+      tl.set("#c2w4", {color: "#FFD43B", scale: 1.08}, 7.07); tl.set("#c2w4", {color: "#ffffff", scale: 1}, 7.42);
+      tl.set("#c2w5", {color: "#FFD43B", scale: 1.08}, 7.43); tl.set("#c2w5", {color: "#ffffff", scale: 1}, 7.59);
+      tl.set("#c2w6", {color: "#FFD43B", scale: 1.08}, 7.61); tl.set("#c2w6", {color: "#ffffff", scale: 1}, 8.39);
+      tl.set("#cap3", {opacity: 1}, 8.72); tl.set("#cap3", {opacity: 0}, 9.92);
+      tl.set("#c3w0", {color: "#FFD43B", scale: 1.08}, 8.72); tl.set("#c3w0", {color: "#ffffff", scale: 1}, 8.94);
+      tl.set("#c3w1", {color: "#FFD43B", scale: 1.08}, 8.96); tl.set("#c3w1", {color: "#ffffff", scale: 1}, 9.24);
+      tl.set("#c3w2", {color: "#FFD43B", scale: 1.08}, 9.26); tl.set("#c3w2", {color: "#ffffff", scale: 1}, 9.28);
+      tl.set("#c3w3", {color: "#FFD43B", scale: 1.08}, 9.29); tl.set("#c3w3", {color: "#ffffff", scale: 1}, 9.63);
+      tl.set("#cap4", {opacity: 1}, 9.97); tl.set("#cap4", {opacity: 0}, 13.00);
+      tl.set("#c4w0", {color: "#FFD43B", scale: 1.08}, 9.97); tl.set("#c4w0", {color: "#ffffff", scale: 1}, 10.34);
+      tl.set("#c4w1", {color: "#FFD43B", scale: 1.08}, 10.36); tl.set("#c4w1", {color: "#ffffff", scale: 1}, 10.53);
+      tl.set("#c4w2", {color: "#FFD43B", scale: 1.08}, 10.54); tl.set("#c4w2", {color: "#ffffff", scale: 1}, 10.81);
+      tl.set("#c4w3", {color: "#FFD43B", scale: 1.08}, 10.82); tl.set("#c4w3", {color: "#ffffff", scale: 1}, 11.24);
+      tl.set("#c4w4", {color: "#FFD43B", scale: 1.08}, 11.57); tl.set("#c4w4", {color: "#ffffff", scale: 1}, 11.91);
+      tl.set("#c4w5", {color: "#FFD43B", scale: 1.08}, 11.93); tl.set("#c4w5", {color: "#ffffff", scale: 1}, 12.08);
+      tl.set("#c4w6", {color: "#FFD43B", scale: 1.08}, 12.09); tl.set("#c4w6", {color: "#ffffff", scale: 1}, 12.29);
+      tl.set("#c4w7", {color: "#FFD43B", scale: 1.08}, 12.30); tl.set("#c4w7", {color: "#ffffff", scale: 1}, 12.68);
+      tl.set("#cap5", {opacity: 1}, 13.05); tl.set("#cap5", {opacity: 0}, 16.19);
+      tl.set("#c5w0", {color: "#FFD43B", scale: 1.08}, 13.05); tl.set("#c5w0", {color: "#ffffff", scale: 1}, 13.30);
+      tl.set("#c5w1", {color: "#FFD43B", scale: 1.08}, 13.31); tl.set("#c5w1", {color: "#ffffff", scale: 1}, 13.50);
+      tl.set("#c5w2", {color: "#FFD43B", scale: 1.08}, 13.51); tl.set("#c5w2", {color: "#ffffff", scale: 1}, 13.68);
+      tl.set("#c5w3", {color: "#FFD43B", scale: 1.08}, 13.70); tl.set("#c5w3", {color: "#ffffff", scale: 1}, 14.07);
+      tl.set("#c5w4", {color: "#FFD43B", scale: 1.08}, 14.08); tl.set("#c5w4", {color: "#ffffff", scale: 1}, 14.34);
+      tl.set("#c5w5", {color: "#FFD43B", scale: 1.08}, 14.36); tl.set("#c5w5", {color: "#ffffff", scale: 1}, 14.64);
+      tl.set("#c5w6", {color: "#FFD43B", scale: 1.08}, 14.66); tl.set("#c5w6", {color: "#ffffff", scale: 1}, 15.08);
+      tl.set("#c5w7", {color: "#FFD43B", scale: 1.08}, 15.10); tl.set("#c5w7", {color: "#ffffff", scale: 1}, 15.43);
+      tl.set("#c5w8", {color: "#FFD43B", scale: 1.08}, 15.46); tl.set("#c5w8", {color: "#ffffff", scale: 1}, 15.49);
+      tl.set("#c5w9", {color: "#FFD43B", scale: 1.08}, 15.50); tl.set("#c5w9", {color: "#ffffff", scale: 1}, 15.89);
+      tl.set("#cap6", {opacity: 1}, 16.24); tl.set("#cap6", {opacity: 0}, 18.63);
+      tl.set("#c6w0", {color: "#FFD43B", scale: 1.08}, 16.24); tl.set("#c6w0", {color: "#ffffff", scale: 1}, 16.62);
+      tl.set("#c6w1", {color: "#FFD43B", scale: 1.08}, 16.64); tl.set("#c6w1", {color: "#ffffff", scale: 1}, 16.87);
+      tl.set("#c6w2", {color: "#FFD43B", scale: 1.08}, 16.88); tl.set("#c6w2", {color: "#ffffff", scale: 1}, 17.09);
+      tl.set("#c6w3", {color: "#FFD43B", scale: 1.08}, 17.10); tl.set("#c6w3", {color: "#ffffff", scale: 1}, 17.25);
+      tl.set("#c6w4", {color: "#FFD43B", scale: 1.08}, 17.26); tl.set("#c6w4", {color: "#ffffff", scale: 1}, 17.58);
+      tl.set("#c6w5", {color: "#FFD43B", scale: 1.08}, 17.60); tl.set("#c6w5", {color: "#ffffff", scale: 1}, 18.24);
+      tl.set("#cap7", {opacity: 1}, 18.68); tl.set("#cap7", {opacity: 0}, 21.31);
+      tl.set("#c7w0", {color: "#FFD43B", scale: 1.08}, 18.68); tl.set("#c7w0", {color: "#ffffff", scale: 1}, 18.90);
+      tl.set("#c7w1", {color: "#FFD43B", scale: 1.08}, 18.91); tl.set("#c7w1", {color: "#ffffff", scale: 1}, 19.14);
+      tl.set("#c7w2", {color: "#FFD43B", scale: 1.08}, 19.15); tl.set("#c7w2", {color: "#ffffff", scale: 1}, 19.26);
+      tl.set("#c7w3", {color: "#FFD43B", scale: 1.08}, 19.27); tl.set("#c7w3", {color: "#ffffff", scale: 1}, 19.46);
+      tl.set("#c7w4", {color: "#FFD43B", scale: 1.08}, 19.48); tl.set("#c7w4", {color: "#ffffff", scale: 1}, 19.77);
+      tl.set("#c7w5", {color: "#FFD43B", scale: 1.08}, 19.78); tl.set("#c7w5", {color: "#ffffff", scale: 1}, 20.15);
+      tl.set("#c7w6", {color: "#FFD43B", scale: 1.08}, 20.16); tl.set("#c7w6", {color: "#ffffff", scale: 1}, 20.53);
+      tl.set("#c7w7", {color: "#FFD43B", scale: 1.08}, 20.54); tl.set("#c7w7", {color: "#ffffff", scale: 1}, 20.84);
+      tl.set("#c7w8", {color: "#FFD43B", scale: 1.08}, 20.85); tl.set("#c7w8", {color: "#ffffff", scale: 1}, 21.15);
+      tl.set("#cap8", {opacity: 1}, 21.36); tl.set("#cap8", {opacity: 0}, 22.39);
+      tl.set("#c8w0", {color: "#FFD43B", scale: 1.08}, 21.36); tl.set("#c8w0", {color: "#ffffff", scale: 1}, 21.45);
+      tl.set("#c8w1", {color: "#FFD43B", scale: 1.08}, 21.47); tl.set("#c8w1", {color: "#ffffff", scale: 1}, 21.52);
+      tl.set("#c8w2", {color: "#FFD43B", scale: 1.08}, 21.54); tl.set("#c8w2", {color: "#ffffff", scale: 1}, 21.78);
+      tl.set("#c8w3", {color: "#FFD43B", scale: 1.08}, 21.79); tl.set("#c8w3", {color: "#ffffff", scale: 1}, 22.13);
+      tl.set("#cap9", {opacity: 1}, 22.45); tl.set("#cap9", {opacity: 0}, 24.21);
+      tl.set("#c9w0", {color: "#FFD43B", scale: 1.08}, 22.45); tl.set("#c9w0", {color: "#ffffff", scale: 1}, 22.67);
+      tl.set("#c9w1", {color: "#FFD43B", scale: 1.08}, 22.68); tl.set("#c9w1", {color: "#ffffff", scale: 1}, 22.76);
+      tl.set("#c9w2", {color: "#FFD43B", scale: 1.08}, 22.77); tl.set("#c9w2", {color: "#ffffff", scale: 1}, 22.84);
+      tl.set("#c9w3", {color: "#FFD43B", scale: 1.08}, 22.85); tl.set("#c9w3", {color: "#ffffff", scale: 1}, 23.26);
+      tl.set("#c9w4", {color: "#FFD43B", scale: 1.08}, 23.27); tl.set("#c9w4", {color: "#ffffff", scale: 1}, 23.50);
+      tl.set("#c9w5", {color: "#FFD43B", scale: 1.08}, 23.51); tl.set("#c9w5", {color: "#ffffff", scale: 1}, 23.61);
+      tl.set("#c9w6", {color: "#FFD43B", scale: 1.08}, 23.62); tl.set("#c9w6", {color: "#ffffff", scale: 1}, 23.93);
+      tl.set("#cap10", {opacity: 1}, 24.26); tl.set("#cap10", {opacity: 0}, 26.20);
+      tl.set("#c10w0", {color: "#FFD43B", scale: 1.08}, 24.26); tl.set("#c10w0", {color: "#ffffff", scale: 1}, 24.67);
+      tl.set("#c10w1", {color: "#FFD43B", scale: 1.08}, 24.68); tl.set("#c10w1", {color: "#ffffff", scale: 1}, 24.81);
+      tl.set("#c10w2", {color: "#FFD43B", scale: 1.08}, 24.82); tl.set("#c10w2", {color: "#ffffff", scale: 1}, 24.97);
+      tl.set("#c10w3", {color: "#FFD43B", scale: 1.08}, 24.98); tl.set("#c10w3", {color: "#ffffff", scale: 1}, 25.19);
+      tl.set("#c10w4", {color: "#FFD43B", scale: 1.08}, 25.20); tl.set("#c10w4", {color: "#ffffff", scale: 1}, 25.60);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+{
+ "lead": 0.3,
+ "tail": 1.8,
+ "trim": true,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "Is your savings account making you poorer?",
+   "gap": 0.3
+  },
+  {
+   "id": "s2",
+   "text": "Liam and Zoe both save three hundred dollars a month.",
+   "gap": 0.3
+  },
+  {
+   "id": "s3",
+   "text": "For thirty years. Same habit, same money.",
+   "gap": 0.3
+  },
+  {
+   "id": "s4",
+   "text": "Liam's bank pays half a percent. Zoe's index fund averages eight.",
+   "gap": 0.3
+  },
+  {
+   "id": "s5",
+   "text": "Liam ends with one hundred sixteen thousand.",
+   "gap": 0.3
+  },
+  {
+   "id": "s6",
+   "text": "Zoe ends with four hundred forty-seven thousand.",
+   "gap": 0.4
+  },
+  {
+   "id": "s7",
+   "text": "Same savings. Over three hundred thirty thousand dollars apart.",
+   "gap": 0.3
+  },
+  {
+   "id": "s8",
+   "text": "Keep your emergency fund in the bank, and invest the rest. Follow for more money math.",
+   "gap": 0.2
+  }
+ ]
+}

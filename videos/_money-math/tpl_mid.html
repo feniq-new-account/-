@@ -1,0 +1,14 @@
+<div id="captions" class="caps clip" data-start="0" data-duration="%%D%%" data-track-index="1" data-track-kind="captions">
+%%CAPS%%
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US"); } }, at);
+      };
+      // hidden by default (children of clips)
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });

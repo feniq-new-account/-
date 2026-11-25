@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Alexandria"; src: url("assets/fonts/Alexandria.ttf"); font-weight: 100 900; }
+      :root { --orange: #F2760A; --navy: #16283F; --navy2: #0E1B2C; --ink: #ffffff; --soft: #C9D3E0; --obg: #C25600; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--navy2); }
+      #root { position: relative; width: 1080px; height: 1920px; font-family: "Alexandria", sans-serif; color: var(--ink); direction: rtl;
+        background: radial-gradient(1200px 900px at 50% 30%, #1E3656 0%, var(--navy) 45%, var(--navy2) 100%); overflow: hidden; }
+      .scene { position: absolute; inset: 0; }
+      .in { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; }
+      .headline { font-size: 88px; font-weight: 800; line-height: 1.25; text-align: center; padding: 0 90px; }
+      .headline .o { color: var(--orange); }
+      .sub { font-size: 52px; font-weight: 500; color: var(--soft); text-align: center; padding: 0 110px; line-height: 1.45; }
+
+      /* scene 1: the old way */
+      #s1 .in { justify-content: flex-start; padding-top: 260px; gap: 60px; }
+      .chaos { position: relative; width: 760px; height: 700px; }
+      .bubble { position: absolute; background: #ffffff; color: #1b1b1b; border-radius: 34px; padding: 26px 38px; font-size: 40px; font-weight: 500; box-shadow: 0 18px 40px rgba(0,0,0,.35); white-space: nowrap; }
+      .bubble.g { background: #DCF8C6; }
+      .bubble small { display: block; font-size: 30px; color: #555; margin-top: 6px; }
+      .phoneIcon { position: absolute; left: 90px; top: 360px; width: 200px; height: 200px; border-radius: 50%; background: #E5484D; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 0 rgba(229,72,77,.5); }
+      .phoneIcon svg { width: 120px; height: 120px; }
+
+      /* scene 2: logo */
+      #s2 .in { justify-content: center; gap: 70px; }
+      .logo { display: flex; align-items: center; gap: 34px; direction: rtl; }
+      .mark { flex: none; width: 180px; height: 180px; border-radius: 52px; background: var(--obg); display: flex; align-items: center; justify-content: center; box-shadow: 0 30px 80px rgba(242,118,10,.45); }
+      .mark svg { width: 130px; height: 130px; }
+      .word { white-space: nowrap; font-size: 118px; font-weight: 900; letter-spacing: -2px; }
+      .word span { color: var(--orange); }
+      .drawers { display: grid; grid-template-columns: repeat(3, 230px); gap: 22px; }
+      .drawer { height: 120px; border-radius: 22px; background: rgba(255,255,255,.08); border: 3px solid rgba(255,255,255,.18); position: relative; }
+      .drawer::after { content: ""; position: absolute; left: 50%; top: 50%; width: 70px; height: 14px; margin: -7px 0 0 -35px; border-radius: 8px; background: var(--orange); }
+
+      /* scene 3: phone with catalog */
+      #s3 .in { justify-content: flex-start; padding-top: 170px; gap: 60px; }
+      .phone { width: 700px; height: 1180px; border-radius: 80px; background: #0A1422; border: 14px solid #2A3F5C; padding: 50px 40px; display: flex; flex-direction: column; gap: 28px; box-shadow: 0 50px 120px rgba(0,0,0,.5); }
+      .phone .bar { font-size: 40px; font-weight: 800; color: var(--orange); padding-bottom: 10px; border-bottom: 2px solid rgba(255,255,255,.1); }
+      .item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.06); border-radius: 26px; padding: 30px 30px; }
+      .item .n { font-size: 38px; font-weight: 600; }
+      .item .n small { display: block; font-size: 30px; color: var(--soft); font-weight: 400; margin-top: 6px; }
+      .item .p { font-size: 38px; font-weight: 800; color: var(--orange); white-space: nowrap; }
+      .item .q { width: 64px; height: 64px; border-radius: 18px; background: var(--obg); color: #fff; font-size: 48px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-inline-start: 22px; }
+      .send { margin-top: auto; background: var(--obg); border-radius: 30px; text-align: center; font-size: 46px; font-weight: 800; padding: 34px 0; }
+      .tap { position: absolute; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.35); border: 6px solid #fff; left: 480px; top: 1330px; }
+
+      /* scene 4: warehouse receives */
+      #s4 .in { justify-content: center; gap: 60px; }
+      .board { width: 880px; background: #ffffff; color: var(--navy); border-radius: 44px; padding: 50px; box-shadow: 0 50px 120px rgba(0,0,0,.45); display: flex; flex-direction: column; gap: 24px; }
+      .board h3 { font-size: 46px; font-weight: 800; display: flex; align-items: center; gap: 20px; }
+      .badge { background: var(--obg); color: #fff; font-size: 30px; border-radius: 40px; padding: 8px 24px; }
+      .row { display: flex; justify-content: space-between; font-size: 36px; font-weight: 500; padding: 18px 0; border-bottom: 2px solid #E7ECF2; }
+      .row b { font-weight: 800; }
+      .check { width: 170px; height: 170px; border-radius: 50%; background: #1E8A52; display: flex; align-items: center; justify-content: center; box-shadow: 0 20px 60px rgba(46,184,114,.45); }
+      .check svg { width: 100px; height: 100px; }
+
+      /* scene 5: CTA */
+      #s5 .in { justify-content: center; gap: 56px; }
+      .date { background: var(--obg); border-radius: 40px; padding: 40px 70px; text-align: center; box-shadow: 0 30px 80px rgba(242,118,10,.45); }
+      .date .k { display: block; font-size: 46px; font-weight: 600; margin-bottom: 14px; }
+      .date .d { font-size: 112px; font-weight: 900; line-height: 1.35; }
+      .url { font-size: 44px; font-weight: 600; direction: ltr; background: rgba(255,255,255,.1); border: 3px solid rgba(255,255,255,.25); border-radius: 30px; padding: 22px 44px; }
+      .small-logo { font-size: 70px; font-weight: 900; }
+      .small-logo span { color: var(--orange); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="23" data-width="1080" data-height="1920">
+
+      <audio id="vo" class="clip" src="assets/voice.wav" data-start="0" data-duration="22.4" data-track-index="5"></audio>
+
+      <!-- s1: 0 – 4.5 -->
+      <div id="s1" class="scene clip" data-start="0" data-duration="4.5" data-track-index="0">
+        <div class="in" id="s1in">
+          <div class="headline" id="s1h">صيدلاني؟<br />لسّا عم تطلب<br /><span class="o">بالتلفون والواتساب؟</span></div>
+          <div class="chaos">
+            <div class="bubble g" id="b1" style="right:50px;top:20px">عندك أموكسيسيلين؟<small>11:42</small></div>
+            <div class="bubble" id="b2" style="left:20px;top:200px">لحظة بشوف…<small>11:58</small></div>
+            <div class="bubble g" id="b3" style="right:30px;top:470px">ابعتلي الأسعار 🙏<small>12:10</small></div>
+            <div class="bubble" id="b4" style="left:40px;top:590px">رن عليّ بعد الظهر<small>12:31</small></div>
+            <div class="phoneIcon" id="ring"><svg viewBox="0 0 24 24" fill="#fff"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s2: 4.5 – 8.3 -->
+      <div id="s2" class="scene clip" data-start="4.5" data-duration="3.8" data-track-index="0">
+        <div class="in" id="s2in">
+          <div class="logo" id="logo">
+            <div class="mark"><svg viewBox="0 0 64 64" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6c6 10 18 14 18 30a18 18 0 0 1-36 0c0-8 4-12 8-16 0 6 3 9 6 9 0-9 2-16 4-23z"/></svg></div>
+            <div class="word">فينيق <span>لينك</span></div>
+          </div>
+          <div class="sub" id="s2t">كل أصناف المستودع<br />بدرج واحد بجيبتك</div>
+          <div class="drawers" id="drawers">
+            <div class="drawer"></div><div class="drawer"></div><div class="drawer"></div>
+            <div class="drawer"></div><div class="drawer"></div><div class="drawer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- s3: 8.3 – 12.6 -->
+      <div id="s3" class="scene clip" data-start="8.3" data-duration="4.3" data-track-index="0">
+        <div class="in" id="s3in">
+          <div class="headline" id="s3h" style="font-size:70px">الأسعار <span class="o">بالليرة السورية</span></div>
+          <div class="phone" id="phone">
+            <div class="bar">مستودع النور · الأصناف</div>
+            <div class="item" id="i1"><div class="n">باراسيتامول 500<small>20 مضغوطة</small></div><div style="display:flex;align-items:center"><div class="p">45 ل.س</div><div class="q">+</div></div></div>
+            <div class="item" id="i2"><div class="n">أموكسيسيلين 500<small>16 كبسولة</small></div><div style="display:flex;align-items:center"><div class="p">120 ل.س</div><div class="q">+</div></div></div>
+            <div class="item" id="i3"><div class="n">أوميبرازول 20<small>14 كبسولة</small></div><div style="display:flex;align-items:center"><div class="p">90 ل.س</div><div class="q">+</div></div></div>
+            <div class="item" id="i4"><div class="n">فيتامين د 50000<small>4 كبسولات</small></div><div style="display:flex;align-items:center"><div class="p">75 ل.س</div><div class="q">+</div></div></div>
+            <div class="send" id="send">إرسال الطلبية</div>
+          </div>
+          <div class="tap" id="tap"></div>
+        </div>
+      </div>
+
+      <!-- s4: 12.6 – 15.8 -->
+      <div id="s4" class="scene clip" data-start="12.6" data-duration="3.2" data-track-index="0">
+        <div class="in" id="s4in">
+          <div class="check" id="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div class="board" id="board">
+            <h3>طلبية جديدة <span class="badge">صيدلية الشفاء</span></h3>
+            <div class="row" id="r1"><span>باراسيتامول 500</span><b>× 10</b></div>
+            <div class="row" id="r2"><span>أموكسيسيلين 500</span><b>× 6</b></div>
+            <div class="row" id="r3"><span>أوميبرازول 20</span><b>× 4</b></div>
+          </div>
+          <div class="headline" id="s4h" style="font-size:76px">مرتّبة، <span class="o">بلا غلط ولا ضياع</span></div>
+        </div>
+      </div>
+
+      <!-- s5: 15.8 – 23 -->
+      <div id="s5" class="scene clip" data-start="15.8" data-duration="7.2" data-track-index="0">
+        <div class="in" id="s5in">
+          <div class="small-logo" id="s5logo">فينيق <span>لينك</span></div>
+          <div class="date" id="date"><div class="k">الطلبات بتفتح</div><div class="d">1 كانون الأول</div></div>
+          <div class="sub" id="s5t" style="color:#fff">نزّل التطبيق هلّق<br />من موقع فينيق</div>
+          <div class="url" id="url">feniq-site.onrender.com</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+      // s1
+      tl.from("#s1h", { y: 30, scale: 0.97, duration: 0.5, ease: E }, 0);
+      ["#b1", "#b2", "#b3", "#b4"].forEach((b, i) => tl.from(b, { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 0.6 + i * 0.55));
+      tl.from("#ring", { scale: 0, duration: 0.4, ease: "back.out(2)" }, 0.4);
+      for (let k = 0; k < 8; k++) tl.to("#ring", { rotation: k % 2 ? -14 : 14, duration: 0.09, ease: "none" }, 1.0 + k * 0.09);
+      tl.to("#ring", { rotation: 0, duration: 0.1 }, 1.75);
+      for (let k = 0; k < 8; k++) tl.to("#ring", { rotation: k % 2 ? -14 : 14, duration: 0.09, ease: "none" }, 2.7 + k * 0.09);
+      tl.to("#ring", { rotation: 0, duration: 0.1 }, 3.45);
+      tl.to("#s1in", { opacity: 0, scale: 0.94, duration: 0.3, ease: "power2.in" }, 4.15);
+      // s2
+      tl.from("#logo", { scale: 0.7, opacity: 0, duration: 0.6, ease: "back.out(1.6)" }, 4.55);
+      tl.from("#s2t", { y: 40, opacity: 0, duration: 0.5, ease: E }, 5.2);
+      tl.from("#drawers .drawer", { y: 60, opacity: 0, duration: 0.4, stagger: 0.08, ease: E }, 5.6);
+      tl.to("#s2in", { opacity: 0, y: -40, duration: 0.3, ease: "power2.in" }, 7.95);
+      // s3
+      tl.from("#s3h", { y: 40, opacity: 0, duration: 0.45, ease: E }, 8.35);
+      tl.from("#phone", { y: 300, opacity: 0, duration: 0.6, ease: E }, 8.4);
+      tl.from(["#i1", "#i2", "#i3", "#i4"], { x: -80, opacity: 0, duration: 0.35, stagger: 0.12, ease: E }, 8.9);
+      tl.from("#tap", { scale: 0, opacity: 0, duration: 0.25 }, 11.0);
+      tl.to("#send", { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1 }, 11.25);
+      tl.to("#send", { backgroundColor: "#1E8A52", duration: 0.2 }, 11.4);
+      tl.to("#tap", { scale: 1.8, opacity: 0, duration: 0.4 }, 11.35);
+      tl.to("#s3in", { opacity: 0, duration: 0.3, ease: "power2.in" }, 12.25);
+      // s4
+      tl.from("#check", { scale: 0, rotation: -90, duration: 0.5, ease: "back.out(2)" }, 12.65);
+      tl.from("#board", { y: 120, opacity: 0, duration: 0.5, ease: E }, 12.8);
+      tl.from(["#r1", "#r2", "#r3"], { opacity: 0, x: 60, duration: 0.3, stagger: 0.12, ease: E }, 13.2);
+      tl.from("#s4h", { y: 40, opacity: 0, duration: 0.45, ease: E }, 13.9);
+      tl.to("#s4in", { opacity: 0, duration: 0.3, ease: "power2.in" }, 15.45);
+      // s5
+      tl.from("#s5logo", { y: -40, opacity: 0, duration: 0.45, ease: E }, 15.85);
+      tl.from("#date", { scale: 0.6, opacity: 0, duration: 0.6, ease: "back.out(1.8)" }, 16.0);
+      tl.from("#s5t", { y: 40, opacity: 0, duration: 0.5, ease: E }, 18.0);
+      tl.from("#url", { y: 40, opacity: 0, duration: 0.5, ease: E }, 18.6);
+      tl.to("#date", { scale: 1.05, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 19.4);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
