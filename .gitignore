@@ -10,3 +10,4 @@ videos/**/*.wav
 videos/**/renders/
 .hyperframes/
 .DS_Store
+.claude/kokoro-venv/
