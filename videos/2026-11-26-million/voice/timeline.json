@@ -1,0 +1,464 @@
+{
+ "duration": 27.661,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "How much do you need to save to retire a millionaire?",
+   "start": 0.3,
+   "end": 2.457,
+   "words": [
+    {
+     "w": "How",
+     "start": 0.3,
+     "end": 0.388
+    },
+    {
+     "w": "much",
+     "start": 0.399,
+     "end": 0.573
+    },
+    {
+     "w": "do",
+     "start": 0.585,
+     "end": 0.643
+    },
+    {
+     "w": "you",
+     "start": 0.654,
+     "end": 0.724
+    },
+    {
+     "w": "need",
+     "start": 0.735,
+     "end": 0.886
+    },
+    {
+     "w": "to",
+     "start": 0.897,
+     "end": 0.943
+    },
+    {
+     "w": "save",
+     "start": 0.955,
+     "end": 1.233
+    },
+    {
+     "w": "to",
+     "start": 1.244,
+     "end": 1.337
+    },
+    {
+     "w": "retire",
+     "start": 1.349,
+     "end": 1.823
+    },
+    {
+     "w": "a",
+     "start": 1.835,
+     "end": 1.869
+    },
+    {
+     "w": "millionaire",
+     "start": 1.881,
+     "end": 2.402
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "text": "Olivia starts at twenty-five. Jack starts at forty-five.",
+   "start": 2.757,
+   "end": 5.913,
+   "words": [
+    {
+     "w": "Olivia",
+     "start": 2.757,
+     "end": 3.157
+    },
+    {
+     "w": "starts",
+     "start": 3.168,
+     "end": 3.469
+    },
+    {
+     "w": "at",
+     "start": 3.481,
+     "end": 3.562
+    },
+    {
+     "w": "twenty-five",
+     "start": 3.573,
+     "end": 4.21
+    },
+    {
+     "w": "Jack",
+     "start": 4.542,
+     "end": 4.831
+    },
+    {
+     "w": "starts",
+     "start": 4.843,
+     "end": 5.121
+    },
+    {
+     "w": "at",
+     "start": 5.132,
+     "end": 5.19
+    },
+    {
+     "w": "forty-five",
+     "start": 5.202,
+     "end": 5.861
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "text": "Both want one million dollars by sixty-five. Eight percent a year.",
+   "start": 6.213,
+   "end": 9.674,
+   "words": [
+    {
+     "w": "Both",
+     "start": 6.213,
+     "end": 6.413
+    },
+    {
+     "w": "want",
+     "start": 6.425,
+     "end": 6.598
+    },
+    {
+     "w": "one",
+     "start": 6.61,
+     "end": 6.76
+    },
+    {
+     "w": "million",
+     "start": 6.772,
+     "end": 7.061
+    },
+    {
+     "w": "dollars",
+     "start": 7.073,
+     "end": 7.42
+    },
+    {
+     "w": "by",
+     "start": 7.432,
+     "end": 7.594
+    },
+    {
+     "w": "sixty-five",
+     "start": 7.605,
+     "end": 8.392
+    },
+    {
+     "w": "Eight",
+     "start": 8.724,
+     "end": 8.944
+    },
+    {
+     "w": "percent",
+     "start": 8.956,
+     "end": 9.245
+    },
+    {
+     "w": "a",
+     "start": 9.257,
+     "end": 9.28
+    },
+    {
+     "w": "year",
+     "start": 9.291,
+     "end": 9.627
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "text": "Olivia has forty years. Jack has only twenty.",
+   "start": 9.974,
+   "end": 12.751,
+   "words": [
+    {
+     "w": "Olivia",
+     "start": 9.974,
+     "end": 10.344
+    },
+    {
+     "w": "has",
+     "start": 10.356,
+     "end": 10.53
+    },
+    {
+     "w": "forty",
+     "start": 10.541,
+     "end": 10.807
+    },
+    {
+     "w": "years",
+     "start": 10.819,
+     "end": 11.236
+    },
+    {
+     "w": "Jack",
+     "start": 11.567,
+     "end": 11.915
+    },
+    {
+     "w": "has",
+     "start": 11.926,
+     "end": 12.077
+    },
+    {
+     "w": "only",
+     "start": 12.088,
+     "end": 12.285
+    },
+    {
+     "w": "twenty",
+     "start": 12.297,
+     "end": 12.679
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "text": "Jack needs one thousand six hundred ninety-eight dollars a month.",
+   "start": 13.051,
+   "end": 15.944,
+   "words": [
+    {
+     "w": "Jack",
+     "start": 13.051,
+     "end": 13.302
+    },
+    {
+     "w": "needs",
+     "start": 13.314,
+     "end": 13.499
+    },
+    {
+     "w": "one",
+     "start": 13.51,
+     "end": 13.684
+    },
+    {
+     "w": "thousand",
+     "start": 13.696,
+     "end": 14.066
+    },
+    {
+     "w": "six",
+     "start": 14.078,
+     "end": 14.344
+    },
+    {
+     "w": "hundred",
+     "start": 14.355,
+     "end": 14.645
+    },
+    {
+     "w": "ninety-eight",
+     "start": 14.656,
+     "end": 15.084
+    },
+    {
+     "w": "dollars",
+     "start": 15.096,
+     "end": 15.432
+    },
+    {
+     "w": "a",
+     "start": 15.455,
+     "end": 15.49
+    },
+    {
+     "w": "month",
+     "start": 15.501,
+     "end": 15.895
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "text": "Olivia needs just two hundred eighty-six.",
+   "start": 16.244,
+   "end": 18.282,
+   "words": [
+    {
+     "w": "Olivia",
+     "start": 16.244,
+     "end": 16.624
+    },
+    {
+     "w": "needs",
+     "start": 16.635,
+     "end": 16.867
+    },
+    {
+     "w": "just",
+     "start": 16.878,
+     "end": 17.086
+    },
+    {
+     "w": "two",
+     "start": 17.098,
+     "end": 17.249
+    },
+    {
+     "w": "hundred",
+     "start": 17.26,
+     "end": 17.584
+    },
+    {
+     "w": "eighty-six",
+     "start": 17.596,
+     "end": 18.244
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "text": "Jack pays in two hundred seventy thousand dollars more, for the same million.",
+   "start": 18.682,
+   "end": 22.145,
+   "words": [
+    {
+     "w": "Jack",
+     "start": 18.682,
+     "end": 18.897
+    },
+    {
+     "w": "pays",
+     "start": 18.909,
+     "end": 19.14
+    },
+    {
+     "w": "in",
+     "start": 19.152,
+     "end": 19.256
+    },
+    {
+     "w": "two",
+     "start": 19.268,
+     "end": 19.464
+    },
+    {
+     "w": "hundred",
+     "start": 19.476,
+     "end": 19.765
+    },
+    {
+     "w": "seventy",
+     "start": 19.777,
+     "end": 20.147
+    },
+    {
+     "w": "thousand",
+     "start": 20.159,
+     "end": 20.529
+    },
+    {
+     "w": "dollars",
+     "start": 20.541,
+     "end": 20.842
+    },
+    {
+     "w": "more",
+     "start": 20.853,
+     "end": 21.154
+    },
+    {
+     "w": "for",
+     "start": 21.363,
+     "end": 21.455
+    },
+    {
+     "w": "the",
+     "start": 21.467,
+     "end": 21.525
+    },
+    {
+     "w": "same",
+     "start": 21.536,
+     "end": 21.779
+    },
+    {
+     "w": "million",
+     "start": 21.791,
+     "end": 22.126
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "text": "Time is the cheapest money you have. Follow for more money math.",
+   "start": 22.445,
+   "end": 25.661,
+   "words": [
+    {
+     "w": "Time",
+     "start": 22.445,
+     "end": 22.668
+    },
+    {
+     "w": "is",
+     "start": 22.68,
+     "end": 22.761
+    },
+    {
+     "w": "the",
+     "start": 22.772,
+     "end": 22.842
+    },
+    {
+     "w": "cheapest",
+     "start": 22.853,
+     "end": 23.258
+    },
+    {
+     "w": "money",
+     "start": 23.27,
+     "end": 23.501
+    },
+    {
+     "w": "you",
+     "start": 23.513,
+     "end": 23.606
+    },
+    {
+     "w": "have",
+     "start": 23.617,
+     "end": 23.93
+    },
+    {
+     "w": "Follow",
+     "start": 24.262,
+     "end": 24.667
+    },
+    {
+     "w": "for",
+     "start": 24.678,
+     "end": 24.806
+    },
+    {
+     "w": "more",
+     "start": 24.817,
+     "end": 24.968
+    },
+    {
+     "w": "money",
+     "start": 24.979,
+     "end": 25.188
+    },
+    {
+     "w": "math",
+     "start": 25.199,
+     "end": 25.604
+    }
+   ]
+  }
+ ]
+}

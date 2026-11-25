@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 38px; font-weight: 700; padding: 12px 24px; border-radius: 30px; white-space: nowrap; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 50px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: 110px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.85" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="27.7" data-track-index="5"></audio>
+
+      <div id="stage" class="stage clip" data-start="0" data-duration="27.85" data-track-index="0" data-track-kind="graphics">
+        <div class="top" id="p1"><div class="kicker">Credit card debt</div><div class="big num">$5,000</div></div>
+        <div class="top" id="p3"><div class="badge"><b>$5,000</b> balance · <b>24%</b> APR</div></div>
+        <div class="top" id="p4">
+          <div class="kicker">Monthly payment</div>
+          <div class="rows">
+            <div class="row"><span style="color:var(--sam)">Mason</span><span class="num">minimum</span></div>
+            <div class="row"><span style="color:var(--alex)">Lily</span><span class="num">$250</span></div>
+          </div>
+          <div class="plus">Minimum = interest + 1%, at least $25</div>
+        </div>
+        <div class="top" id="p5">
+          <div class="kicker">Interest paid</div>
+          <div class="ctr">
+            <div class="line" id="lsam"><span class="who" style="color:var(--sam)">Mason</span><span class="num" id="vsam" style="color:var(--sam)">$0</span></div>
+            <div class="line" id="lalex"><span class="who" style="color:var(--alex)">Lily</span><span class="num" id="valex" style="color:var(--alex)">$0</span></div>
+          </div>
+        </div>
+        <div class="people" id="people">
+          <div class="person sam" id="pa1"><div class="av num">M</div><h2>Mason</h2><div class="age" id="agea">owes $5,000</div></div>
+          <div class="person alex" id="ps1"><div class="av num">L</div><h2>Lily</h2><div class="age" id="ages">owes $5,000</div></div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 1000 780">
+          <line x1="120" x2="940" y1="603.6" y2="603.6" class="g"/><text x="102" y="613.6" class="gl">$1k</text><line x1="120" x2="940" y1="429.1" y2="429.1" class="g"/><text x="102" y="439.1" class="gl">$2.5k</text><line x1="120" x2="940" y1="138.2" y2="138.2" class="g"/><text x="102" y="148.2" class="gl">$5k</text>
+          <line class="ax" x1="120" x2="940" y1="720" y2="720" />
+          <text x="120.0" y="772" class="tk">yr 0</text><text x="325.0" y="772" class="tk">5</text><text x="530.0" y="772" class="tk">10</text><text x="735.0" y="772" class="tk">15</text><text x="940.0" y="772" class="tk">20</text>
+          <path id="cs" class="curve" d="M120.0 138.2 L130.2 155.5 L140.5 172.2 L150.8 188.5 L161.0 204.3 L171.2 219.6 L181.5 234.5 L191.8 248.9 L202.0 262.9 L212.2 276.5 L222.5 289.6 L232.8 302.4 L243.0 314.8 L253.2 326.8 L263.5 338.5 L273.8 349.9 L284.0 360.8 L294.2 371.5 L304.5 381.9 L314.8 391.9 L325.0 401.7 L335.2 411.1 L345.5 420.3 L355.8 429.2 L366.0 437.8 L376.2 446.2 L386.5 454.3 L396.8 462.2 L407.0 469.9 L417.2 477.3 L427.5 484.5 L437.8 491.5 L448.0 498.3 L458.2 504.9 L468.5 511.3 L478.8 517.5 L489.0 523.5 L499.2 529.3 L509.5 535.0 L519.8 540.5 L530.0 545.8 L540.2 551.0 L550.5 556.0 L560.8 560.9 L571.0 565.6 L581.2 570.2 L591.5 574.6 L601.8 579.0 L612.0 583.1 L622.2 587.2 L632.5 591.2 L642.8 595.0 L653.0 598.7 L663.2 602.3 L673.5 605.8 L683.8 609.2 L694.0 612.5 L704.2 615.7 L714.5 618.8 L724.8 621.8 L735.0 624.7 L745.2 627.8 L755.5 631.0 L765.8 634.5 L776.0 638.2 L786.2 642.1 L796.5 646.2 L806.8 650.6 L817.0 655.2 L827.2 660.2 L837.5 665.4 L847.8 671.0 L858.0 676.9 L868.2 683.1 L878.5 689.8 L888.8 696.9 L899.0 704.3 L909.2 712.3 L919.5 720.0 L919.5 720.0" stroke="#FF6B6B" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <path id="ca" class="curve" d="M120.0 138.2 L123.4 155.6 L126.8 173.4 L130.2 191.6 L133.7 210.1 L137.1 229.0 L140.5 248.3 L143.9 267.9 L147.3 288.0 L150.8 308.4 L154.2 329.3 L157.6 350.6 L161.0 372.3 L164.4 394.4 L167.8 417.0 L171.2 440.0 L174.7 463.5 L178.1 487.5 L181.5 511.9 L184.9 536.9 L188.3 562.3 L191.8 588.2 L195.2 614.7 L198.6 641.7 L202.0 669.2 L205.4 697.3 L208.8 720.0" stroke="#3DDC97" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <circle id="dots" cx="919.5" cy="720.0" r="20" fill="#FF6B6B" />
+          <circle id="dota" cx="208.8" cy="720.0" r="20" fill="#3DDC97" />
+        </svg>
+        <div class="stamp" id="stamp"><div class="k">Cost of paying the minimum</div><div class="num" id="vgap">−$7,438</div></div>
+        <div class="end" id="end">
+          <div class="num">PAY MORE<br />THAN THE<br /><span>MINIMUM.</span></div>
+          <div class="follow">Follow for more money math</div>
+          <div class="disc">Illustration only, not financial advice. Assumes 24% APR (2% a month), no new purchases. Minimum payment = interest + 1% of the balance, at least $25.</div>
+        </div>
+      </div>
+
+      <div id="captions" class="caps clip" data-start="0" data-duration="27.85" data-track-index="1" data-track-kind="captions">
+<div class="cap" id="cap0"><span class="w" id="c0w0">Five</span> <span class="w" id="c0w1">thousand</span> <span class="w" id="c0w2">dollars</span> <span class="w" id="c0w3">on</span> <span class="w" id="c0w4">a</span> <span class="w" id="c0w5">credit</span> <span class="w" id="c0w6">card.</span> </div>
+<div class="cap" id="cap1"><span class="w" id="c1w0">Just</span> <span class="w" id="c1w1">pay</span> <span class="w" id="c1w2">the</span> <span class="w" id="c1w3">minimum?</span> </div>
+<div class="cap" id="cap2"><span class="w" id="c2w0">Mason</span> <span class="w" id="c2w1">and</span> <span class="w" id="c2w2">Lily</span> <span class="w" id="c2w3">both</span> <span class="w" id="c2w4">owe</span> <span class="w" id="c2w5">five</span> <span class="w" id="c2w6">thousand</span> <span class="w" id="c2w7">dollars.</span> </div>
+<div class="cap" id="cap3"><span class="w" id="c3w0">Same</span> <span class="w" id="c3w1">card.</span> <span class="w" id="c3w2">Twenty-four</span> <span class="w" id="c3w3">percent</span> <span class="w" id="c3w4">interest.</span> </div>
+<div class="cap" id="cap4"><span class="w" id="c4w0">Mason</span> <span class="w" id="c4w1">pays</span> <span class="w" id="c4w2">the</span> <span class="w" id="c4w3">minimum.</span> <span class="w" id="c4w4">Lily</span> <span class="w" id="c4w5">pays</span> <span class="w" id="c4w6">two</span> <span class="w" id="c4w7">hundred</span> <span class="w" id="c4w8">fifty</span> <span class="w" id="c4w9">a</span> <span class="w" id="c4w10">month.</span> </div>
+<div class="cap" id="cap5"><span class="w" id="c5w0">Mason</span> <span class="w" id="c5w1">takes</span> <span class="w" id="c5w2">nineteen</span> <span class="w" id="c5w3">years,</span> <span class="w" id="c5w4">and</span> <span class="w" id="c5w5">pays</span> <span class="w" id="c5w6">eight</span> <span class="w" id="c5w7">thousand</span> <span class="w" id="c5w8">nine</span> <span class="w" id="c5w9">hundred</span> <span class="w" id="c5w10">in</span> <span class="w" id="c5w11">interest.</span> </div>
+<div class="cap" id="cap6"><span class="w" id="c6w0">Lily</span> <span class="w" id="c6w1">is</span> <span class="w" id="c6w2">done</span> <span class="w" id="c6w3">in</span> <span class="w" id="c6w4">two</span> <span class="w" id="c6w5">years,</span> </div>
+<div class="cap" id="cap7"><span class="w" id="c7w0">with</span> <span class="w" id="c7w1">fourteen</span> <span class="w" id="c7w2">hundred</span> <span class="w" id="c7w3">in</span> <span class="w" id="c7w4">interest.</span> </div>
+<div class="cap" id="cap8"><span class="w" id="c8w0">The</span> <span class="w" id="c8w1">minimum</span> <span class="w" id="c8w2">cost</span> <span class="w" id="c8w3">Mason</span> <span class="w" id="c8w4">over</span> <span class="w" id="c8w5">seven</span> <span class="w" id="c8w6">thousand</span> <span class="w" id="c8w7">dollars</span> <span class="w" id="c8w8">extra.</span> </div>
+<div class="cap" id="cap9"><span class="w" id="c9w0">Always</span> <span class="w" id="c9w1">pay</span> <span class="w" id="c9w2">more</span> <span class="w" id="c9w3">than</span> <span class="w" id="c9w4">the</span> <span class="w" id="c9w5">minimum.</span> </div>
+<div class="cap" id="cap10"><span class="w" id="c10w0">Follow</span> <span class="w" id="c10w1">for</span> <span class="w" id="c10w2">more</span> <span class="w" id="c10w3">money</span> <span class="w" id="c10w4">math.</span> </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur, suf) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US") + (suf || ""); } }, at);
+      };
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });
+      // s1
+      tl.from("#p1 .big", { scale: 0.6, duration: 0.6, ease: "back.out(1.7)" }, 0);
+      tl.to("#p1 .big", { color: "#FFD43B", scale: 1.1, duration: 0.25, ease: "power4.in" }, 1.40);
+      tl.to("#p1", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 3.10);
+      // s2 people
+      tl.fromTo("#pa1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.40);
+      tl.fromTo("#ps1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.85);
+      tl.fromTo(["#agea", "#ages"], { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.3 }, 4.50);
+      tl.to("#people", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 5.82);
+      // s3 chart
+      tl.to("#p3", { opacity: 1, duration: 0.35 }, 6.12);
+      tl.to("#chart", { opacity: 1, duration: 0.35 }, 6.12);
+      tl.to("#ca", { attr: { "stroke-dashoffset": 0 }, duration: 1.99, ease: "power1.in" }, 6.32);
+      tl.to("#cs", { attr: { "stroke-dashoffset": 0 }, duration: 5.70, ease: "power1.in" }, 6.32);
+      tl.from("#dota", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 8.31);
+      tl.from("#dots", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 12.02);
+      // s4 difference
+      tl.to("#p3", { opacity: 0, duration: 0.25 }, 8.58);
+      tl.to("#p4", { opacity: 1, duration: 0.35 }, 8.68);
+      tl.from("#p4 .row", { x: 80, opacity: 0, duration: 0.35, stagger: 1.47, ease: E }, 8.68);
+      tl.from("#p4 .plus", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 11.42);
+      // s5/s6 counters
+      tl.to("#p4", { opacity: 0, duration: 0.25 }, 12.10);
+      tl.to("#p5", { opacity: 1, duration: 0.3 }, 12.22);
+      gsap.set("#lalex", { opacity: 0 });
+      money("#vsam", 8887, 12.72, 3.01, "");
+      tl.to("#dots", { attr: { r: 30 }, duration: 0.3, yoyo: true, repeat: 1 }, 15.53);
+      tl.to("#lalex", { opacity: 1, duration: 0.25 }, 16.23);
+      money("#valex", 1449, 16.43, 2.69, "");
+      tl.to("#dota", { attr: { r: 34 }, duration: 0.3, yoyo: true, repeat: 1 }, 19.02);
+      tl.to("#valex", { scale: 1.08, transformOrigin: "100% 50%", duration: 0.25, yoyo: true, repeat: 1 }, 19.12);
+      // s7 stamp
+      tl.to("#chart", { opacity: 0, duration: 0.3 }, 19.62);
+      tl.fromTo("#stamp", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.35, ease: "power4.in" }, 19.87);
+      tl.to("#stamp", { scale: 1.05, duration: 0.25, yoyo: true, repeat: 1 }, 21.86);
+      // s8 end
+      tl.to(["#stamp", "#p5"], { opacity: 0, duration: 0.3, ease: IN }, 22.46);
+      tl.to("#end", { opacity: 1, duration: 0.2 }, 22.76);
+      tl.from("#end .num", { scale: 0.7, duration: 0.6, ease: "back.out(1.7)" }, 22.76);
+      tl.from("#end .disc", { opacity: 0, duration: 0.4 }, 22.96);
+      tl.from("#end .follow", { y: 40, opacity: 0, duration: 0.45, ease: E }, 23.76);
+      // captions
+      tl.set("#cap0", {opacity: 1}, 0.30); tl.set("#cap0", {opacity: 0}, 2.15);
+      tl.set("#c0w0", {color: "#FFD43B", scale: 1.08}, 0.30); tl.set("#c0w0", {color: "#ffffff", scale: 1}, 0.47);
+      tl.set("#c0w1", {color: "#FFD43B", scale: 1.08}, 0.48); tl.set("#c0w1", {color: "#ffffff", scale: 1}, 0.80);
+      tl.set("#c0w2", {color: "#FFD43B", scale: 1.08}, 0.81); tl.set("#c0w2", {color: "#ffffff", scale: 1}, 1.14);
+      tl.set("#c0w3", {color: "#FFD43B", scale: 1.08}, 1.15); tl.set("#c0w3", {color: "#ffffff", scale: 1}, 1.24);
+      tl.set("#c0w4", {color: "#FFD43B", scale: 1.08}, 1.25); tl.set("#c0w4", {color: "#ffffff", scale: 1}, 1.30);
+      tl.set("#c0w5", {color: "#FFD43B", scale: 1.08}, 1.31); tl.set("#c0w5", {color: "#ffffff", scale: 1}, 1.57);
+      tl.set("#c0w6", {color: "#FFD43B", scale: 1.08}, 1.58); tl.set("#c0w6", {color: "#ffffff", scale: 1}, 1.87);
+      tl.set("#cap1", {opacity: 1}, 2.20); tl.set("#cap1", {opacity: 0}, 3.35);
+      tl.set("#c1w0", {color: "#FFD43B", scale: 1.08}, 2.20); tl.set("#c1w0", {color: "#ffffff", scale: 1}, 2.45);
+      tl.set("#c1w1", {color: "#FFD43B", scale: 1.08}, 2.46); tl.set("#c1w1", {color: "#ffffff", scale: 1}, 2.60);
+      tl.set("#c1w2", {color: "#FFD43B", scale: 1.08}, 2.62); tl.set("#c1w2", {color: "#ffffff", scale: 1}, 2.66);
+      tl.set("#c1w3", {color: "#FFD43B", scale: 1.08}, 2.67); tl.set("#c1w3", {color: "#ffffff", scale: 1}, 3.03);
+      tl.set("#cap2", {opacity: 1}, 3.40); tl.set("#cap2", {opacity: 0}, 6.07);
+      tl.set("#c2w0", {color: "#FFD43B", scale: 1.08}, 3.40); tl.set("#c2w0", {color: "#ffffff", scale: 1}, 3.85);
+      tl.set("#c2w1", {color: "#FFD43B", scale: 1.08}, 3.90); tl.set("#c2w1", {color: "#ffffff", scale: 1}, 4.03);
+      tl.set("#c2w2", {color: "#FFD43B", scale: 1.08}, 4.04); tl.set("#c2w2", {color: "#ffffff", scale: 1}, 4.27);
+      tl.set("#c2w3", {color: "#FFD43B", scale: 1.08}, 4.28); tl.set("#c2w3", {color: "#ffffff", scale: 1}, 4.54);
+      tl.set("#c2w4", {color: "#FFD43B", scale: 1.08}, 4.55); tl.set("#c2w4", {color: "#ffffff", scale: 1}, 4.62);
+      tl.set("#c2w5", {color: "#FFD43B", scale: 1.08}, 4.63); tl.set("#c2w5", {color: "#ffffff", scale: 1}, 4.96);
+      tl.set("#c2w6", {color: "#FFD43B", scale: 1.08}, 4.98); tl.set("#c2w6", {color: "#ffffff", scale: 1}, 5.31);
+      tl.set("#c2w7", {color: "#FFD43B", scale: 1.08}, 5.32); tl.set("#c2w7", {color: "#ffffff", scale: 1}, 5.76);
+      tl.set("#cap3", {opacity: 1}, 6.12); tl.set("#cap3", {opacity: 0}, 8.63);
+      tl.set("#c3w0", {color: "#FFD43B", scale: 1.08}, 6.12); tl.set("#c3w0", {color: "#ffffff", scale: 1}, 6.33);
+      tl.set("#c3w1", {color: "#FFD43B", scale: 1.08}, 6.35); tl.set("#c3w1", {color: "#ffffff", scale: 1}, 6.66);
+      tl.set("#c3w2", {color: "#FFD43B", scale: 1.08}, 6.99); tl.set("#c3w2", {color: "#ffffff", scale: 1}, 7.48);
+      tl.set("#c3w3", {color: "#FFD43B", scale: 1.08}, 7.49); tl.set("#c3w3", {color: "#ffffff", scale: 1}, 7.86);
+      tl.set("#c3w4", {color: "#FFD43B", scale: 1.08}, 7.87); tl.set("#c3w4", {color: "#ffffff", scale: 1}, 8.35);
+      tl.set("#cap4", {opacity: 1}, 8.68); tl.set("#cap4", {opacity: 0}, 12.17);
+      tl.set("#c4w0", {color: "#FFD43B", scale: 1.08}, 8.68); tl.set("#c4w0", {color: "#ffffff", scale: 1}, 8.96);
+      tl.set("#c4w1", {color: "#FFD43B", scale: 1.08}, 8.97); tl.set("#c4w1", {color: "#ffffff", scale: 1}, 9.22);
+      tl.set("#c4w2", {color: "#FFD43B", scale: 1.08}, 9.23); tl.set("#c4w2", {color: "#ffffff", scale: 1}, 9.30);
+      tl.set("#c4w3", {color: "#FFD43B", scale: 1.08}, 9.31); tl.set("#c4w3", {color: "#ffffff", scale: 1}, 9.66);
+      tl.set("#c4w4", {color: "#FFD43B", scale: 1.08}, 9.99); tl.set("#c4w4", {color: "#ffffff", scale: 1}, 10.29);
+      tl.set("#c4w5", {color: "#FFD43B", scale: 1.08}, 10.30); tl.set("#c4w5", {color: "#ffffff", scale: 1}, 10.62);
+      tl.set("#c4w6", {color: "#FFD43B", scale: 1.08}, 10.64); tl.set("#c4w6", {color: "#ffffff", scale: 1}, 10.83);
+      tl.set("#c4w7", {color: "#FFD43B", scale: 1.08}, 10.84); tl.set("#c4w7", {color: "#ffffff", scale: 1}, 11.11);
+      tl.set("#c4w8", {color: "#FFD43B", scale: 1.08}, 11.12); tl.set("#c4w8", {color: "#ffffff", scale: 1}, 11.41);
+      tl.set("#c4w9", {color: "#FFD43B", scale: 1.08}, 11.42); tl.set("#c4w9", {color: "#ffffff", scale: 1}, 11.47);
+      tl.set("#c4w10", {color: "#FFD43B", scale: 1.08}, 11.48); tl.set("#c4w10", {color: "#ffffff", scale: 1}, 11.86);
+      tl.set("#cap5", {opacity: 1}, 12.22); tl.set("#cap5", {opacity: 0}, 16.18);
+      tl.set("#c5w0", {color: "#FFD43B", scale: 1.08}, 12.22); tl.set("#c5w0", {color: "#ffffff", scale: 1}, 12.50);
+      tl.set("#c5w1", {color: "#FFD43B", scale: 1.08}, 12.51); tl.set("#c5w1", {color: "#ffffff", scale: 1}, 12.75);
+      tl.set("#c5w2", {color: "#FFD43B", scale: 1.08}, 12.76); tl.set("#c5w2", {color: "#ffffff", scale: 1}, 13.19);
+      tl.set("#c5w3", {color: "#FFD43B", scale: 1.08}, 13.20); tl.set("#c5w3", {color: "#ffffff", scale: 1}, 13.58);
+      tl.set("#c5w4", {color: "#FFD43B", scale: 1.08}, 13.77); tl.set("#c5w4", {color: "#ffffff", scale: 1}, 13.88);
+      tl.set("#c5w5", {color: "#FFD43B", scale: 1.08}, 13.90); tl.set("#c5w5", {color: "#ffffff", scale: 1}, 14.16);
+      tl.set("#c5w6", {color: "#FFD43B", scale: 1.08}, 14.21); tl.set("#c5w6", {color: "#ffffff", scale: 1}, 14.36);
+      tl.set("#c5w7", {color: "#FFD43B", scale: 1.08}, 14.37); tl.set("#c5w7", {color: "#ffffff", scale: 1}, 14.75);
+      tl.set("#c5w8", {color: "#FFD43B", scale: 1.08}, 14.76); tl.set("#c5w8", {color: "#ffffff", scale: 1}, 14.96);
+      tl.set("#c5w9", {color: "#FFD43B", scale: 1.08}, 14.97); tl.set("#c5w9", {color: "#ffffff", scale: 1}, 15.26);
+      tl.set("#c5w10", {color: "#FFD43B", scale: 1.08}, 15.27); tl.set("#c5w10", {color: "#ffffff", scale: 1}, 15.37);
+      tl.set("#c5w11", {color: "#FFD43B", scale: 1.08}, 15.38); tl.set("#c5w11", {color: "#ffffff", scale: 1}, 15.89);
+      tl.set("#cap6", {opacity: 1}, 16.23); tl.set("#cap6", {opacity: 0}, 17.60);
+      tl.set("#c6w0", {color: "#FFD43B", scale: 1.08}, 16.23); tl.set("#c6w0", {color: "#ffffff", scale: 1}, 16.50);
+      tl.set("#c6w1", {color: "#FFD43B", scale: 1.08}, 16.51); tl.set("#c6w1", {color: "#ffffff", scale: 1}, 16.62);
+      tl.set("#c6w2", {color: "#FFD43B", scale: 1.08}, 16.63); tl.set("#c6w2", {color: "#ffffff", scale: 1}, 16.79);
+      tl.set("#c6w3", {color: "#FFD43B", scale: 1.08}, 16.80); tl.set("#c6w3", {color: "#ffffff", scale: 1}, 16.89);
+      tl.set("#c6w4", {color: "#FFD43B", scale: 1.08}, 16.90); tl.set("#c6w4", {color: "#ffffff", scale: 1}, 17.11);
+      tl.set("#c6w5", {color: "#FFD43B", scale: 1.08}, 17.12); tl.set("#c6w5", {color: "#ffffff", scale: 1}, 17.53);
+      tl.set("#cap7", {opacity: 1}, 17.65); tl.set("#cap7", {opacity: 0}, 19.57);
+      tl.set("#c7w0", {color: "#FFD43B", scale: 1.08}, 17.65); tl.set("#c7w0", {color: "#ffffff", scale: 1}, 17.80);
+      tl.set("#c7w1", {color: "#FFD43B", scale: 1.08}, 17.81); tl.set("#c7w1", {color: "#ffffff", scale: 1}, 18.25);
+      tl.set("#c7w2", {color: "#FFD43B", scale: 1.08}, 18.26); tl.set("#c7w2", {color: "#ffffff", scale: 1}, 18.54);
+      tl.set("#c7w3", {color: "#FFD43B", scale: 1.08}, 18.55); tl.set("#c7w3", {color: "#ffffff", scale: 1}, 18.64);
+      tl.set("#c7w4", {color: "#FFD43B", scale: 1.08}, 18.66); tl.set("#c7w4", {color: "#ffffff", scale: 1}, 19.18);
+      tl.set("#cap8", {opacity: 1}, 19.62); tl.set("#cap8", {opacity: 0}, 22.71);
+      tl.set("#c8w0", {color: "#FFD43B", scale: 1.08}, 19.62); tl.set("#c8w0", {color: "#ffffff", scale: 1}, 19.68);
+      tl.set("#c8w1", {color: "#FFD43B", scale: 1.08}, 19.70); tl.set("#c8w1", {color: "#ffffff", scale: 1}, 20.01);
+      tl.set("#c8w2", {color: "#FFD43B", scale: 1.08}, 20.02); tl.set("#c8w2", {color: "#ffffff", scale: 1}, 20.33);
+      tl.set("#c8w3", {color: "#FFD43B", scale: 1.08}, 20.34); tl.set("#c8w3", {color: "#ffffff", scale: 1}, 20.71);
+      tl.set("#c8w4", {color: "#FFD43B", scale: 1.08}, 20.73); tl.set("#c8w4", {color: "#ffffff", scale: 1}, 20.92);
+      tl.set("#c8w5", {color: "#FFD43B", scale: 1.08}, 20.93); tl.set("#c8w5", {color: "#ffffff", scale: 1}, 21.27);
+      tl.set("#c8w6", {color: "#FFD43B", scale: 1.08}, 21.28); tl.set("#c8w6", {color: "#ffffff", scale: 1}, 21.63);
+      tl.set("#c8w7", {color: "#FFD43B", scale: 1.08}, 21.64); tl.set("#c8w7", {color: "#ffffff", scale: 1}, 21.95);
+      tl.set("#c8w8", {color: "#FFD43B", scale: 1.08}, 21.96); tl.set("#c8w8", {color: "#ffffff", scale: 1}, 22.37);
+      tl.set("#cap9", {opacity: 1}, 22.76); tl.set("#cap9", {opacity: 0}, 24.26);
+      tl.set("#c9w0", {color: "#FFD43B", scale: 1.08}, 22.76); tl.set("#c9w0", {color: "#ffffff", scale: 1}, 23.08);
+      tl.set("#c9w1", {color: "#FFD43B", scale: 1.08}, 23.10); tl.set("#c9w1", {color: "#ffffff", scale: 1}, 23.25);
+      tl.set("#c9w2", {color: "#FFD43B", scale: 1.08}, 23.26); tl.set("#c9w2", {color: "#ffffff", scale: 1}, 23.47);
+      tl.set("#c9w3", {color: "#FFD43B", scale: 1.08}, 23.48); tl.set("#c9w3", {color: "#ffffff", scale: 1}, 23.57);
+      tl.set("#c9w4", {color: "#FFD43B", scale: 1.08}, 23.58); tl.set("#c9w4", {color: "#ffffff", scale: 1}, 23.63);
+      tl.set("#c9w5", {color: "#FFD43B", scale: 1.08}, 23.64); tl.set("#c9w5", {color: "#ffffff", scale: 1}, 23.98);
+      tl.set("#cap10", {opacity: 1}, 24.31); tl.set("#cap10", {opacity: 0}, 26.25);
+      tl.set("#c10w0", {color: "#FFD43B", scale: 1.08}, 24.31); tl.set("#c10w0", {color: "#ffffff", scale: 1}, 24.71);
+      tl.set("#c10w1", {color: "#FFD43B", scale: 1.08}, 24.72); tl.set("#c10w1", {color: "#ffffff", scale: 1}, 24.85);
+      tl.set("#c10w2", {color: "#FFD43B", scale: 1.08}, 24.86); tl.set("#c10w2", {color: "#ffffff", scale: 1}, 25.01);
+      tl.set("#c10w3", {color: "#FFD43B", scale: 1.08}, 25.02); tl.set("#c10w3", {color: "#ffffff", scale: 1}, 25.23);
+      tl.set("#c10w4", {color: "#FFD43B", scale: 1.08}, 25.25); tl.set("#c10w4", {color: "#ffffff", scale: 1}, 25.65);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

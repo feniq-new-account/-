@@ -1,0 +1,439 @@
+{
+ "duration": 26.911,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "Is your savings account making you poorer?",
+   "start": 0.3,
+   "end": 1.847,
+   "words": [
+    {
+     "w": "Is",
+     "start": 0.3,
+     "end": 0.38
+    },
+    {
+     "w": "your",
+     "start": 0.391,
+     "end": 0.484
+    },
+    {
+     "w": "savings",
+     "start": 0.496,
+     "end": 0.854
+    },
+    {
+     "w": "account",
+     "start": 0.866,
+     "end": 1.121
+    },
+    {
+     "w": "making",
+     "start": 1.132,
+     "end": 1.364
+    },
+    {
+     "w": "you",
+     "start": 1.375,
+     "end": 1.445
+    },
+    {
+     "w": "poorer",
+     "start": 1.456,
+     "end": 1.803
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "text": "Liam and Zoe both save three hundred dollars a month.",
+   "start": 2.147,
+   "end": 4.874,
+   "words": [
+    {
+     "w": "Liam",
+     "start": 2.147,
+     "end": 2.407
+    },
+    {
+     "w": "and",
+     "start": 2.419,
+     "end": 2.512
+    },
+    {
+     "w": "Zoe",
+     "start": 2.523,
+     "end": 2.836
+    },
+    {
+     "w": "both",
+     "start": 2.859,
+     "end": 3.125
+    },
+    {
+     "w": "save",
+     "start": 3.137,
+     "end": 3.414
+    },
+    {
+     "w": "three",
+     "start": 3.449,
+     "end": 3.727
+    },
+    {
+     "w": "hundred",
+     "start": 3.738,
+     "end": 4.028
+    },
+    {
+     "w": "dollars",
+     "start": 4.039,
+     "end": 4.363
+    },
+    {
+     "w": "a",
+     "start": 4.375,
+     "end": 4.41
+    },
+    {
+     "w": "month",
+     "start": 4.421,
+     "end": 4.826
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "text": "For thirty years. Same habit, same money.",
+   "start": 5.174,
+   "end": 7.776,
+   "words": [
+    {
+     "w": "For",
+     "start": 5.174,
+     "end": 5.261
+    },
+    {
+     "w": "thirty",
+     "start": 5.273,
+     "end": 5.585
+    },
+    {
+     "w": "years",
+     "start": 5.597,
+     "end": 5.99
+    },
+    {
+     "w": "Same",
+     "start": 6.322,
+     "end": 6.623
+    },
+    {
+     "w": "habit",
+     "start": 6.635,
+     "end": 6.913
+    },
+    {
+     "w": "same",
+     "start": 7.225,
+     "end": 7.445
+    },
+    {
+     "w": "money",
+     "start": 7.457,
+     "end": 7.711
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "text": "Liam's bank pays half a percent. Zoe's index fund averages eight.",
+   "start": 8.076,
+   "end": 11.667,
+   "words": [
+    {
+     "w": "Liam's",
+     "start": 8.076,
+     "end": 8.372
+    },
+    {
+     "w": "bank",
+     "start": 8.384,
+     "end": 8.627
+    },
+    {
+     "w": "pays",
+     "start": 8.638,
+     "end": 8.881
+    },
+    {
+     "w": "half",
+     "start": 8.893,
+     "end": 9.032
+    },
+    {
+     "w": "a",
+     "start": 9.043,
+     "end": 9.09
+    },
+    {
+     "w": "percent",
+     "start": 9.101,
+     "end": 9.564
+    },
+    {
+     "w": "Zoe's",
+     "start": 9.896,
+     "end": 10.347
+    },
+    {
+     "w": "index",
+     "start": 10.359,
+     "end": 10.695
+    },
+    {
+     "w": "fund",
+     "start": 10.706,
+     "end": 10.949
+    },
+    {
+     "w": "averages",
+     "start": 10.961,
+     "end": 11.389
+    },
+    {
+     "w": "eight",
+     "start": 11.401,
+     "end": 11.609
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "text": "Liam ends with one hundred sixteen thousand.",
+   "start": 11.967,
+   "end": 13.861,
+   "words": [
+    {
+     "w": "Liam",
+     "start": 11.967,
+     "end": 12.182
+    },
+    {
+     "w": "ends",
+     "start": 12.193,
+     "end": 12.402
+    },
+    {
+     "w": "with",
+     "start": 12.413,
+     "end": 12.529
+    },
+    {
+     "w": "one",
+     "start": 12.54,
+     "end": 12.656
+    },
+    {
+     "w": "hundred",
+     "start": 12.668,
+     "end": 12.946
+    },
+    {
+     "w": "sixteen",
+     "start": 12.957,
+     "end": 13.385
+    },
+    {
+     "w": "thousand",
+     "start": 13.397,
+     "end": 13.814
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "text": "Zoe ends with four hundred forty-seven thousand.",
+   "start": 14.161,
+   "end": 16.439,
+   "words": [
+    {
+     "w": "Zoe",
+     "start": 14.161,
+     "end": 14.479
+    },
+    {
+     "w": "ends",
+     "start": 14.491,
+     "end": 14.688
+    },
+    {
+     "w": "with",
+     "start": 14.699,
+     "end": 14.826
+    },
+    {
+     "w": "four",
+     "start": 14.838,
+     "end": 15.104
+    },
+    {
+     "w": "hundred",
+     "start": 15.116,
+     "end": 15.394
+    },
+    {
+     "w": "forty-seven",
+     "start": 15.405,
+     "end": 15.949
+    },
+    {
+     "w": "thousand",
+     "start": 15.961,
+     "end": 16.389
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "text": "Same savings. Over three hundred thirty thousand dollars apart.",
+   "start": 16.839,
+   "end": 20.232,
+   "words": [
+    {
+     "w": "Same",
+     "start": 16.839,
+     "end": 17.06
+    },
+    {
+     "w": "savings",
+     "start": 17.072,
+     "end": 17.627
+    },
+    {
+     "w": "Over",
+     "start": 17.959,
+     "end": 18.249
+    },
+    {
+     "w": "three",
+     "start": 18.26,
+     "end": 18.526
+    },
+    {
+     "w": "hundred",
+     "start": 18.538,
+     "end": 18.839
+    },
+    {
+     "w": "thirty",
+     "start": 18.85,
+     "end": 19.117
+    },
+    {
+     "w": "thousand",
+     "start": 19.128,
+     "end": 19.499
+    },
+    {
+     "w": "dollars",
+     "start": 19.51,
+     "end": 19.8
+    },
+    {
+     "w": "apart",
+     "start": 19.811,
+     "end": 20.182
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "text": "Keep your emergency fund in the bank, and invest the rest. Follow for more money math.",
+   "start": 20.532,
+   "end": 24.911,
+   "words": [
+    {
+     "w": "Keep",
+     "start": 20.532,
+     "end": 20.634
+    },
+    {
+     "w": "your",
+     "start": 20.645,
+     "end": 20.75
+    },
+    {
+     "w": "emergency",
+     "start": 20.761,
+     "end": 21.247
+    },
+    {
+     "w": "fund",
+     "start": 21.259,
+     "end": 21.502
+    },
+    {
+     "w": "in",
+     "start": 21.513,
+     "end": 21.56
+    },
+    {
+     "w": "the",
+     "start": 21.571,
+     "end": 21.652
+    },
+    {
+     "w": "bank",
+     "start": 21.664,
+     "end": 21.976
+    },
+    {
+     "w": "and",
+     "start": 22.324,
+     "end": 22.393
+    },
+    {
+     "w": "invest",
+     "start": 22.405,
+     "end": 22.717
+    },
+    {
+     "w": "the",
+     "start": 22.729,
+     "end": 22.798
+    },
+    {
+     "w": "rest",
+     "start": 22.81,
+     "end": 23.18
+    },
+    {
+     "w": "Follow",
+     "start": 23.512,
+     "end": 23.917
+    },
+    {
+     "w": "for",
+     "start": 23.929,
+     "end": 24.056
+    },
+    {
+     "w": "more",
+     "start": 24.068,
+     "end": 24.218
+    },
+    {
+     "w": "money",
+     "start": 24.23,
+     "end": 24.438
+    },
+    {
+     "w": "math",
+     "start": 24.45,
+     "end": 24.855
+    }
+   ]
+  }
+ ]
+}

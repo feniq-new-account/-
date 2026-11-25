@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 38px; font-weight: 700; padding: 12px 24px; border-radius: 30px; white-space: nowrap; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 50px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: 130px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.84" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="27.69" data-track-index="5"></audio>
+
+      <div id="stage" class="stage clip" data-start="0" data-duration="27.84" data-track-index="0" data-track-kind="graphics">
+        <div class="top" id="p1"><div class="kicker">Cash under the mattress</div><div class="big num">$100k</div></div>
+        <div class="top" id="p3"><div class="badge"><b>$100k</b> · <b>30</b> yrs · inflation <b>3%</b></div></div>
+        <div class="top" id="p4">
+          <div class="kicker">What they do</div>
+          <div class="rows">
+            <div class="row"><span style="color:var(--sam)">Ava · cash</span><span class="num">0%</span></div>
+            <div class="row"><span style="color:var(--alex)">Ben · invests</span><span class="num">7%</span></div>
+          </div>
+          <div class="plus">Shown in today's dollars</div>
+        </div>
+        <div class="top" id="p5">
+          <div class="kicker">In today's dollars</div>
+          <div class="ctr">
+            <div class="line" id="lsam"><span class="who" style="color:var(--sam)">Ava</span><span class="num" id="vsam" style="color:var(--sam)">$0</span></div>
+            <div class="line" id="lalex"><span class="who" style="color:var(--alex)">Ben</span><span class="num" id="valex" style="color:var(--alex)">$0</span></div>
+          </div>
+        </div>
+        <div class="people" id="people">
+          <div class="person sam" id="pa1"><div class="av num">A</div><h2>Ava</h2><div class="age" id="agea">$100,000</div></div>
+          <div class="person alex" id="ps1"><div class="av num">B</div><h2>Ben</h2><div class="age" id="ages">$100,000</div></div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 1000 780">
+          <line x1="120" x2="940" y1="537.1" y2="537.1" class="g"/><text x="102" y="547.1" class="gl">$100k</text><line x1="120" x2="940" y1="354.3" y2="354.3" class="g"/><text x="102" y="364.3" class="gl">$200k</text><line x1="120" x2="940" y1="171.4" y2="171.4" class="g"/><text x="102" y="181.4" class="gl">$300k</text>
+          <line class="ax" x1="120" x2="940" y1="720" y2="720" />
+          <text x="120.0" y="772" class="tk">yr 0</text><text x="393.3" y="772" class="tk">10</text><text x="666.7" y="772" class="tk">20</text><text x="940.0" y="772" class="tk">30</text>
+          <path id="cs" class="curve" d="M120.0 537.1 L147.3 542.5 L174.7 547.6 L202.0 552.7 L229.3 557.5 L256.7 562.3 L284.0 566.9 L311.3 571.3 L338.7 575.7 L366.0 579.9 L393.3 583.9 L420.7 587.9 L448.0 591.7 L475.3 595.5 L502.7 599.1 L530.0 602.6 L557.3 606.0 L584.7 609.4 L612.0 612.6 L639.3 615.7 L666.7 618.8 L694.0 621.7 L721.3 624.6 L748.7 627.3 L776.0 630.0 L803.3 632.7 L830.7 635.2 L858.0 637.7 L885.3 640.1 L912.7 642.4 L940.0 644.7" stroke="#FF6B6B" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <path id="ca" class="curve" d="M120.0 537.1 L147.3 530.0 L174.7 522.7 L202.0 515.0 L229.3 507.0 L256.7 498.8 L284.0 490.2 L311.3 481.3 L338.7 472.0 L366.0 462.3 L393.3 452.3 L420.7 441.9 L448.0 431.2 L475.3 419.9 L502.7 408.3 L530.0 396.2 L557.3 383.6 L584.7 370.5 L612.0 357.0 L639.3 342.9 L666.7 328.2 L694.0 313.0 L721.3 297.2 L748.7 280.8 L776.0 263.7 L803.3 246.0 L830.7 227.6 L858.0 208.5 L885.3 188.6 L912.7 168.0 L940.0 146.5" stroke="#3DDC97" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <circle id="dots" cx="940.0" cy="644.7" r="20" fill="#FF6B6B" />
+          <circle id="dota" cx="940.0" cy="146.5" r="20" fill="#3DDC97" />
+        </svg>
+        <div class="stamp" id="stamp"><div class="k">Lost to inflation</div><div class="num" id="vgap">−59%</div></div>
+        <div class="end" id="end">
+          <div class="num">BEAT<br /><span>INFLATION.</span></div>
+          <div class="follow">Follow for more money math</div>
+          <div class="disc">Illustration only, not financial advice. Assumes 3% yearly inflation and a 7% average yearly return, values in today's dollars, before fees and taxes. Markets can fall.</div>
+        </div>
+      </div>
+
+      <div id="captions" class="caps clip" data-start="0" data-duration="27.84" data-track-index="1" data-track-kind="captions">
+<div class="cap" id="cap0"><span class="w" id="c0w0">A</span> <span class="w" id="c0w1">hundred</span> <span class="w" id="c0w2">thousand</span> <span class="w" id="c0w3">dollars</span> <span class="w" id="c0w4">in</span> <span class="w" id="c0w5">cash.</span> </div>
+<div class="cap" id="cap1"><span class="w" id="c1w0">Safe,</span> <span class="w" id="c1w1">right?</span> </div>
+<div class="cap" id="cap2"><span class="w" id="c2w0">Ava</span> <span class="w" id="c2w1">and</span> <span class="w" id="c2w2">Ben</span> <span class="w" id="c2w3">each</span> <span class="w" id="c2w4">get</span> <span class="w" id="c2w5">one</span> <span class="w" id="c2w6">hundred</span> <span class="w" id="c2w7">thousand</span> <span class="w" id="c2w8">dollars.</span> </div>
+<div class="cap" id="cap3"><span class="w" id="c3w0">Thirty</span> <span class="w" id="c3w1">years</span> <span class="w" id="c3w2">go</span> <span class="w" id="c3w3">by.</span> <span class="w" id="c3w4">Prices</span> <span class="w" id="c3w5">rise</span> <span class="w" id="c3w6">three</span> <span class="w" id="c3w7">percent</span> <span class="w" id="c3w8">a</span> <span class="w" id="c3w9">year.</span> </div>
+<div class="cap" id="cap4"><span class="w" id="c4w0">Ava</span> <span class="w" id="c4w1">keeps</span> <span class="w" id="c4w2">it</span> <span class="w" id="c4w3">in</span> <span class="w" id="c4w4">cash.</span> </div>
+<div class="cap" id="cap5"><span class="w" id="c5w0">Ben</span> <span class="w" id="c5w1">invests</span> <span class="w" id="c5w2">it</span> <span class="w" id="c5w3">at</span> <span class="w" id="c5w4">seven</span> <span class="w" id="c5w5">percent.</span> </div>
+<div class="cap" id="cap6"><span class="w" id="c6w0">In</span> <span class="w" id="c6w1">today's</span> <span class="w" id="c6w2">money,</span> <span class="w" id="c6w3">Ava's</span> <span class="w" id="c6w4">cash</span> <span class="w" id="c6w5">buys</span> <span class="w" id="c6w6">what</span> <span class="w" id="c6w7">forty-one</span> <span class="w" id="c6w8">thousand</span> <span class="w" id="c6w9">buys</span> <span class="w" id="c6w10">now.</span> </div>
+<div class="cap" id="cap7"><span class="w" id="c7w0">Ben's</span> <span class="w" id="c7w1">is</span> <span class="w" id="c7w2">worth</span> <span class="w" id="c7w3">three</span> <span class="w" id="c7w4">hundred</span> <span class="w" id="c7w5">thirteen</span> <span class="w" id="c7w6">thousand.</span> </div>
+<div class="cap" id="cap8"><span class="w" id="c8w0">Doing</span> <span class="w" id="c8w1">nothing</span> <span class="w" id="c8w2">quietly</span> <span class="w" id="c8w3">cost</span> <span class="w" id="c8w4">Ava</span> <span class="w" id="c8w5">almost</span> <span class="w" id="c8w6">sixty</span> <span class="w" id="c8w7">percent.</span> </div>
+<div class="cap" id="cap9"><span class="w" id="c9w0">Cash</span> <span class="w" id="c9w1">is</span> <span class="w" id="c9w2">safe</span> <span class="w" id="c9w3">from</span> <span class="w" id="c9w4">crashes,</span> </div>
+<div class="cap" id="cap10"><span class="w" id="c10w0">not</span> <span class="w" id="c10w1">from</span> <span class="w" id="c10w2">inflation.</span> <span class="w" id="c10w3">Follow</span> <span class="w" id="c10w4">for</span> <span class="w" id="c10w5">more</span> <span class="w" id="c10w6">money</span> <span class="w" id="c10w7">math.</span> </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur, suf) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US") + (suf || ""); } }, at);
+      };
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });
+      // s1
+      tl.from("#p1 .big", { scale: 0.6, duration: 0.6, ease: "back.out(1.7)" }, 0);
+      tl.to("#p1 .big", { color: "#FFD43B", scale: 1.1, duration: 0.25, ease: "power4.in" }, 1.40);
+      tl.to("#p1", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 3.19);
+      // s2 people
+      tl.fromTo("#pa1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.49);
+      tl.fromTo("#ps1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.94);
+      tl.fromTo(["#agea", "#ages"], { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.3 }, 4.59);
+      tl.to("#people", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 5.74);
+      // s3 chart
+      tl.to("#p3", { opacity: 1, duration: 0.35 }, 6.04);
+      tl.to("#chart", { opacity: 1, duration: 0.35 }, 6.04);
+      tl.to("#ca", { attr: { "stroke-dashoffset": 0 }, duration: 6.16, ease: "power1.in" }, 6.24);
+      tl.to("#cs", { attr: { "stroke-dashoffset": 0 }, duration: 6.16, ease: "power1.in" }, 6.24);
+      tl.from("#dota", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 12.40);
+      tl.from("#dots", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 12.40);
+      // s4 difference
+      tl.to("#p3", { opacity: 0, duration: 0.25 }, 9.17);
+      tl.to("#p4", { opacity: 1, duration: 0.35 }, 9.27);
+      tl.from("#p4 .row", { x: 80, opacity: 0, duration: 0.35, stagger: 1.38, ease: E }, 9.27);
+      tl.from("#p4 .plus", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 11.80);
+      // s5/s6 counters
+      tl.to("#p4", { opacity: 0, duration: 0.25 }, 12.48);
+      tl.to("#p5", { opacity: 1, duration: 0.3 }, 12.60);
+      gsap.set("#lalex", { opacity: 0 });
+      money("#vsam", 41199, 13.10, 2.54, "");
+      tl.to("#dots", { attr: { r: 30 }, duration: 0.3, yoyo: true, repeat: 1 }, 15.44);
+      tl.to("#lalex", { opacity: 1, duration: 0.25 }, 16.14);
+      money("#valex", 313615, 16.34, 1.81, "");
+      tl.to("#dota", { attr: { r: 34 }, duration: 0.3, yoyo: true, repeat: 1 }, 18.05);
+      tl.to("#valex", { scale: 1.08, transformOrigin: "100% 50%", duration: 0.25, yoyo: true, repeat: 1 }, 18.15);
+      // s7 stamp
+      tl.to("#chart", { opacity: 0, duration: 0.3 }, 18.65);
+      tl.fromTo("#stamp", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.35, ease: "power4.in" }, 18.90);
+      tl.to("#stamp", { scale: 1.05, duration: 0.25, yoyo: true, repeat: 1 }, 20.79);
+      // s8 end
+      tl.to(["#stamp", "#p5"], { opacity: 0, duration: 0.3, ease: IN }, 21.39);
+      tl.to("#end", { opacity: 1, duration: 0.2 }, 21.69);
+      tl.from("#end .num", { scale: 0.7, duration: 0.6, ease: "back.out(1.7)" }, 21.69);
+      tl.from("#end .disc", { opacity: 0, duration: 0.4 }, 21.89);
+      tl.from("#end .follow", { y: 40, opacity: 0, duration: 0.45, ease: E }, 22.69);
+      // captions
+      tl.set("#cap0", {opacity: 1}, 0.30); tl.set("#cap0", {opacity: 0}, 2.10);
+      tl.set("#c0w0", {color: "#FFD43B", scale: 1.08}, 0.30); tl.set("#c0w0", {color: "#ffffff", scale: 1}, 0.35);
+      tl.set("#c0w1", {color: "#FFD43B", scale: 1.08}, 0.36); tl.set("#c0w1", {color: "#ffffff", scale: 1}, 0.60);
+      tl.set("#c0w2", {color: "#FFD43B", scale: 1.08}, 0.61); tl.set("#c0w2", {color: "#ffffff", scale: 1}, 0.93);
+      tl.set("#c0w3", {color: "#FFD43B", scale: 1.08}, 0.94); tl.set("#c0w3", {color: "#ffffff", scale: 1}, 1.25);
+      tl.set("#c0w4", {color: "#FFD43B", scale: 1.08}, 1.26); tl.set("#c0w4", {color: "#ffffff", scale: 1}, 1.35);
+      tl.set("#c0w5", {color: "#FFD43B", scale: 1.08}, 1.37); tl.set("#c0w5", {color: "#ffffff", scale: 1}, 1.82);
+      tl.set("#cap1", {opacity: 1}, 2.15); tl.set("#cap1", {opacity: 0}, 3.44);
+      tl.set("#c1w0", {color: "#FFD43B", scale: 1.08}, 2.15); tl.set("#c1w0", {color: "#ffffff", scale: 1}, 2.62);
+      tl.set("#c1w1", {color: "#FFD43B", scale: 1.08}, 2.92); tl.set("#c1w1", {color: "#ffffff", scale: 1}, 3.18);
+      tl.set("#cap2", {opacity: 1}, 3.49); tl.set("#cap2", {opacity: 0}, 5.99);
+      tl.set("#c2w0", {color: "#FFD43B", scale: 1.08}, 3.49); tl.set("#c2w0", {color: "#ffffff", scale: 1}, 3.78);
+      tl.set("#c2w1", {color: "#FFD43B", scale: 1.08}, 3.79); tl.set("#c2w1", {color: "#ffffff", scale: 1}, 3.89);
+      tl.set("#c2w2", {color: "#FFD43B", scale: 1.08}, 3.90); tl.set("#c2w2", {color: "#ffffff", scale: 1}, 4.13);
+      tl.set("#c2w3", {color: "#FFD43B", scale: 1.08}, 4.14); tl.set("#c2w3", {color: "#ffffff", scale: 1}, 4.29);
+      tl.set("#c2w4", {color: "#FFD43B", scale: 1.08}, 4.30); tl.set("#c2w4", {color: "#ffffff", scale: 1}, 4.46);
+      tl.set("#c2w5", {color: "#FFD43B", scale: 1.08}, 4.48); tl.set("#c2w5", {color: "#ffffff", scale: 1}, 4.59);
+      tl.set("#c2w6", {color: "#FFD43B", scale: 1.08}, 4.60); tl.set("#c2w6", {color: "#ffffff", scale: 1}, 4.90);
+      tl.set("#c2w7", {color: "#FFD43B", scale: 1.08}, 4.92); tl.set("#c2w7", {color: "#ffffff", scale: 1}, 5.25);
+      tl.set("#c2w8", {color: "#FFD43B", scale: 1.08}, 5.26); tl.set("#c2w8", {color: "#ffffff", scale: 1}, 5.69);
+      tl.set("#cap3", {opacity: 1}, 6.04); tl.set("#cap3", {opacity: 0}, 9.22);
+      tl.set("#c3w0", {color: "#FFD43B", scale: 1.08}, 6.04); tl.set("#c3w0", {color: "#ffffff", scale: 1}, 6.21);
+      tl.set("#c3w1", {color: "#FFD43B", scale: 1.08}, 6.22); tl.set("#c3w1", {color: "#ffffff", scale: 1}, 6.44);
+      tl.set("#c3w2", {color: "#FFD43B", scale: 1.08}, 6.45); tl.set("#c3w2", {color: "#ffffff", scale: 1}, 6.60);
+      tl.set("#c3w3", {color: "#FFD43B", scale: 1.08}, 6.62); tl.set("#c3w3", {color: "#ffffff", scale: 1}, 6.85);
+      tl.set("#c3w4", {color: "#FFD43B", scale: 1.08}, 7.18); tl.set("#c3w4", {color: "#ffffff", scale: 1}, 7.67);
+      tl.set("#c3w5", {color: "#FFD43B", scale: 1.08}, 7.68); tl.set("#c3w5", {color: "#ffffff", scale: 1}, 8.01);
+      tl.set("#c3w6", {color: "#FFD43B", scale: 1.08}, 8.02); tl.set("#c3w6", {color: "#ffffff", scale: 1}, 8.21);
+      tl.set("#c3w7", {color: "#FFD43B", scale: 1.08}, 8.22); tl.set("#c3w7", {color: "#ffffff", scale: 1}, 8.56);
+      tl.set("#c3w8", {color: "#FFD43B", scale: 1.08}, 8.57); tl.set("#c3w8", {color: "#ffffff", scale: 1}, 8.59);
+      tl.set("#c3w9", {color: "#FFD43B", scale: 1.08}, 8.60); tl.set("#c3w9", {color: "#ffffff", scale: 1}, 8.91);
+      tl.set("#cap4", {opacity: 1}, 9.27); tl.set("#cap4", {opacity: 0}, 10.66);
+      tl.set("#c4w0", {color: "#FFD43B", scale: 1.08}, 9.27); tl.set("#c4w0", {color: "#ffffff", scale: 1}, 9.44);
+      tl.set("#c4w1", {color: "#FFD43B", scale: 1.08}, 9.45); tl.set("#c4w1", {color: "#ffffff", scale: 1}, 9.69);
+      tl.set("#c4w2", {color: "#FFD43B", scale: 1.08}, 9.70); tl.set("#c4w2", {color: "#ffffff", scale: 1}, 9.78);
+      tl.set("#c4w3", {color: "#FFD43B", scale: 1.08}, 9.79); tl.set("#c4w3", {color: "#ffffff", scale: 1}, 9.90);
+      tl.set("#c4w4", {color: "#FFD43B", scale: 1.08}, 9.91); tl.set("#c4w4", {color: "#ffffff", scale: 1}, 10.37);
+      tl.set("#cap5", {opacity: 1}, 10.71); tl.set("#cap5", {opacity: 0}, 12.55);
+      tl.set("#c5w0", {color: "#FFD43B", scale: 1.08}, 10.71); tl.set("#c5w0", {color: "#ffffff", scale: 1}, 10.94);
+      tl.set("#c5w1", {color: "#FFD43B", scale: 1.08}, 10.95); tl.set("#c5w1", {color: "#ffffff", scale: 1}, 11.32);
+      tl.set("#c5w2", {color: "#FFD43B", scale: 1.08}, 11.33); tl.set("#c5w2", {color: "#ffffff", scale: 1}, 11.41);
+      tl.set("#c5w3", {color: "#FFD43B", scale: 1.08}, 11.42); tl.set("#c5w3", {color: "#ffffff", scale: 1}, 11.49);
+      tl.set("#c5w4", {color: "#FFD43B", scale: 1.08}, 11.51); tl.set("#c5w4", {color: "#ffffff", scale: 1}, 11.78);
+      tl.set("#c5w5", {color: "#FFD43B", scale: 1.08}, 11.79); tl.set("#c5w5", {color: "#ffffff", scale: 1}, 12.24);
+      tl.set("#cap6", {opacity: 1}, 12.60); tl.set("#cap6", {opacity: 0}, 16.09);
+      tl.set("#c6w0", {color: "#FFD43B", scale: 1.08}, 12.60); tl.set("#c6w0", {color: "#ffffff", scale: 1}, 12.67);
+      tl.set("#c6w1", {color: "#FFD43B", scale: 1.08}, 12.68); tl.set("#c6w1", {color: "#ffffff", scale: 1}, 12.97);
+      tl.set("#c6w2", {color: "#FFD43B", scale: 1.08}, 12.98); tl.set("#c6w2", {color: "#ffffff", scale: 1}, 13.31);
+      tl.set("#c6w3", {color: "#FFD43B", scale: 1.08}, 13.39); tl.set("#c6w3", {color: "#ffffff", scale: 1}, 13.60);
+      tl.set("#c6w4", {color: "#FFD43B", scale: 1.08}, 13.61); tl.set("#c6w4", {color: "#ffffff", scale: 1}, 13.92);
+      tl.set("#c6w5", {color: "#FFD43B", scale: 1.08}, 13.93); tl.set("#c6w5", {color: "#ffffff", scale: 1}, 14.21);
+      tl.set("#c6w6", {color: "#FFD43B", scale: 1.08}, 14.22); tl.set("#c6w6", {color: "#ffffff", scale: 1}, 14.37);
+      tl.set("#c6w7", {color: "#FFD43B", scale: 1.08}, 14.38); tl.set("#c6w7", {color: "#ffffff", scale: 1}, 14.86);
+      tl.set("#c6w8", {color: "#FFD43B", scale: 1.08}, 14.87); tl.set("#c6w8", {color: "#ffffff", scale: 1}, 15.23);
+      tl.set("#c6w9", {color: "#FFD43B", scale: 1.08}, 15.24); tl.set("#c6w9", {color: "#ffffff", scale: 1}, 15.50);
+      tl.set("#c6w10", {color: "#FFD43B", scale: 1.08}, 15.51); tl.set("#c6w10", {color: "#ffffff", scale: 1}, 15.76);
+      tl.set("#cap7", {opacity: 1}, 16.14); tl.set("#cap7", {opacity: 0}, 18.60);
+      tl.set("#c7w0", {color: "#FFD43B", scale: 1.08}, 16.14); tl.set("#c7w0", {color: "#ffffff", scale: 1}, 16.38);
+      tl.set("#c7w1", {color: "#FFD43B", scale: 1.08}, 16.39); tl.set("#c7w1", {color: "#ffffff", scale: 1}, 16.50);
+      tl.set("#c7w2", {color: "#FFD43B", scale: 1.08}, 16.51); tl.set("#c7w2", {color: "#ffffff", scale: 1}, 16.73);
+      tl.set("#c7w3", {color: "#FFD43B", scale: 1.08}, 16.74); tl.set("#c7w3", {color: "#ffffff", scale: 1}, 16.94);
+      tl.set("#c7w4", {color: "#FFD43B", scale: 1.08}, 16.95); tl.set("#c7w4", {color: "#ffffff", scale: 1}, 17.27);
+      tl.set("#c7w5", {color: "#FFD43B", scale: 1.08}, 17.28); tl.set("#c7w5", {color: "#ffffff", scale: 1}, 17.75);
+      tl.set("#c7w6", {color: "#FFD43B", scale: 1.08}, 17.76); tl.set("#c7w6", {color: "#ffffff", scale: 1}, 18.20);
+      tl.set("#cap8", {opacity: 1}, 18.65); tl.set("#cap8", {opacity: 0}, 21.64);
+      tl.set("#c8w0", {color: "#FFD43B", scale: 1.08}, 18.65); tl.set("#c8w0", {color: "#ffffff", scale: 1}, 18.86);
+      tl.set("#c8w1", {color: "#FFD43B", scale: 1.08}, 18.87); tl.set("#c8w1", {color: "#ffffff", scale: 1}, 19.12);
+      tl.set("#c8w2", {color: "#FFD43B", scale: 1.08}, 19.13); tl.set("#c8w2", {color: "#ffffff", scale: 1}, 19.53);
+      tl.set("#c8w3", {color: "#FFD43B", scale: 1.08}, 19.54); tl.set("#c8w3", {color: "#ffffff", scale: 1}, 19.87);
+      tl.set("#c8w4", {color: "#FFD43B", scale: 1.08}, 19.90); tl.set("#c8w4", {color: "#ffffff", scale: 1}, 20.19);
+      tl.set("#c8w5", {color: "#FFD43B", scale: 1.08}, 20.21); tl.set("#c8w5", {color: "#ffffff", scale: 1}, 20.57);
+      tl.set("#c8w6", {color: "#FFD43B", scale: 1.08}, 20.58); tl.set("#c8w6", {color: "#ffffff", scale: 1}, 20.86);
+      tl.set("#c8w7", {color: "#FFD43B", scale: 1.08}, 20.87); tl.set("#c8w7", {color: "#ffffff", scale: 1}, 21.34);
+      tl.set("#cap9", {opacity: 1}, 21.69); tl.set("#cap9", {opacity: 0}, 23.07);
+      tl.set("#c9w0", {color: "#FFD43B", scale: 1.08}, 21.69); tl.set("#c9w0", {color: "#ffffff", scale: 1}, 21.93);
+      tl.set("#c9w1", {color: "#FFD43B", scale: 1.08}, 21.94); tl.set("#c9w1", {color: "#ffffff", scale: 1}, 22.02);
+      tl.set("#c9w2", {color: "#FFD43B", scale: 1.08}, 22.03); tl.set("#c9w2", {color: "#ffffff", scale: 1}, 22.25);
+      tl.set("#c9w3", {color: "#FFD43B", scale: 1.08}, 22.26); tl.set("#c9w3", {color: "#ffffff", scale: 1}, 22.39);
+      tl.set("#c9w4", {color: "#FFD43B", scale: 1.08}, 22.40); tl.set("#c9w4", {color: "#ffffff", scale: 1}, 22.94);
+      tl.set("#cap10", {opacity: 1}, 23.12); tl.set("#cap10", {opacity: 0}, 26.24);
+      tl.set("#c10w0", {color: "#FFD43B", scale: 1.08}, 23.12); tl.set("#c10w0", {color: "#ffffff", scale: 1}, 23.28);
+      tl.set("#c10w1", {color: "#FFD43B", scale: 1.08}, 23.29); tl.set("#c10w1", {color: "#ffffff", scale: 1}, 23.43);
+      tl.set("#c10w2", {color: "#FFD43B", scale: 1.08}, 23.44); tl.set("#c10w2", {color: "#ffffff", scale: 1}, 23.96);
+      tl.set("#c10w3", {color: "#FFD43B", scale: 1.08}, 24.29); tl.set("#c10w3", {color: "#ffffff", scale: 1}, 24.70);
+      tl.set("#c10w4", {color: "#FFD43B", scale: 1.08}, 24.71); tl.set("#c10w4", {color: "#ffffff", scale: 1}, 24.84);
+      tl.set("#c10w5", {color: "#FFD43B", scale: 1.08}, 24.85); tl.set("#c10w5", {color: "#ffffff", scale: 1}, 25.00);
+      tl.set("#c10w6", {color: "#FFD43B", scale: 1.08}, 25.01); tl.set("#c10w6", {color: "#ffffff", scale: 1}, 25.22);
+      tl.set("#c10w7", {color: "#FFD43B", scale: 1.08}, 25.23); tl.set("#c10w7", {color: "#ffffff", scale: 1}, 25.64);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

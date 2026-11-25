@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 38px; font-weight: 700; padding: 12px 24px; border-radius: 30px; white-space: nowrap; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 50px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: 150px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.22" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="27.07" data-track-index="5"></audio>
+
+      <div id="stage" class="stage clip" data-start="0" data-duration="27.22" data-track-index="0" data-track-kind="graphics">
+        <div class="top" id="p1"><div class="kicker">One coffee a day</div><div class="big num">$5</div></div>
+        <div class="top" id="p3"><div class="badge"><b>$5</b>/day · <b>30</b> yrs · market <b>8%</b></div></div>
+        <div class="top" id="p4">
+          <div class="kicker">Where the $5 goes</div>
+          <div class="rows">
+            <div class="row"><span style="color:var(--sam)">Emma · coffee</span><span class="num">☕</span></div>
+            <div class="row"><span style="color:var(--alex)">Noah · invests</span><span class="num">📈</span></div>
+          </div>
+          <div class="plus">Same $54,749 out of pocket</div>
+        </div>
+        <div class="top" id="p5">
+          <div class="kicker">After 30 years</div>
+          <div class="ctr">
+            <div class="line" id="lsam"><span class="who" style="color:var(--sam)">Emma spent</span><span class="num" id="vsam" style="color:var(--sam)">$0</span></div>
+            <div class="line" id="lalex"><span class="who" style="color:var(--alex)">Noah has</span><span class="num" id="valex" style="color:var(--alex)">$0</span></div>
+          </div>
+        </div>
+        <div class="people" id="people">
+          <div class="person sam" id="pa1"><div class="av num">E</div><h2>Emma</h2><div class="age" id="agea">$5 / day</div></div>
+          <div class="person alex" id="ps1"><div class="av num">N</div><h2>Noah</h2><div class="age" id="ages">$5 / day</div></div>
+        </div>
+        <svg class="chart" id="chart" viewBox="0 0 1000 780">
+          <line x1="120" x2="940" y1="592.0" y2="592.0" class="g"/><text x="102" y="602.0" class="gl">$50k</text><line x1="120" x2="940" y1="464.0" y2="464.0" class="g"/><text x="102" y="474.0" class="gl">$100k</text><line x1="120" x2="940" y1="336.0" y2="336.0" class="g"/><text x="102" y="346.0" class="gl">$150k</text><line x1="120" x2="940" y1="208.0" y2="208.0" class="g"/><text x="102" y="218.0" class="gl">$200k</text>
+          <line class="ax" x1="120" x2="940" y1="720" y2="720" />
+          <text x="120.0" y="772" class="tk">yr 0</text><text x="393.3" y="772" class="tk">10</text><text x="666.7" y="772" class="tk">20</text><text x="940.0" y="772" class="tk">30</text>
+          <path id="cs" class="curve" d="M120.0 720.0 L147.3 715.3 L174.7 710.7 L202.0 706.0 L229.3 701.3 L256.7 696.6 L284.0 692.0 L311.3 687.3 L338.7 682.6 L366.0 678.0 L393.3 673.3 L420.7 668.6 L448.0 663.9 L475.3 659.3 L502.7 654.6 L530.0 649.9 L557.3 645.2 L584.7 640.6 L612.0 635.9 L639.3 631.2 L666.7 626.6 L694.0 621.9 L721.3 617.2 L748.7 612.5 L776.0 607.9 L803.3 603.2 L830.7 598.5 L858.0 593.9 L885.3 589.2 L912.7 584.5 L940.0 579.8" stroke="#FF6B6B" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <path id="ca" class="curve" d="M120.0 720.0 L147.3 715.2 L174.7 709.9 L202.0 704.2 L229.3 698.1 L256.7 691.4 L284.0 684.2 L311.3 676.4 L338.7 667.9 L366.0 658.7 L393.3 648.8 L420.7 638.0 L448.0 626.4 L475.3 613.7 L502.7 600.1 L530.0 585.3 L557.3 569.2 L584.7 551.9 L612.0 533.1 L639.3 512.7 L666.7 490.7 L694.0 466.8 L721.3 440.9 L748.7 412.9 L776.0 382.6 L803.3 349.7 L830.7 314.2 L858.0 275.6 L885.3 233.9 L912.7 188.7 L940.0 139.8" stroke="#3DDC97" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <circle id="dots" cx="940.0" cy="579.8" r="20" fill="#FF6B6B" />
+          <circle id="dota" cx="940.0" cy="139.8" r="20" fill="#3DDC97" />
+        </svg>
+        <div class="stamp" id="stamp"><div class="k">True cost of the coffee</div><div class="num" id="vgap">$226,654</div></div>
+        <div class="end" id="end">
+          <div class="num">KNOW THE<br /><span>PRICE.</span></div>
+          <div class="follow">Follow for more money math</div>
+          <div class="disc">Illustration only, not financial advice. Assumes $152 a month (about $5 a day) invested monthly at an 8% average yearly return, before fees, taxes and inflation.</div>
+        </div>
+      </div>
+
+      <div id="captions" class="caps clip" data-start="0" data-duration="27.22" data-track-index="1" data-track-kind="captions">
+<div class="cap" id="cap0"><span class="w" id="c0w0">Five</span> <span class="w" id="c0w1">dollars</span> <span class="w" id="c0w2">a</span> <span class="w" id="c0w3">day.</span> <span class="w" id="c0w4">What's</span> <span class="w" id="c0w5">it</span> <span class="w" id="c0w6">really</span> <span class="w" id="c0w7">costing</span> <span class="w" id="c0w8">you?</span> </div>
+<div class="cap" id="cap1"><span class="w" id="c1w0">Emma</span> <span class="w" id="c1w1">and</span> <span class="w" id="c1w2">Noah</span> <span class="w" id="c1w3">both</span> <span class="w" id="c1w4">have</span> <span class="w" id="c1w5">five</span> <span class="w" id="c1w6">dollars</span> <span class="w" id="c1w7">a</span> <span class="w" id="c1w8">day</span> <span class="w" id="c1w9">to</span> <span class="w" id="c1w10">spare.</span> </div>
+<div class="cap" id="cap2"><span class="w" id="c2w0">Thirty</span> <span class="w" id="c2w1">years.</span> <span class="w" id="c2w2">The</span> <span class="w" id="c2w3">market</span> <span class="w" id="c2w4">averages</span> <span class="w" id="c2w5">eight</span> <span class="w" id="c2w6">percent.</span> </div>
+<div class="cap" id="cap3"><span class="w" id="c3w0">Emma</span> <span class="w" id="c3w1">buys</span> <span class="w" id="c3w2">coffee.</span> <span class="w" id="c3w3">Noah</span> <span class="w" id="c3w4">invests</span> <span class="w" id="c3w5">it.</span> </div>
+<div class="cap" id="cap4"><span class="w" id="c4w0">After</span> <span class="w" id="c4w1">thirty</span> <span class="w" id="c4w2">years,</span> <span class="w" id="c4w3">Emma</span> <span class="w" id="c4w4">spent</span> <span class="w" id="c4w5">fifty-four</span> <span class="w" id="c4w6">thousand</span> <span class="w" id="c4w7">dollars</span> <span class="w" id="c4w8">on</span> <span class="w" id="c4w9">coffee.</span> </div>
+<div class="cap" id="cap5"><span class="w" id="c5w0">Noah</span> <span class="w" id="c5w1">has</span> <span class="w" id="c5w2">two</span> <span class="w" id="c5w3">hundred</span> <span class="w" id="c5w4">twenty-six</span> <span class="w" id="c5w5">thousand.</span> </div>
+<div class="cap" id="cap6"><span class="w" id="c6w0">So</span> <span class="w" id="c6w1">that</span> <span class="w" id="c6w2">daily</span> <span class="w" id="c6w3">coffee</span> <span class="w" id="c6w4">really</span> <span class="w" id="c6w5">cost</span> <span class="w" id="c6w6">about</span> <span class="w" id="c6w7">two</span> <span class="w" id="c6w8">hundred</span> <span class="w" id="c6w9">twenty-six</span> <span class="w" id="c6w10">thousand</span> <span class="w" id="c6w11">dollars.</span> </div>
+<div class="cap" id="cap7"><span class="w" id="c7w0">Enjoy</span> <span class="w" id="c7w1">the</span> <span class="w" id="c7w2">coffee.</span> <span class="w" id="c7w3">Just</span> <span class="w" id="c7w4">know</span> <span class="w" id="c7w5">the</span> <span class="w" id="c7w6">price.</span> </div>
+<div class="cap" id="cap8"><span class="w" id="c8w0">Follow</span> <span class="w" id="c8w1">for</span> <span class="w" id="c8w2">more</span> <span class="w" id="c8w3">money</span> <span class="w" id="c8w4">math.</span> </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out", IN = "power2.in";
+      const money = (el, to, at, dur, suf) => {
+        const o = { v: 0 };
+        tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { document.querySelector(el).textContent = "$" + Math.round(o.v).toLocaleString("en-US") + (suf || ""); } }, at);
+      };
+      gsap.set(["#p3", "#p4", "#p5", "#stamp", "#end", "#chart"], { opacity: 0 });
+      // s1
+      tl.from("#p1 .big", { scale: 0.6, duration: 0.6, ease: "back.out(1.7)" }, 0);
+      tl.to("#p1 .big", { color: "#FFD43B", scale: 1.1, duration: 0.25, ease: "power4.in" }, 1.40);
+      tl.to("#p1", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 2.72);
+      // s2 people
+      tl.fromTo("#pa1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.02);
+      tl.fromTo("#ps1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: E }, 3.47);
+      tl.fromTo(["#agea", "#ages"], { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)", stagger: 0.3 }, 4.12);
+      tl.to("#people", { opacity: 0, y: -40, duration: 0.3, ease: IN }, 5.47);
+      // s3 chart
+      tl.to("#p3", { opacity: 1, duration: 0.35 }, 5.77);
+      tl.to("#chart", { opacity: 1, duration: 0.35 }, 5.77);
+      tl.to("#ca", { attr: { "stroke-dashoffset": 0 }, duration: 4.80, ease: "power1.in" }, 5.97);
+      tl.to("#cs", { attr: { "stroke-dashoffset": 0 }, duration: 4.80, ease: "power1.in" }, 5.97);
+      tl.from("#dota", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 10.77);
+      tl.from("#dots", { attr: { r: 0 }, duration: 0.3, ease: "back.out(3)" }, 10.77);
+      // s4 difference
+      tl.to("#p3", { opacity: 0, duration: 0.25 }, 8.41);
+      tl.to("#p4", { opacity: 1, duration: 0.35 }, 8.51);
+      tl.from("#p4 .row", { x: 80, opacity: 0, duration: 0.35, stagger: 0.98, ease: E }, 8.51);
+      tl.from("#p4 .plus", { scale: 0.6, opacity: 0, duration: 0.35, ease: "back.out(2)" }, 10.17);
+      // s5/s6 counters
+      tl.to("#p4", { opacity: 0, duration: 0.25 }, 10.85);
+      tl.to("#p5", { opacity: 1, duration: 0.3 }, 10.97);
+      gsap.set("#lalex", { opacity: 0 });
+      money("#vsam", 54749, 11.47, 2.66, "");
+      tl.to("#dots", { attr: { r: 30 }, duration: 0.3, yoyo: true, repeat: 1 }, 13.93);
+      tl.to("#lalex", { opacity: 1, duration: 0.25 }, 14.63);
+      money("#valex", 226654, 14.83, 1.68, "");
+      tl.to("#dota", { attr: { r: 34 }, duration: 0.3, yoyo: true, repeat: 1 }, 16.41);
+      tl.to("#valex", { scale: 1.08, transformOrigin: "100% 50%", duration: 0.25, yoyo: true, repeat: 1 }, 16.50);
+      // s7 stamp
+      tl.to("#chart", { opacity: 0, duration: 0.3 }, 17.00);
+      tl.fromTo("#stamp", { opacity: 0, scale: 1.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.35, ease: "power4.in" }, 17.25);
+      tl.to("#stamp", { scale: 1.05, duration: 0.25, yoyo: true, repeat: 1 }, 20.26);
+      // s8 end
+      tl.to(["#stamp", "#p5"], { opacity: 0, duration: 0.3, ease: IN }, 20.86);
+      tl.to("#end", { opacity: 1, duration: 0.2 }, 21.16);
+      tl.from("#end .num", { scale: 0.7, duration: 0.6, ease: "back.out(1.7)" }, 21.16);
+      tl.from("#end .disc", { opacity: 0, duration: 0.4 }, 21.36);
+      tl.from("#end .follow", { y: 40, opacity: 0, duration: 0.45, ease: E }, 22.16);
+      // captions
+      tl.set("#cap0", {opacity: 1}, 0.30); tl.set("#cap0", {opacity: 0}, 2.97);
+      tl.set("#c0w0", {color: "#FFD43B", scale: 1.08}, 0.30); tl.set("#c0w0", {color: "#ffffff", scale: 1}, 0.44);
+      tl.set("#c0w1", {color: "#FFD43B", scale: 1.08}, 0.45); tl.set("#c0w1", {color: "#ffffff", scale: 1}, 0.78);
+      tl.set("#c0w2", {color: "#FFD43B", scale: 1.08}, 0.80); tl.set("#c0w2", {color: "#ffffff", scale: 1}, 0.85);
+      tl.set("#c0w3", {color: "#FFD43B", scale: 1.08}, 0.86); tl.set("#c0w3", {color: "#ffffff", scale: 1}, 1.12);
+      tl.set("#c0w4", {color: "#FFD43B", scale: 1.08}, 1.45); tl.set("#c0w4", {color: "#ffffff", scale: 1}, 1.67);
+      tl.set("#c0w5", {color: "#FFD43B", scale: 1.08}, 1.68); tl.set("#c0w5", {color: "#ffffff", scale: 1}, 1.79);
+      tl.set("#c0w6", {color: "#FFD43B", scale: 1.08}, 1.80); tl.set("#c0w6", {color: "#ffffff", scale: 1}, 2.00);
+      tl.set("#c0w7", {color: "#FFD43B", scale: 1.08}, 2.01); tl.set("#c0w7", {color: "#ffffff", scale: 1}, 2.42);
+      tl.set("#c0w8", {color: "#FFD43B", scale: 1.08}, 2.43); tl.set("#c0w8", {color: "#ffffff", scale: 1}, 2.64);
+      tl.set("#cap1", {opacity: 1}, 3.02); tl.set("#cap1", {opacity: 0}, 5.72);
+      tl.set("#c1w0", {color: "#FFD43B", scale: 1.08}, 3.02); tl.set("#c1w0", {color: "#ffffff", scale: 1}, 3.27);
+      tl.set("#c1w1", {color: "#FFD43B", scale: 1.08}, 3.29); tl.set("#c1w1", {color: "#ffffff", scale: 1}, 3.40);
+      tl.set("#c1w2", {color: "#FFD43B", scale: 1.08}, 3.41); tl.set("#c1w2", {color: "#ffffff", scale: 1}, 3.67);
+      tl.set("#c1w3", {color: "#FFD43B", scale: 1.08}, 3.68); tl.set("#c1w3", {color: "#ffffff", scale: 1}, 3.92);
+      tl.set("#c1w4", {color: "#FFD43B", scale: 1.08}, 3.94); tl.set("#c1w4", {color: "#ffffff", scale: 1}, 4.05);
+      tl.set("#c1w5", {color: "#FFD43B", scale: 1.08}, 4.06); tl.set("#c1w5", {color: "#ffffff", scale: 1}, 4.34);
+      tl.set("#c1w6", {color: "#FFD43B", scale: 1.08}, 4.35); tl.set("#c1w6", {color: "#ffffff", scale: 1}, 4.70);
+      tl.set("#c1w7", {color: "#FFD43B", scale: 1.08}, 4.71); tl.set("#c1w7", {color: "#ffffff", scale: 1}, 4.77);
+      tl.set("#c1w8", {color: "#FFD43B", scale: 1.08}, 4.78); tl.set("#c1w8", {color: "#ffffff", scale: 1}, 4.92);
+      tl.set("#c1w9", {color: "#FFD43B", scale: 1.08}, 4.93); tl.set("#c1w9", {color: "#ffffff", scale: 1}, 5.00);
+      tl.set("#c1w10", {color: "#FFD43B", scale: 1.08}, 5.01); tl.set("#c1w10", {color: "#ffffff", scale: 1}, 5.42);
+      tl.set("#cap2", {opacity: 1}, 5.77); tl.set("#cap2", {opacity: 0}, 8.46);
+      tl.set("#c2w0", {color: "#FFD43B", scale: 1.08}, 5.77); tl.set("#c2w0", {color: "#ffffff", scale: 1}, 5.96);
+      tl.set("#c2w1", {color: "#FFD43B", scale: 1.08}, 5.97); tl.set("#c2w1", {color: "#ffffff", scale: 1}, 6.34);
+      tl.set("#c2w2", {color: "#FFD43B", scale: 1.08}, 6.67); tl.set("#c2w2", {color: "#ffffff", scale: 1}, 6.83);
+      tl.set("#c2w3", {color: "#FFD43B", scale: 1.08}, 6.84); tl.set("#c2w3", {color: "#ffffff", scale: 1}, 7.15);
+      tl.set("#c2w4", {color: "#FFD43B", scale: 1.08}, 7.17); tl.set("#c2w4", {color: "#ffffff", scale: 1}, 7.57);
+      tl.set("#c2w5", {color: "#FFD43B", scale: 1.08}, 7.58); tl.set("#c2w5", {color: "#ffffff", scale: 1}, 7.69);
+      tl.set("#c2w6", {color: "#FFD43B", scale: 1.08}, 7.71); tl.set("#c2w6", {color: "#ffffff", scale: 1}, 8.17);
+      tl.set("#cap3", {opacity: 1}, 8.51); tl.set("#cap3", {opacity: 0}, 10.92);
+      tl.set("#c3w0", {color: "#FFD43B", scale: 1.08}, 8.51); tl.set("#c3w0", {color: "#ffffff", scale: 1}, 8.66);
+      tl.set("#c3w1", {color: "#FFD43B", scale: 1.08}, 8.67); tl.set("#c3w1", {color: "#ffffff", scale: 1}, 8.92);
+      tl.set("#c3w2", {color: "#FFD43B", scale: 1.08}, 8.93); tl.set("#c3w2", {color: "#ffffff", scale: 1}, 9.38);
+      tl.set("#c3w3", {color: "#FFD43B", scale: 1.08}, 9.71); tl.set("#c3w3", {color: "#ffffff", scale: 1}, 10.06);
+      tl.set("#c3w4", {color: "#FFD43B", scale: 1.08}, 10.07); tl.set("#c3w4", {color: "#ffffff", scale: 1}, 10.48);
+      tl.set("#c3w5", {color: "#FFD43B", scale: 1.08}, 10.49); tl.set("#c3w5", {color: "#ffffff", scale: 1}, 10.62);
+      tl.set("#cap4", {opacity: 1}, 10.97); tl.set("#cap4", {opacity: 0}, 14.58);
+      tl.set("#c4w0", {color: "#FFD43B", scale: 1.08}, 10.97); tl.set("#c4w0", {color: "#ffffff", scale: 1}, 11.20);
+      tl.set("#c4w1", {color: "#FFD43B", scale: 1.08}, 11.21); tl.set("#c4w1", {color: "#ffffff", scale: 1}, 11.49);
+      tl.set("#c4w2", {color: "#FFD43B", scale: 1.08}, 11.50); tl.set("#c4w2", {color: "#ffffff", scale: 1}, 11.87);
+      tl.set("#c4w3", {color: "#FFD43B", scale: 1.08}, 12.08); tl.set("#c4w3", {color: "#ffffff", scale: 1}, 12.22);
+      tl.set("#c4w4", {color: "#FFD43B", scale: 1.08}, 12.23); tl.set("#c4w4", {color: "#ffffff", scale: 1}, 12.49);
+      tl.set("#c4w5", {color: "#FFD43B", scale: 1.08}, 12.50); tl.set("#c4w5", {color: "#ffffff", scale: 1}, 13.02);
+      tl.set("#c4w6", {color: "#FFD43B", scale: 1.08}, 13.03); tl.set("#c4w6", {color: "#ffffff", scale: 1}, 13.37);
+      tl.set("#c4w7", {color: "#FFD43B", scale: 1.08}, 13.38); tl.set("#c4w7", {color: "#ffffff", scale: 1}, 13.67);
+      tl.set("#c4w8", {color: "#FFD43B", scale: 1.08}, 13.68); tl.set("#c4w8", {color: "#ffffff", scale: 1}, 13.79);
+      tl.set("#c4w9", {color: "#FFD43B", scale: 1.08}, 13.81); tl.set("#c4w9", {color: "#ffffff", scale: 1}, 14.25);
+      tl.set("#cap5", {opacity: 1}, 14.63); tl.set("#cap5", {opacity: 0}, 16.95);
+      tl.set("#c5w0", {color: "#FFD43B", scale: 1.08}, 14.63); tl.set("#c5w0", {color: "#ffffff", scale: 1}, 14.86);
+      tl.set("#c5w1", {color: "#FFD43B", scale: 1.08}, 14.87); tl.set("#c5w1", {color: "#ffffff", scale: 1}, 15.08);
+      tl.set("#c5w2", {color: "#FFD43B", scale: 1.08}, 15.09); tl.set("#c5w2", {color: "#ffffff", scale: 1}, 15.29);
+      tl.set("#c5w3", {color: "#FFD43B", scale: 1.08}, 15.30); tl.set("#c5w3", {color: "#ffffff", scale: 1}, 15.60);
+      tl.set("#c5w4", {color: "#FFD43B", scale: 1.08}, 15.61); tl.set("#c5w4", {color: "#ffffff", scale: 1}, 16.16);
+      tl.set("#c5w5", {color: "#FFD43B", scale: 1.08}, 16.17); tl.set("#c5w5", {color: "#ffffff", scale: 1}, 16.56);
+      tl.set("#cap6", {opacity: 1}, 17.00); tl.set("#cap6", {opacity: 0}, 21.11);
+      tl.set("#c6w0", {color: "#FFD43B", scale: 1.08}, 17.00); tl.set("#c6w0", {color: "#ffffff", scale: 1}, 17.11);
+      tl.set("#c6w1", {color: "#FFD43B", scale: 1.08}, 17.12); tl.set("#c6w1", {color: "#ffffff", scale: 1}, 17.28);
+      tl.set("#c6w2", {color: "#FFD43B", scale: 1.08}, 17.29); tl.set("#c6w2", {color: "#ffffff", scale: 1}, 17.57);
+      tl.set("#c6w3", {color: "#FFD43B", scale: 1.08}, 17.58); tl.set("#c6w3", {color: "#ffffff", scale: 1}, 18.07);
+      tl.set("#c6w4", {color: "#FFD43B", scale: 1.08}, 18.08); tl.set("#c6w4", {color: "#ffffff", scale: 1}, 18.31);
+      tl.set("#c6w5", {color: "#FFD43B", scale: 1.08}, 18.32); tl.set("#c6w5", {color: "#ffffff", scale: 1}, 18.67);
+      tl.set("#c6w6", {color: "#FFD43B", scale: 1.08}, 18.68); tl.set("#c6w6", {color: "#ffffff", scale: 1}, 18.91);
+      tl.set("#c6w7", {color: "#FFD43B", scale: 1.08}, 18.93); tl.set("#c6w7", {color: "#ffffff", scale: 1}, 19.13);
+      tl.set("#c6w8", {color: "#FFD43B", scale: 1.08}, 19.14); tl.set("#c6w8", {color: "#ffffff", scale: 1}, 19.46);
+      tl.set("#c6w9", {color: "#FFD43B", scale: 1.08}, 19.47); tl.set("#c6w9", {color: "#ffffff", scale: 1}, 20.01);
+      tl.set("#c6w10", {color: "#FFD43B", scale: 1.08}, 20.02); tl.set("#c6w10", {color: "#ffffff", scale: 1}, 20.34);
+      tl.set("#c6w11", {color: "#FFD43B", scale: 1.08}, 20.35); tl.set("#c6w11", {color: "#ffffff", scale: 1}, 20.80);
+      tl.set("#cap7", {opacity: 1}, 21.16); tl.set("#cap7", {opacity: 0}, 23.62);
+      tl.set("#c7w0", {color: "#FFD43B", scale: 1.08}, 21.16); tl.set("#c7w0", {color: "#ffffff", scale: 1}, 21.47);
+      tl.set("#c7w1", {color: "#FFD43B", scale: 1.08}, 21.48); tl.set("#c7w1", {color: "#ffffff", scale: 1}, 21.56);
+      tl.set("#c7w2", {color: "#FFD43B", scale: 1.08}, 21.57); tl.set("#c7w2", {color: "#ffffff", scale: 1}, 22.03);
+      tl.set("#c7w3", {color: "#FFD43B", scale: 1.08}, 22.36); tl.set("#c7w3", {color: "#ffffff", scale: 1}, 22.64);
+      tl.set("#c7w4", {color: "#FFD43B", scale: 1.08}, 22.65); tl.set("#c7w4", {color: "#ffffff", scale: 1}, 22.77);
+      tl.set("#c7w5", {color: "#FFD43B", scale: 1.08}, 22.78); tl.set("#c7w5", {color: "#ffffff", scale: 1}, 22.86);
+      tl.set("#c7w6", {color: "#FFD43B", scale: 1.08}, 22.87); tl.set("#c7w6", {color: "#ffffff", scale: 1}, 23.34);
+      tl.set("#cap8", {opacity: 1}, 23.67); tl.set("#cap8", {opacity: 0}, 25.62);
+      tl.set("#c8w0", {color: "#FFD43B", scale: 1.08}, 23.67); tl.set("#c8w0", {color: "#ffffff", scale: 1}, 24.08);
+      tl.set("#c8w1", {color: "#FFD43B", scale: 1.08}, 24.09); tl.set("#c8w1", {color: "#ffffff", scale: 1}, 24.22);
+      tl.set("#c8w2", {color: "#FFD43B", scale: 1.08}, 24.23); tl.set("#c8w2", {color: "#ffffff", scale: 1}, 24.38);
+      tl.set("#c8w3", {color: "#FFD43B", scale: 1.08}, 24.39); tl.set("#c8w3", {color: "#ffffff", scale: 1}, 24.60);
+      tl.set("#c8w4", {color: "#FFD43B", scale: 1.08}, 24.61); tl.set("#c8w4", {color: "#ffffff", scale: 1}, 25.02);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

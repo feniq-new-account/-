@@ -1,0 +1,47 @@
+{
+ "lead": 0.3,
+ "tail": 1.8,
+ "trim": true,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "How much do you need to save to retire a millionaire?",
+   "gap": 0.3
+  },
+  {
+   "id": "s2",
+   "text": "Olivia starts at twenty-five. Jack starts at forty-five.",
+   "gap": 0.3
+  },
+  {
+   "id": "s3",
+   "text": "Both want one million dollars by sixty-five. Eight percent a year.",
+   "gap": 0.3
+  },
+  {
+   "id": "s4",
+   "text": "Olivia has forty years. Jack has only twenty.",
+   "gap": 0.3
+  },
+  {
+   "id": "s5",
+   "text": "Jack needs one thousand six hundred ninety-eight dollars a month.",
+   "gap": 0.3
+  },
+  {
+   "id": "s6",
+   "text": "Olivia needs just two hundred eighty-six.",
+   "gap": 0.4
+  },
+  {
+   "id": "s7",
+   "text": "Jack pays in two hundred seventy thousand dollars more, for the same million.",
+   "gap": 0.3
+  },
+  {
+   "id": "s8",
+   "text": "Time is the cheapest money you have. Follow for more money math.",
+   "gap": 0.2
+  }
+ ]
+}

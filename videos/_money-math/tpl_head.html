@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root { --bg: #0A0E17; --panel: #131A28; --ink: #FFFFFF; --mute: #8C97AB; --alex: #3DDC97; --sam: #FF6B6B; --gold: #FFD43B; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--bg); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Inter", sans-serif; color: var(--ink);
+        background: radial-gradient(1100px 900px at 50% 38%, #18223A 0%, var(--bg) 70%); }
+      .stage { position: absolute; inset: 0; }
+      .num { font-family: "Archivo Black", sans-serif; letter-spacing: -1px; }
+      .top { position: absolute; left: 0; right: 0; top: 250px; height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; }
+      .kicker { font-size: 44px; font-weight: 700; color: var(--mute); letter-spacing: 6px; text-transform: uppercase; }
+      .big { font-size: 190px; line-height: 1; }
+      .big small { font-size: 80px; color: var(--mute); }
+      /* avatars */
+      .people { position: absolute; left: 0; right: 0; top: 700px; display: flex; justify-content: center; gap: 60px; }
+      .person { width: 380px; padding: 44px 30px; border-radius: 40px; background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 22px; border: 3px solid rgba(255,255,255,.07); }
+      .av { width: 170px; height: 170px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 90px; color: var(--bg); }
+      .person h2 { font-size: 64px; font-weight: 900; }
+      .age { font-size: 38px; font-weight: 700; padding: 12px 24px; border-radius: 30px; white-space: nowrap; }
+      .alex .av, .alex .age { background: var(--alex); color: var(--bg); }
+      .sam .av, .sam .age { background: var(--sam); color: var(--bg); }
+      /* badge */
+      .badge { font-size: 58px; font-weight: 900; background: var(--panel); border: 3px solid rgba(255,255,255,.12); border-radius: 30px; padding: 22px 40px; }
+      .badge b { color: var(--gold); }
+      /* put-in rows */
+      .rows { display: flex; flex-direction: column; gap: 16px; width: 820px; }
+      .row { display: flex; justify-content: space-between; align-items: center; font-size: 50px; font-weight: 800; background: var(--panel); border-radius: 24px; padding: 18px 34px; }
+      .row .num { font-size: 64px; }
+      .plus { font-size: 46px; font-weight: 800; color: var(--gold); }
+      /* counters */
+      .ctr { display: flex; flex-direction: column; gap: 6px; width: 900px; }
+      .ctr .line { display: flex; justify-content: space-between; align-items: baseline; }
+      .ctr .who { font-size: 56px; font-weight: 900; }
+      .ctr .num { font-size: 104px; }
+      /* chart */
+      .chart { position: absolute; left: 100px; top: 630px; width: 880px; height: 686px; }
+      .chart .g { stroke: rgba(255,255,255,.08); stroke-width: 2; }
+      .chart .gl { fill: var(--mute); font: 700 30px Inter, sans-serif; text-anchor: end; }
+      .chart .tk { fill: var(--mute); font: 700 32px Inter, sans-serif; text-anchor: middle; }
+      .chart .ax { stroke: rgba(255,255,255,.25); stroke-width: 3; }
+      .curve { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+      /* stamp */
+      .stamp { position: absolute; left: 90px; right: 90px; top: 760px; padding: 50px 30px; border-radius: 44px; background: var(--sam); color: var(--bg); text-align: center; box-shadow: 0 40px 120px rgba(255,107,107,.35); }
+      .stamp .k { font-size: 52px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; }
+      .stamp .num { font-size: 130px; line-height: 1.1; white-space: nowrap; }
+      /* end */
+      .end { position: absolute; left: 0; right: 0; top: 560px; display: flex; flex-direction: column; align-items: center; gap: 36px; text-align: center; }
+      .end .num { font-size: %%ENDSIZE%%px; line-height: 1.02; }
+      .end .num span { color: var(--alex); }
+      .follow { font-size: 50px; font-weight: 800; background: var(--gold); color: var(--bg); border-radius: 40px; padding: 22px 44px; }
+      .disc { font-size: 30px; font-weight: 400; color: var(--mute); width: 860px; line-height: 1.45; }
+      /* captions */
+      .caps { position: absolute; left: 90px; right: 90px; top: 1380px; height: 160px; }
+      .cap { position: absolute; inset: 0; display: flex; flex-wrap: wrap; justify-content: center; align-content: center; gap: 0 18px; font-size: 64px; font-weight: 900; text-align: center; line-height: 1.2; opacity: 0; text-shadow: 0 6px 20px rgba(0,0,0,.7); }
+      .w { display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="%%D%%" data-width="1080" data-height="1920">
+      <audio id="mix" class="clip" src="assets/mix.wav" data-start="0" data-duration="%%AD%%" data-track-index="5"></audio>
+
+      
