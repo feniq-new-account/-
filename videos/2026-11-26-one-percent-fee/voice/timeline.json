@@ -1,0 +1,469 @@
+{
+ "duration": 27.309,
+ "lines": [
+  {
+   "id": "s1",
+   "text": "A one percent fee sounds tiny. It's not.",
+   "start": 0.3,
+   "end": 2.637,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.3,
+     "end": 0.351
+    },
+    {
+     "w": "one",
+     "start": 0.362,
+     "end": 0.501
+    },
+    {
+     "w": "percent",
+     "start": 0.513,
+     "end": 0.825
+    },
+    {
+     "w": "fee",
+     "start": 0.837,
+     "end": 0.987
+    },
+    {
+     "w": "sounds",
+     "start": 0.999,
+     "end": 1.323
+    },
+    {
+     "w": "tiny",
+     "start": 1.334,
+     "end": 1.728
+    },
+    {
+     "w": "It's",
+     "start": 2.06,
+     "end": 2.28
+    },
+    {
+     "w": "not",
+     "start": 2.291,
+     "end": 2.581
+    }
+   ]
+  },
+  {
+   "id": "s2",
+   "text": "Mia and Leo both invest five hundred dollars a month, for forty years.",
+   "start": 2.937,
+   "end": 6.632,
+   "words": [
+    {
+     "w": "Mia",
+     "start": 2.937,
+     "end": 3.211
+    },
+    {
+     "w": "and",
+     "start": 3.222,
+     "end": 3.373
+    },
+    {
+     "w": "Leo",
+     "start": 3.384,
+     "end": 3.65
+    },
+    {
+     "w": "both",
+     "start": 3.662,
+     "end": 3.94
+    },
+    {
+     "w": "invest",
+     "start": 3.951,
+     "end": 4.287
+    },
+    {
+     "w": "five",
+     "start": 4.299,
+     "end": 4.588
+    },
+    {
+     "w": "hundred",
+     "start": 4.599,
+     "end": 4.842
+    },
+    {
+     "w": "dollars",
+     "start": 4.854,
+     "end": 5.167
+    },
+    {
+     "w": "a",
+     "start": 5.19,
+     "end": 5.213
+    },
+    {
+     "w": "month",
+     "start": 5.224,
+     "end": 5.653
+    },
+    {
+     "w": "for",
+     "start": 5.757,
+     "end": 5.884
+    },
+    {
+     "w": "forty",
+     "start": 5.896,
+     "end": 6.174
+    },
+    {
+     "w": "years",
+     "start": 6.185,
+     "end": 6.579
+    }
+   ]
+  },
+  {
+   "id": "s3",
+   "text": "Same market. Eight percent a year.",
+   "start": 6.932,
+   "end": 8.802,
+   "words": [
+    {
+     "w": "Same",
+     "start": 6.932,
+     "end": 7.127
+    },
+    {
+     "w": "market",
+     "start": 7.139,
+     "end": 7.521
+    },
+    {
+     "w": "Eight",
+     "start": 7.852,
+     "end": 8.072
+    },
+    {
+     "w": "percent",
+     "start": 8.084,
+     "end": 8.373
+    },
+    {
+     "w": "a",
+     "start": 8.385,
+     "end": 8.408
+    },
+    {
+     "w": "year",
+     "start": 8.42,
+     "end": 8.755
+    }
+   ]
+  },
+  {
+   "id": "s4",
+   "text": "Mia pays a zero point one percent fee. Leo pays one percent.",
+   "start": 9.102,
+   "end": 12.768,
+   "words": [
+    {
+     "w": "Mia",
+     "start": 9.102,
+     "end": 9.288
+    },
+    {
+     "w": "pays",
+     "start": 9.3,
+     "end": 9.554
+    },
+    {
+     "w": "a",
+     "start": 9.566,
+     "end": 9.612
+    },
+    {
+     "w": "zero",
+     "start": 9.624,
+     "end": 9.959
+    },
+    {
+     "w": "point",
+     "start": 9.971,
+     "end": 10.249
+    },
+    {
+     "w": "one",
+     "start": 10.26,
+     "end": 10.376
+    },
+    {
+     "w": "percent",
+     "start": 10.388,
+     "end": 10.746
+    },
+    {
+     "w": "fee",
+     "start": 10.758,
+     "end": 11.059
+    },
+    {
+     "w": "Leo",
+     "start": 11.391,
+     "end": 11.75
+    },
+    {
+     "w": "pays",
+     "start": 11.761,
+     "end": 12.074
+    },
+    {
+     "w": "one",
+     "start": 12.085,
+     "end": 12.236
+    },
+    {
+     "w": "percent",
+     "start": 12.247,
+     "end": 12.722
+    }
+   ]
+  },
+  {
+   "id": "s5",
+   "text": "After forty years, Leo has one point two eight million.",
+   "start": 13.068,
+   "end": 15.915,
+   "words": [
+    {
+     "w": "After",
+     "start": 13.068,
+     "end": 13.292
+    },
+    {
+     "w": "forty",
+     "start": 13.304,
+     "end": 13.547
+    },
+    {
+     "w": "years",
+     "start": 13.558,
+     "end": 13.952
+    },
+    {
+     "w": "Leo",
+     "start": 14.114,
+     "end": 14.357
+    },
+    {
+     "w": "has",
+     "start": 14.368,
+     "end": 14.588
+    },
+    {
+     "w": "one",
+     "start": 14.6,
+     "end": 14.797
+    },
+    {
+     "w": "point",
+     "start": 14.808,
+     "end": 15.098
+    },
+    {
+     "w": "two",
+     "start": 15.109,
+     "end": 15.329
+    },
+    {
+     "w": "eight",
+     "start": 15.364,
+     "end": 15.514
+    },
+    {
+     "w": "million",
+     "start": 15.526,
+     "end": 15.885
+    }
+   ]
+  },
+  {
+   "id": "s6",
+   "text": "Mia has one point six three million.",
+   "start": 16.215,
+   "end": 17.955,
+   "words": [
+    {
+     "w": "Mia",
+     "start": 16.215,
+     "end": 16.403
+    },
+    {
+     "w": "has",
+     "start": 16.414,
+     "end": 16.623
+    },
+    {
+     "w": "one",
+     "start": 16.634,
+     "end": 16.843
+    },
+    {
+     "w": "point",
+     "start": 16.854,
+     "end": 17.109
+    },
+    {
+     "w": "six",
+     "start": 17.12,
+     "end": 17.398
+    },
+    {
+     "w": "three",
+     "start": 17.41,
+     "end": 17.572
+    },
+    {
+     "w": "million",
+     "start": 17.583,
+     "end": 17.931
+    }
+   ]
+  },
+  {
+   "id": "s7",
+   "text": "That tiny fee took over three hundred fifty thousand dollars. About a fifth of everything.",
+   "start": 18.355,
+   "end": 22.478,
+   "words": [
+    {
+     "w": "That",
+     "start": 18.355,
+     "end": 18.45
+    },
+    {
+     "w": "tiny",
+     "start": 18.461,
+     "end": 18.739
+    },
+    {
+     "w": "fee",
+     "start": 18.751,
+     "end": 18.913
+    },
+    {
+     "w": "took",
+     "start": 18.924,
+     "end": 19.051
+    },
+    {
+     "w": "over",
+     "start": 19.063,
+     "end": 19.237
+    },
+    {
+     "w": "three",
+     "start": 19.248,
+     "end": 19.503
+    },
+    {
+     "w": "hundred",
+     "start": 19.514,
+     "end": 19.792
+    },
+    {
+     "w": "fifty",
+     "start": 19.804,
+     "end": 20.116
+    },
+    {
+     "w": "thousand",
+     "start": 20.128,
+     "end": 20.464
+    },
+    {
+     "w": "dollars",
+     "start": 20.475,
+     "end": 20.915
+    },
+    {
+     "w": "About",
+     "start": 21.247,
+     "end": 21.559
+    },
+    {
+     "w": "a",
+     "start": 21.571,
+     "end": 21.606
+    },
+    {
+     "w": "fifth",
+     "start": 21.617,
+     "end": 21.895
+    },
+    {
+     "w": "of",
+     "start": 21.907,
+     "end": 21.999
+    },
+    {
+     "w": "everything",
+     "start": 22.011,
+     "end": 22.427
+    }
+   ]
+  },
+  {
+   "id": "s8",
+   "text": "Check your fees today. Follow for more money math.",
+   "start": 22.778,
+   "end": 25.309,
+   "words": [
+    {
+     "w": "Check",
+     "start": 22.778,
+     "end": 22.943
+    },
+    {
+     "w": "your",
+     "start": 22.955,
+     "end": 23.047
+    },
+    {
+     "w": "fees",
+     "start": 23.059,
+     "end": 23.267
+    },
+    {
+     "w": "today",
+     "start": 23.279,
+     "end": 23.58
+    },
+    {
+     "w": "Follow",
+     "start": 23.912,
+     "end": 24.317
+    },
+    {
+     "w": "for",
+     "start": 24.328,
+     "end": 24.456
+    },
+    {
+     "w": "more",
+     "start": 24.467,
+     "end": 24.618
+    },
+    {
+     "w": "money",
+     "start": 24.629,
+     "end": 24.838
+    },
+    {
+     "w": "math",
+     "start": 24.849,
+     "end": 25.254
+    }
+   ]
+  }
+ ]
+}
