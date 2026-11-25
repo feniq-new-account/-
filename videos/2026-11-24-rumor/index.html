@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0a0c14;
+        --ink: #ffffff;
+        --accent: #ffb84d;
+        --font-display: "Inter", sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        font-family: var(--font-display);
+      }
+      #bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 900px 1100px at 50% 40%, #161d33 0%, #0d1120 55%, #07080e 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="48.18" data-width="1080" data-height="1920">
+      <div id="bg"></div>
+      <div id="sim" data-composition-id="sim" data-composition-src="compositions/sim.html" data-start="0" data-duration="48.18" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="48.18" data-track-index="2" data-volume="0.8"></audio>
+
+      <!-- whooshes on the three zoom-outs; pops on the first doublings -->
+      <audio id="sfx-w1" class="clip" src="assets/sfx/whoosh.mp3" data-start="12.98" data-duration="0.57" data-track-index="3" data-volume="0.3"></audio>
+      <audio id="sfx-w2" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="20.57" data-duration="0.57" data-track-index="3" data-volume="0.26"></audio>
+      <audio id="sfx-w3" class="clip" src="assets/sfx/whoosh.mp3" data-start="29.00" data-duration="0.57" data-track-index="3" data-volume="0.32"></audio>
+      <audio id="sfx-p1" class="clip" src="assets/sfx/pop.mp3" data-start="3.01" data-duration="0.72" data-track-index="5" data-volume="0.34"></audio>
+      <audio id="sfx-p2" class="clip" src="assets/sfx/pop.mp3" data-start="5.01" data-duration="0.72" data-track-index="5" data-volume="0.3"></audio>
+      <audio id="sfx-p3" class="clip" src="assets/sfx/pop.mp3" data-start="7.01" data-duration="0.72" data-track-index="5" data-volume="0.3"></audio>
+      <audio id="sfx-p5" class="clip" src="assets/sfx/pop.mp3" data-start="8.19" data-duration="0.72" data-track-index="5" data-volume="0.26"></audio>
+      <!-- riser cresting on "every single person on Earth", bass hit when the whole world lights up -->
+      <audio id="sfx-riser" class="clip" src="assets/sfx/riser.mp3" data-start="31.76" data-duration="6" data-track-index="4" data-volume="0.22" data-fade-out="1.2"></audio>
+      <audio id="sfx-hit" class="clip" src="assets/sfx/impact-bass-1.mp3" data-start="35.16" data-duration="2.11" data-track-index="6" data-volume="0.4"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

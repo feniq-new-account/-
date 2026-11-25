@@ -1,0 +1,642 @@
+{
+ "duration": 49.344,
+ "lines": [
+  {
+   "id": "hook",
+   "text": "One grain of rice. It doubles every second. How long until it's bigger than the Sun?",
+   "start": 0.15,
+   "end": 5.476,
+   "words": [
+    {
+     "w": "One",
+     "start": 0.15,
+     "end": 0.243
+    },
+    {
+     "w": "grain",
+     "start": 0.243,
+     "end": 0.451
+    },
+    {
+     "w": "of",
+     "start": 0.451,
+     "end": 0.513
+    },
+    {
+     "w": "rice",
+     "start": 0.525,
+     "end": 1.015
+    },
+    {
+     "w": "It",
+     "start": 1.407,
+     "end": 1.517
+    },
+    {
+     "w": "doubles",
+     "start": 1.53,
+     "end": 2.02
+    },
+    {
+     "w": "every",
+     "start": 2.179,
+     "end": 2.461
+    },
+    {
+     "w": "second",
+     "start": 2.461,
+     "end": 2.976
+    },
+    {
+     "w": "How",
+     "start": 3.368,
+     "end": 3.515
+    },
+    {
+     "w": "long",
+     "start": 3.515,
+     "end": 3.981
+    },
+    {
+     "w": "until",
+     "start": 4.054,
+     "end": 4.275
+    },
+    {
+     "w": "it's",
+     "start": 4.275,
+     "end": 4.385
+    },
+    {
+     "w": "bigger",
+     "start": 4.459,
+     "end": 4.826
+    },
+    {
+     "w": "than",
+     "start": 4.838,
+     "end": 4.949
+    },
+    {
+     "w": "the",
+     "start": 4.949,
+     "end": 5.01
+    },
+    {
+     "w": "Sun",
+     "start": 5.022,
+     "end": 5.427
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "text": "Ten seconds: a thousand grains. A handful.",
+   "start": 5.976,
+   "end": 9.228,
+   "words": [
+    {
+     "w": "Ten",
+     "start": 5.976,
+     "end": 6.17
+    },
+    {
+     "w": "seconds",
+     "start": 6.182,
+     "end": 6.721
+    },
+    {
+     "w": "a",
+     "start": 7.003,
+     "end": 7.052
+    },
+    {
+     "w": "thousand",
+     "start": 7.065,
+     "end": 7.555
+    },
+    {
+     "w": "grains",
+     "start": 7.567,
+     "end": 8.192
+    },
+    {
+     "w": "A",
+     "start": 8.596,
+     "end": 8.633
+    },
+    {
+     "w": "handful",
+     "start": 8.645,
+     "end": 9.185
+    }
+   ]
+  },
+  {
+   "id": "s14",
+   "text": "Fourteen: a full bowl.",
+   "start": 9.628,
+   "end": 11.34,
+   "words": [
+    {
+     "w": "Fourteen",
+     "start": 9.628,
+     "end": 10.191
+    },
+    {
+     "w": "a",
+     "start": 10.595,
+     "end": 10.632
+    },
+    {
+     "w": "full",
+     "start": 10.632,
+     "end": 10.95
+    },
+    {
+     "w": "bowl",
+     "start": 10.95,
+     "end": 11.306
+    }
+   ]
+  },
+  {
+   "id": "s23",
+   "text": "Twenty-three: enough to fill a bathtub.",
+   "start": 11.74,
+   "end": 14.2,
+   "words": [
+    {
+     "w": "Twenty-three",
+     "start": 11.74,
+     "end": 12.387
+    },
+    {
+     "w": "enough",
+     "start": 12.828,
+     "end": 13.097
+    },
+    {
+     "w": "to",
+     "start": 13.11,
+     "end": 13.208
+    },
+    {
+     "w": "fill",
+     "start": 13.22,
+     "end": 13.49
+    },
+    {
+     "w": "a",
+     "start": 13.49,
+     "end": 13.538
+    },
+    {
+     "w": "bathtub",
+     "start": 13.551,
+     "end": 14.139
+    }
+   ]
+  },
+  {
+   "id": "s30",
+   "text": "Thirty seconds: your kitchen, packed to the ceiling.",
+   "start": 14.6,
+   "end": 17.756,
+   "words": [
+    {
+     "w": "Thirty",
+     "start": 14.6,
+     "end": 14.823
+    },
+    {
+     "w": "seconds",
+     "start": 14.823,
+     "end": 15.423
+    },
+    {
+     "w": "your",
+     "start": 15.791,
+     "end": 15.938
+    },
+    {
+     "w": "kitchen",
+     "start": 15.95,
+     "end": 16.465
+    },
+    {
+     "w": "packed",
+     "start": 16.698,
+     "end": 17.078
+    },
+    {
+     "w": "to",
+     "start": 17.09,
+     "end": 17.188
+    },
+    {
+     "w": "the",
+     "start": 17.2,
+     "end": 17.274
+    },
+    {
+     "w": "ceiling",
+     "start": 17.274,
+     "end": 17.776
+    }
+   ]
+  },
+  {
+   "id": "s34",
+   "text": "Thirty-four: the whole house.",
+   "start": 18.156,
+   "end": 19.995,
+   "words": [
+    {
+     "w": "Thirty-four",
+     "start": 18.156,
+     "end": 18.707
+    },
+    {
+     "w": "the",
+     "start": 19.075,
+     "end": 19.136
+    },
+    {
+     "w": "whole",
+     "start": 19.136,
+     "end": 19.381
+    },
+    {
+     "w": "house",
+     "start": 19.381,
+     "end": 19.957
+    }
+   ]
+  },
+  {
+   "id": "s37",
+   "text": "Thirty-seven: an Olympic swimming pool.",
+   "start": 20.395,
+   "end": 22.906,
+   "words": [
+    {
+     "w": "Thirty-seven",
+     "start": 20.395,
+     "end": 21.027
+    },
+    {
+     "w": "an",
+     "start": 21.505,
+     "end": 21.542
+    },
+    {
+     "w": "Olympic",
+     "start": 21.542,
+     "end": 21.995
+    },
+    {
+     "w": "swimming",
+     "start": 21.995,
+     "end": 22.461
+    },
+    {
+     "w": "pool",
+     "start": 22.473,
+     "end": 22.865
+    }
+   ]
+  },
+  {
+   "id": "s47",
+   "text": "Forty-seven: more rice than the Great Pyramid.",
+   "start": 23.306,
+   "end": 26.028,
+   "words": [
+    {
+     "w": "Forty-seven",
+     "start": 23.306,
+     "end": 23.979
+    },
+    {
+     "w": "more",
+     "start": 24.457,
+     "end": 24.714
+    },
+    {
+     "w": "rice",
+     "start": 24.714,
+     "end": 25.082
+    },
+    {
+     "w": "than",
+     "start": 25.082,
+     "end": 25.168
+    },
+    {
+     "w": "the",
+     "start": 25.168,
+     "end": 25.229
+    },
+    {
+     "w": "Great",
+     "start": 25.241,
+     "end": 25.548
+    },
+    {
+     "w": "Pyramid",
+     "start": 25.548,
+     "end": 25.989
+    }
+   ]
+  },
+  {
+   "id": "s58",
+   "text": "Fifty-eight: Manhattan, buried forty stories deep.",
+   "start": 26.428,
+   "end": 29.885,
+   "words": [
+    {
+     "w": "Fifty-eight",
+     "start": 26.428,
+     "end": 26.997
+    },
+    {
+     "w": "Manhattan",
+     "start": 27.499,
+     "end": 28.149
+    },
+    {
+     "w": "buried",
+     "start": 28.32,
+     "end": 28.713
+    },
+    {
+     "w": "forty",
+     "start": 28.725,
+     "end": 29.08
+    },
+    {
+     "w": "stories",
+     "start": 29.08,
+     "end": 29.497
+    },
+    {
+     "w": "deep",
+     "start": 29.497,
+     "end": 29.852
+    }
+   ]
+  },
+  {
+   "id": "s74",
+   "text": "Seventy-four: the entire planet, under a meter of rice.",
+   "start": 30.285,
+   "end": 34.247,
+   "words": [
+    {
+     "w": "Seventy-four",
+     "start": 30.287,
+     "end": 30.973
+    },
+    {
+     "w": "the",
+     "start": 31.426,
+     "end": 31.488
+    },
+    {
+     "w": "entire",
+     "start": 31.488,
+     "end": 32.076
+    },
+    {
+     "w": "planet",
+     "start": 32.076,
+     "end": 32.517
+    },
+    {
+     "w": "under",
+     "start": 32.799,
+     "end": 33.02
+    },
+    {
+     "w": "a",
+     "start": 33.02,
+     "end": 33.056
+    },
+    {
+     "w": "meter",
+     "start": 33.069,
+     "end": 33.522
+    },
+    {
+     "w": "of",
+     "start": 33.522,
+     "end": 33.596
+    },
+    {
+     "w": "rice",
+     "start": 33.608,
+     "end": 34.221
+    }
+   ]
+  },
+  {
+   "id": "s95",
+   "text": "Ninety-five: the pile is bigger than Earth itself.",
+   "start": 34.647,
+   "end": 37.76,
+   "words": [
+    {
+     "w": "Ninety-five",
+     "start": 34.647,
+     "end": 35.379
+    },
+    {
+     "w": "the",
+     "start": 35.783,
+     "end": 35.857
+    },
+    {
+     "w": "pile",
+     "start": 35.857,
+     "end": 36.225
+    },
+    {
+     "w": "is",
+     "start": 36.225,
+     "end": 36.372
+    },
+    {
+     "w": "bigger",
+     "start": 36.457,
+     "end": 36.752
+    },
+    {
+     "w": "than",
+     "start": 36.752,
+     "end": 36.874
+    },
+    {
+     "w": "Earth",
+     "start": 36.886,
+     "end": 37.107
+    },
+    {
+     "w": "itself",
+     "start": 37.119,
+     "end": 37.769
+    }
+   ]
+  },
+  {
+   "id": "s116a",
+   "text": "And at one hundred and sixteen seconds...",
+   "start": 38.26,
+   "end": 40.319,
+   "words": [
+    {
+     "w": "And",
+     "start": 38.26,
+     "end": 38.319
+    },
+    {
+     "w": "at",
+     "start": 38.319,
+     "end": 38.43
+    },
+    {
+     "w": "one",
+     "start": 38.442,
+     "end": 38.663
+    },
+    {
+     "w": "hundred",
+     "start": 38.663,
+     "end": 38.908
+    },
+    {
+     "w": "and",
+     "start": 38.908,
+     "end": 38.981
+    },
+    {
+     "w": "sixteen",
+     "start": 38.981,
+     "end": 39.631
+    },
+    {
+     "w": "seconds",
+     "start": 39.643,
+     "end": 40.292
+    }
+   ]
+  },
+  {
+   "id": "s116b",
+   "text": "it's bigger than the Sun.",
+   "start": 41.119,
+   "end": 42.151,
+   "words": [
+    {
+     "w": "it's",
+     "start": 41.119,
+     "end": 41.227
+    },
+    {
+     "w": "bigger",
+     "start": 41.239,
+     "end": 41.534
+    },
+    {
+     "w": "than",
+     "start": 41.534,
+     "end": 41.632
+    },
+    {
+     "w": "the",
+     "start": 41.632,
+     "end": 41.693
+    },
+    {
+     "w": "Sun",
+     "start": 41.705,
+     "end": 42.097
+    }
+   ]
+  },
+  {
+   "id": "outro",
+   "text": "Under two minutes. That's the power of doubling. What should we double next?",
+   "start": 42.951,
+   "end": 46.944,
+   "words": [
+    {
+     "w": "Under",
+     "start": 42.951,
+     "end": 43.096
+    },
+    {
+     "w": "two",
+     "start": 43.109,
+     "end": 43.305
+    },
+    {
+     "w": "minutes",
+     "start": 43.305,
+     "end": 43.856
+    },
+    {
+     "w": "That's",
+     "start": 44.261,
+     "end": 44.42
+    },
+    {
+     "w": "the",
+     "start": 44.42,
+     "end": 44.506
+    },
+    {
+     "w": "power",
+     "start": 44.506,
+     "end": 44.984
+    },
+    {
+     "w": "of",
+     "start": 44.984,
+     "end": 45.094
+    },
+    {
+     "w": "doubling",
+     "start": 45.094,
+     "end": 45.523
+    },
+    {
+     "w": "What",
+     "start": 45.927,
+     "end": 45.988
+    },
+    {
+     "w": "should",
+     "start": 46.001,
+     "end": 46.099
+    },
+    {
+     "w": "we",
+     "start": 46.099,
+     "end": 46.16
+    },
+    {
+     "w": "double",
+     "start": 46.16,
+     "end": 46.417
+    },
+    {
+     "w": "next",
+     "start": 46.43,
+     "end": 46.895
+    }
+   ]
+  }
+ ]
+}
