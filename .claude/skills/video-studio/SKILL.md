@@ -23,7 +23,7 @@ HyperFrames نفسه مجاني (مفتوح المصدر، والرندر على
 - و`events` (usage note): منتخطاه.
 
 بدالهم منستعمل:
-- **الصوت:** edge-tts (`reverse-engineer-video/scripts/tts.py`).
+- **الصوت:** Kokoro المحلي (`npx hyperframes tts`) مع `HYPERFRAMES_PYTHON=.claude/kokoro-venv/bin/python`. ‏edge-tts ما بيمشي بالجلسة السحابية لأن البروكسي بيمنع WebSocket، بس بيمشي على جهاز عادي.
 - **الموسيقا والمؤثرات:** مولّدة بالكود (`reverse-engineer-video/scripts/score.py`) أو بلاها.
 - **الصور:** رسم بالكود (SVG/canvas/CSS).
 - **الرندر:** `render` المحلي بس.
@@ -39,12 +39,13 @@ HyperFrames نفسه مجاني (مفتوح المصدر، والرندر على
 ## الحالة 1: موضوع ← فيديو كامل
 
 1. **الشكل:** إذا عمار ما حدد، افتراضي = عمودي 1080×1920، 45–60 ثانية (Shorts/Reels/TikTok)، عربي RTL. أفقي 1920×1080 بس لليوتيوب الطويل.
-2. **السكريبت:** هوك بأول 2 ثانية (سؤال أو رقم صادم)، جملة لكل مشهد، 140–160 كلمة بالدقيقة، ختام بدعوة. اكتبه بـ `videos/<date>-<slug>/script.md` واعرضه على عمار 🛑 قبل البناء إلا إذا قال «كمّل لحالك».
-3. **الصوت:** `edge-tts` ببلاش وفيه أصوات سورية: `ar-SY-LaithNeural` (رجل؛ بـ tts.py: `python scripts/tts.py script.json out ar-SY-LaithNeural`)، `ar-SY-AmanyNeural` (امرأة). عبر `reverse-engineer-video/scripts/tts.py` أو مباشرة `.venv/bin/edge-tts`. للإنكليزي: `npx hyperframes tts` (Kokoro محلي). خد توقيت الكلمات وركّب المشاهد عليه.
-4. **البناء:** `/hyperframes`: `npx hyperframes init videos/<date>-<slug> --skip-skills --skill=hyperframes`، مشهد لكل جملة بـ `compositions/`، دوّر بـ `hyperframes-registry` قبل ما تبني أي عنصر بإيدك. الخطوط العربية تكون ملفات بـ `assets/fonts/` (Cairo، Tajawal، IBM Plex Sans Arabic من Google Fonts).
-5. **الفحص:** `npx hyperframes check --json` ← صلّح كل خطأ، بعدين `snapshot` وشوف الفريمات بعينك.
-6. **الرندر:** `npx hyperframes render --quality draft -o draft.mp4` للتجربة، و`--quality delivery -o final.mp4` للنهائي. تأكد بـ `ffprobe` من المدة والقياس، وطلّع فريمات وشوفها.
-7. **التسليم:** ابعت `final.mp4` لعمار بـ SendUserFile (لا ترفعه على git). مع عنوان + وصف + 5 هاشتاغ + فكرة صورة مصغّرة.
+2. **الوصفات الجاهزة:** شوف `styles/*/recipe.md` أول: إذا في وصفة بتناسب، امشِ عليها. أول حلقة: `videos/2026-11-25-rice-doubling/`.
+3. **السكريبت:** هوك بأول 2 ثانية (سؤال أو رقم صادم)، جملة لكل مشهد، 140–160 كلمة بالدقيقة، ختام بدعوة. اكتبه بـ `videos/<date>-<slug>/script.md` واعرضه على عمار 🛑 قبل البناء إلا إذا قال «كمّل لحالك».
+4. **الصوت:** بالسحابة: Kokoro (إنكليزي): `HYPERFRAMES_PYTHON=.claude/kokoro-venv/bin/python npx hyperframes tts "…" -v am_michael -s 1.05 -o line.wav`. ملف لكل جملة، وبعدين بنصفّهن على الخط الزمني (شوف `styles/what-if-doubling/recipe.md`). Kokoro ما فيه عربي. على جهاز عادي: `edge-tts` ببلاش وفيه أصوات سورية: `ar-SY-LaithNeural` (رجل؛ بـ tts.py: `python scripts/tts.py script.json out ar-SY-LaithNeural`)، `ar-SY-AmanyNeural` (امرأة). عبر `reverse-engineer-video/scripts/tts.py` أو مباشرة `.venv/bin/edge-tts`. للإنكليزي: `npx hyperframes tts` (Kokoro محلي). خد توقيت الكلمات وركّب المشاهد عليه.
+5. **البناء:** `/hyperframes`: `npx hyperframes init videos/<date>-<slug> --skip-skills --skill=hyperframes`، مشهد لكل جملة بـ `compositions/`، دوّر بـ `hyperframes-registry` قبل ما تبني أي عنصر بإيدك. الخطوط العربية تكون ملفات بـ `assets/fonts/` (Cairo، Tajawal، IBM Plex Sans Arabic من Google Fonts).
+6. **الفحص:** `npx hyperframes check --json` ← صلّح كل خطأ، بعدين `snapshot` وشوف الفريمات بعينك.
+7. **الرندر:** `npx hyperframes render --quality draft -o draft.mp4` للتجربة، و`--quality delivery -o final.mp4` للنهائي. تأكد بـ `ffprobe` من المدة والقياس، وطلّع فريمات وشوفها.
+8. **التسليم:** ابعت `final.mp4` لعمار بـ SendUserFile (لا ترفعه على git). مع عنوان + وصف + 5 هاشتاغ + فكرة صورة مصغّرة.
 
 ## الحالة 2: رابط يوتيوب/قناة ← فيديو بنفس الأسلوب
 

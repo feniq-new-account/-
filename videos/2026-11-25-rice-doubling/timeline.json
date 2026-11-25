@@ -1,0 +1,77 @@
+{
+ "total": 49.23,
+ "lines": [
+  {
+   "id": "l1",
+   "text": "This is one grain of rice. Every second, it doubles.",
+   "start": 0.3,
+   "end": 3.649
+  },
+  {
+   "id": "l2",
+   "text": "How long until it swallows the Sun?",
+   "start": 4.149,
+   "end": 6.346
+  },
+  {
+   "id": "l3",
+   "text": "Ten seconds. About a thousand grains. Barely a handful.",
+   "start": 7.046,
+   "end": 10.566
+  },
+  {
+   "id": "l4",
+   "text": "Fourteen seconds. Sixteen thousand. A full bowl.",
+   "start": 11.016,
+   "end": 14.323
+  },
+  {
+   "id": "l5",
+   "text": "Twenty-three seconds. Eight million grains. Enough to fill a bathtub.",
+   "start": 14.773,
+   "end": 18.869
+  },
+  {
+   "id": "l6",
+   "text": "Thirty-four seconds. Seventeen billion. A whole house, packed to the roof.",
+   "start": 19.319,
+   "end": 23.799
+  },
+  {
+   "id": "l7",
+   "text": "Forty-seven seconds. The Great Pyramid of Giza, buried.",
+   "start": 24.249,
+   "end": 27.897
+  },
+  {
+   "id": "l8",
+   "text": "Fifty-five seconds. More rice than the whole world harvests in a year.",
+   "start": 28.347,
+   "end": 32.614
+  },
+  {
+   "id": "l9",
+   "text": "Ninety-five seconds. The entire planet Earth.",
+   "start": 33.064,
+   "end": 36.221
+  },
+  {
+   "id": "l10",
+   "text": "One hundred sixteen seconds. The Sun.",
+   "start": 36.671,
+   "end": 39.274
+  },
+  {
+   "id": "l11",
+   "text": "And in under five minutes, it fills the observable universe.",
+   "start": 40.074,
+   "end": 43.786
+  },
+  {
+   "id": "l12",
+   "text": "That's the power of doubling. Follow for more.",
+   "start": 44.386,
+   "end": 47.031
+  }
+ ]
+}

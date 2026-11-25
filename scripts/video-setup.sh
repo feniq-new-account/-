@@ -31,6 +31,13 @@ fi
 # 2) HyperFrames: الـ CLI من npm (أحدث نسخة)، منسخّنه بالكاش
 if ! node "$SK/hyperframes/scripts/plugin-cli.mjs" --version >>"$LOG" 2>&1; then say "HyperFrames CLI ما اشتغل (شوف $LOG)"; fi
 
+# 2b) صوت مجاني محلي (Kokoro) لـ hyperframes tts — بيمشي بالسحابة (edge-tts لأ)
+KV=$ROOT/.claude/kokoro-venv
+if [[ ! -x $KV/bin/python ]] || ! "$KV/bin/python" -c "import kokoro_onnx, soundfile" 2>/dev/null; then
+  say "Kokoro: venv"; python3 -m venv "$KV" >>"$LOG" 2>&1 && "$KV/bin/pip" install -q kokoro-onnx soundfile >>"$LOG" 2>&1 || say "Kokoro فشل (شوف $LOG)"
+fi
+say "للصوت: export HYPERFRAMES_PYTHON=$KV/bin/python"
+
 # 3) reverse-video: venv خفيف دايماً؛ النماذج الثقيلة بس مع --full
 RV=$SK/reverse-video
 if [[ $FULL == --full && ! -x $RV/.venv/bin/python ]] && command -v uv >/dev/null; then
